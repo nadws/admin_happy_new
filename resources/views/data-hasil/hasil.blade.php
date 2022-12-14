@@ -37,6 +37,7 @@
                                     <th>Tanggal</th>
                                     <th>No Order</th>
                                     <th>Nama Pasien</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -50,6 +51,7 @@
                                         <td>{{ date('d-m-Y', strtotime($n->tgl)) }}</td>
                                         <td>{{ $n->no_order }}</td>
                                         <td>{{ $n->nama_pasien }}</td>
+
                                         <td>
                                             <a href="" class="btn btn-primary"><i class="bi bi-eye"></i></a>
                                             <a href="{{ route('cetak', ['no_order' => $n->no_order, 'member_id' => $n->member_id]) }}"

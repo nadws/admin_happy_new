@@ -50,6 +50,7 @@ Route::post('add_foto', [FotoController::class, 'add_foto'])->name('add_foto');
 Route::get('invoice', [Invoice::class, 'index'])->name('invoice');
 Route::get('cetak_invoice', [Invoice::class, 'cetak_invoice'])->name('cetak_invoice');
 Route::post('save_invoice', [Invoice::class, 'save_invoice'])->name('save_invoice');
+Route::post('save_status', [Invoice::class, 'save_status'])->name('save_status');
 
 // Hasil Pemeriksaan
 Route::get('h_pemeriksaaan', [Hasil_pemeriksaan::class, 'index'])->name('h_pemeriksaaan');

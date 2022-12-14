@@ -20,7 +20,7 @@ class Invoice extends Controller
         $data = [
             'title' => 'Data Invoive',
             'dt_pasien' => DB::table('dt_pasien')->get(),
-            'invoice' => DB::select("SELECT a.tgl, a.no_order, b.nama_pasien, b.member_id FROM invoice as a left join dt_pasien as b on b.member_id = a.member_id where a.tgl between '$tgl1' and '$tgl2' order by a.id_invoice DESC")
+            'invoice' => DB::select("SELECT a.pembayaran,a.id_invoice,a.tgl, a.no_order, b.nama_pasien, b.member_id, a.status FROM invoice as a left join dt_pasien as b on b.member_id = a.member_id where a.tgl between '$tgl1' and '$tgl2' order by a.id_invoice DESC")
         ];
         return view('data-appointment.appointment', $data);
     }
@@ -60,8 +60,12 @@ class Invoice extends Controller
 
     public function cetak_invoice(Request $r)
     {
-
-
         return view('data-appointment.cetak_invoice');
+    }
+
+    public function save_status(Request $r)
+    {
+        DB::table('invoice')->where('id_invoice', $r->id_invoice)->update(['pembayaran' => $r->pembayaran, 'status' => 'paid']);
+        return redirect()->route('invoice')->with('sukses', 'Berhasil paid appointment');
     }
 }

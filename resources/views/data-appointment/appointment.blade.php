@@ -39,6 +39,7 @@
                                     <th>Member ID</th>
                                     <th>No Order</th>
                                     <th>Nama Pasien</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -54,9 +55,12 @@
                                         <td>{{ $n->no_order }}</td>
                                         <td>{{ $n->nama_pasien }}</td>
                                         <td>
+                                            <span class="badge bg-{{$n->status == 'paid' ? 'primary' : 'warning'}}">{{ $n->status == 'paid' ? "$n->status : " . strtoupper($n->pembayaran) : $n->status }}</span>
+                                        </td>
+                                        <td>
                                             <a href="{{ route('cetak_invoice') }}" class="btn btn-success btn-sm"><i
                                                     class="bi bi-printer"></i></a>
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#pay"
+                                            <a href="#" data-bs-toggle="modal" id_invoice="{{ $n->id_invoice }}" data-bs-target="#pay"
                                                 class="btn btn-info btn-sm pay pay{{ $n->no_order }}"
                                                 no_order="{{ $n->no_order }}"><i class="bi bi-credit-card"></i></a>
                                         </td>
@@ -72,7 +76,7 @@
     </div>
 
     {{-- form tambah --}}
-    <form action="" method="post">
+    <form action="{{ route('save_status') }}" method="post">
         @csrf
         <div class="modal fade text-left" id="pay" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
             aria-hidden="true">
@@ -86,7 +90,7 @@
                             <i data-feather="x"></i>
                         </button>
                     </div>
-
+                    <input type="hidden" id="id_invoice" name="id_invoice">
                     <div class="modal-body">
                         <div class="row text-center">
                             <h5>--Product--</h5>
@@ -98,8 +102,15 @@
                             </table>
                             <table width="100%" class="table">
                                 <tr>
-                                    <th>Cash</th>
-                                    <th><input type="text" class="form-control"></th>
+                                    <th>Pembayaran</th>
+                                    <th>
+                                        <select name="pembayaran" id="" class="form-control choices">
+                                            <option value="">- Pilih pembayaran -</option>
+                                            <option value="CASH">CASH</option>
+                                            <option value="BCA">BCA</option>
+                                            <option value="MANDIRI">MANDIRI</option>
+                                        </select>
+                                    </th>
                                 </tr>
 
                             </table>
@@ -131,46 +142,6 @@
             </div>
         </div>
     </div>
-
-
-    {{-- form edit --}}
-    <div class="modal fade text-left" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel33">
-                        Edit Form
-                    </h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <i data-feather="x"></i>
-                    </button>
-                </div>
-                <form action="#">
-                    <div class="modal-body">
-                        <label>Email: </label>
-                        <div class="form-group">
-                            <input type="text" placeholder="Email Address" class="form-control" />
-                        </div>
-                        <label>Password: </label>
-                        <div class="form-group">
-                            <input type="password" placeholder="Password" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                            <i class="bx bx-x d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Close</span>
-                        </button>
-                        <button type="button" class="btn btn-primary ml-1" data-bs-dismiss="modal">
-                            <i class="bx bx-check d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Save</span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 @endsection
 @section('scripts')
     <script>
@@ -192,6 +163,11 @@
                     $('.input_manual').hide();
                     $('.input_manual').attr('disabled', 'true');
                 }
+            })
+
+            $(document).on('click', '.pay', function(){
+                var id_invoice = $(this).attr('id_invoice')
+                $("#id_invoice").val(id_invoice);
             })
         });
     </script>

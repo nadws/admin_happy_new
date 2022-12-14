@@ -19,7 +19,7 @@ class Hasil_pemeriksaan extends Controller
 
         $data = [
             'title' => 'Data Hasil Pemeriksaan',
-            'invoice' => DB::select("SELECT a.tgl, a.no_order, b.nama_pasien, b.member_id FROM invoice as a left join dt_pasien as b on b.member_id = a.member_id where a.tgl between '$tgl1' and '$tgl2'")
+            'invoice' => DB::select("SELECT a.tgl, a.no_order, b.nama_pasien, b.member_id,a.status FROM invoice as a left join dt_pasien as b on b.member_id = a.member_id where a.tgl between '$tgl1' and '$tgl2'")
         ];
         return view('data-hasil.hasil', $data);
     }

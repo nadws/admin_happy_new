@@ -18,10 +18,6 @@
     <link rel="stylesheet" href="{{ asset('css') }}/iziToast.min.css">
 
 
-    {{-- css select2 choices --}}
-    <link rel="stylesheet" href="{{ asset('theme') }}/assets/extensions/choices.js/public/assets/styles/choices.css" />
-
-
     @yield('styles')
 </head>
 
@@ -40,8 +36,8 @@
     <script src="{{ asset('theme') }}/assets/js/pages/dashboard.js"></script>
     <script src="{{ asset('theme') }}/assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
     <script src="{{ asset('theme') }}/assets/js/pages/simple-datatables.js"></script>
-    {{-- <script src="{{ asset('theme') }}/assets/extensions/choices.js/public/assets/scripts/choices.js"></script>
-    <script src="{{ asset('theme') }}/assets/js/pages/form-element-select.js"></script> --}}
+
+    {{-- <script src="{{ asset('theme') }}/assets/js/pages/form-element-select.js"></script> --}}
 
     {{-- choice select2 --}}
     {{-- <script src="{{ asset('theme') }}/assets/extensions/choices.js/public/assets/scripts/choices.js"></script>
