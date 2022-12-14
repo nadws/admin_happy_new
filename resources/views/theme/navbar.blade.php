@@ -51,7 +51,7 @@
                 <li class="sidebar-item {{ Request::is('invoice') ? 'active' : '' }}">
                     <a href="{{ route('invoice') }}" class='sidebar-link'>
                         <i class="bi bi-receipt"></i>
-                        <span>Data Pasien</span>
+                        <span>Data Invoice</span>
                     </a>
                 </li>
 
@@ -69,10 +69,6 @@
                         <li class="submenu-item {{ Request::is('data_dokter') ? 'active' : '' }}">
                             <a href="{{ route('data_dokter') }}">Data Dokter</a>
                         </li>
-                        <li class="submenu-item {{ Request::is('h_pemeriksaaan') ? 'active' : '' }}">
-                            <a href="{{ route('h_pemeriksaaan') }}">Data Test I</a>
-                        </li>
-
                     </ul>
                 </li>
                 @php
