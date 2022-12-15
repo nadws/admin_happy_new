@@ -1,3 +1,22 @@
+@php
+    $user_id = Auth::user()->id;
+    $sub_m = DB::table('tb_sub_menu')
+        ->where('url', Route::current()->getName())
+        ->first();
+@endphp
+@if (!empty($sub_m->url))
+    @php
+        $per = DB::table('tb_permission')
+            ->where('permission', $sub_m->id_sub_menu)
+            ->where('id_user', $user_id)
+            ->first();
+    @endphp
+@endif
+@if (empty($per->id_user))
+    <script>
+        // window.location.href = '{{ route('login') }}';
+    </script>
+@endif
 <div id="sidebar" class="active">
     <div class="sidebar-wrapper active">
         <div class="sidebar-header position-relative">
@@ -42,19 +61,20 @@
         <div class="sidebar-menu">
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
-                <li class="sidebar-item {{ Request::is('dashboard') ? 'active' : '' }}">
+                {{-- <li class="sidebar-item {{ Request::is('dashboard') ? 'active' : '' }}">
                     <a href="{{ route('dashboard') }}" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-                <li class="sidebar-item {{ Request::is('invoice') ? 'active' : '' }}">
+                --}}
+                {{-- <li class="sidebar-item {{ Request::is('invoice') ? 'active' : '' }}">
                     <a href="{{ route('invoice') }}" class='sidebar-link'>
                         <i class="bi bi-receipt"></i>
                         <span>Data Invoice</span>
                     </a>
-                </li>
-
+                </li> --}}
+                {{--
 
                 <li
                     class="sidebar-item has-sub {{ Request::is('data_pasien', 'data_dokter', 'h_pemeriksaaan') ? 'active' : '' }}">
@@ -94,21 +114,127 @@
                         </li>
 
                     </ul>
-                </li>
-                <li class="sidebar-item has-sub {{ Request::is('data_pasien', 'data_dokter') ? 'active' : '' }}">
-                    <a href="#" class='sidebar-link'>
-                        <i class="bi bi-file-code"></i>
-                        <span>Data Web</span>
-                    </a>
-                    <ul class="submenu {{ Request::is('foto') ? 'active' : '' }}">
-                        <li class="submenu-item {{ Request::is('foto') ? 'active' : '' }}">
-                            <a href="{{ route('foto') }}">Foto</a>
-                        </li>
+                </li> --}}
+                @php
+                    $id_user = Auth::user()->id;
+                    
+                    $sub = DB::table('tb_sub_menu')
+                        ->where('url', Route::current()->getName())
+                        ->first();
+                @endphp
+                @if (empty($sub->url))
+                    @php
+                        $menu = DB::select(
+                            "SELECT a.id_user, b.url, c.id_menu, c.icon, c.menu
+                        FROM tb_permission AS a
+                        LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
+                        LEFT JOIN tb_menu AS c ON c.id_menu = b.id_menu
+                        WHERE a.id_user ='$id_user'
+                        GROUP BY b.id_menu
+                        order by c.urutan ASC
+                        ",
+                        );
+                    @endphp
 
+                    @foreach ($menu as $i => $m)
+                        <li
+                            class="sidebar-item has-sub {{ Request::is('data_pasien', 'data_dokter', 'h_pemeriksaaan') ? 'active' : '' }}">
+                            <a href="#" class='sidebar-link'>
+                                <i class="{{ $m->icon }}"></i>
+                                <span>{{ $m->menu }}</span>
+                            </a>
+                            @php
+                           
+                                $menu_p = DB::select(
+                                    DB::raw(
+                                        "SELECT b.id_sub_menu,a.id_user, b.url, b.sub_menu, c.id_menu, c.icon, c.menu
+                                            FROM tb_permission AS a
+                                            LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
+                                            LEFT JOIN tb_menu AS c ON c.id_menu = b.id_menu
+                                            WHERE a.id_user ='$id_user' and b.id_menu = '$m->id_menu'
+                                        "
+                                    ),
+                                )
+                            @endphp
+                            <ul class="submenu {{ Request::is('tb_user') ? 'active' : '' }}">
+                                @foreach ($menu_p as $sm)
+                                    <li class="submenu-item {{ Request::is($sm->url) ? 'active' : '' }}">
+                                        <a href="{{ $sm->id_sub_menu == 2 ? $sm->url : route($sm->url) }}">{{$sm->sub_menu}}</a>
+                                    </li>
+                                @endforeach
+                                {{-- <li class="submenu-item">
+                                    <a target="_blank" href="http://127.0.0.1:2222/dashboard">CMS Website</a>
+                                </li> --}}
+                            </ul>
+                        </li>
+                    @endforeach
+                @else
+                @php
+                    $menu = DB::select(
+                    
+                            "SELECT a.id_user, b.url, c.id_menu, c.icon, c.menu
+                            FROM tb_permission AS a
+                            LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
+                            LEFT JOIN tb_menu AS c ON c.id_menu = b.id_menu
+                            WHERE a.id_user ='$id_user'
+                            GROUP BY b.id_menu
+                            order by c.urutan ASC
+                            "
+                    
+                    )
+                @endphp
+                @foreach ($menu as $m)
+                    @php
+                        $permission2 =  DB::selectOne(
+                            DB::raw(
+                                "SELECT a.id_user, a.permission, b.sub_menu, b.url, b.id_menu
+                                FROM tb_permission AS a
+                                LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
+                                WHERE a.id_user ='$id_user' AND a.permission = '$sub->id_sub_menu'
+                                "
+                            ),
+                        ) 
+                    @endphp
+                    <li
+                    class="sidebar-item has-sub {{ Request::is('data_pasien', 'data_dokter', 'h_pemeriksaaan') ? 'active' : '' }}">
+                    <a href="#" class='sidebar-link'>
+                        <i class="{{ $m->icon }}"></i>
+                        <span>{{ $m->menu }}</span>
+                    </a>
+                    @php
+                   
+                   $menu_p = DB::select(
+                        DB::raw(
+                            "SELECT b.id_sub_menu,a.id_user, b.url, b.sub_menu, c.id_menu, c.icon, c.menu
+                                FROM tb_permission AS a
+                                LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
+                                LEFT JOIN tb_menu AS c ON c.id_menu = b.id_menu
+                                WHERE a.id_user ='$id_user' and b.id_menu = '$m->id_menu'
+                            "
+                        ),
+                    )
+                    @endphp
+                    <ul class="submenu {{ Request::is('tb_user') ? 'active' : '' }}">
+                        @foreach ($menu_p as $sm)
+                            <li class="submenu-item {{ Request::is($sm->url) ? 'active' : '' }}">
+                                <a href="{{ $sm->id_sub_menu == 2 ? $sm->url : route($sm->url) }}">{{$sm->sub_menu}}</a>
+                            </li>
+                        @endforeach
+                        {{-- <li class="submenu-item">
+                            <a target="_blank" href="http://127.0.0.1:2222/dashboard">CMS Website</a>
+                        </li> --}}
                     </ul>
                 </li>
-
-
+                @endforeach
+                @endif
+                <hr>
+                <li class="sidebar-item">
+                    <a href="{{ route('logout') }}" class='sidebar-link'>
+                        <i class="bi bi-arrow-left text-danger"></i>
+                        <span>Logout</span>
+                    </a>
+                    
+                </li>
             </ul>
         </div>
     </div>

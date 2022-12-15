@@ -6,6 +6,7 @@ use App\Http\Controllers\FotoController;
 use App\Http\Controllers\Hasil_pemeriksaan;
 use App\Http\Controllers\Invoice;
 use App\Http\Controllers\PertanyaanController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +23,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('tb_user', [UserController::class, 'index'])->middleware(['auth'])->name('tb_user');
+Route::post('save_user', [UserController::class, 'save_user'])->name('save_user');
+Route::get('logout', [UserController::class, 'logout'])->name('logout');
+Route::get('permission', [UserController::class, 'permission'])->name('permission');
+Route::post('save_permission', [UserController::class, 'save_permission'])->name('save_permission');
+Route::get('delete_user/{id}', [UserController::class, 'delete_user'])->name('delete_user');
+Route::get('verifikasi/{val}/{id}', [UserController::class, 'verifikasi'])->name('verifikasi');
 
 Route::get('data_dokter', [DataDokterController::class, 'index'])->name('data_dokter');
 
