@@ -6,7 +6,10 @@ use App\Http\Controllers\FotoController;
 use App\Http\Controllers\Hasil_pemeriksaan;
 use App\Http\Controllers\Invoice;
 use App\Http\Controllers\PertanyaanController;
+use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\UserController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,6 +34,21 @@ Route::get('permission', [UserController::class, 'permission'])->name('permissio
 Route::post('save_permission', [UserController::class, 'save_permission'])->name('save_permission');
 Route::get('delete_user/{id}', [UserController::class, 'delete_user'])->name('delete_user');
 Route::get('verifikasi/{val}/{id}', [UserController::class, 'verifikasi'])->name('verifikasi');
+
+Route::post('save_theme', function(Request $r){
+    DB::table('cms_konten')->where('id',1)->update(['isi' => $r->warna1]);
+    DB::table('cms_konten')->where('id',2)->update(['isi' => $r->warna2]);
+    DB::table('cms_konten')->where('id',3)->update(['isi' => $r->warna3]);
+    DB::table('cms_konten')->where('id',4)->update(['isi' => $r->warna4]);
+
+    return redirect()->back();
+})->middleware(['auth'])->name('save_theme');
+
+Route::get('cms', function(){
+    return redirect('http://127.0.0.1:2222/dashboard');
+})->name('cms');
+
+
 
 Route::get('data_dokter', [DataDokterController::class, 'index'])->name('data_dokter');
 

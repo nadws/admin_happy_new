@@ -56,7 +56,7 @@
                                             <a href="#" data-bs-toggle="modal" id_user="{{ $n->id }}" data-bs-target="#permission"
                                                 class="btn btn-primary btn-sm permission"
                                                 ><i class="bi bi-key"></i></a>
-                                            <a onclick="return confirm('Yakin dihapus ?')" href="{{ route("delete_user", $n->id) }}" class="btn btn-danger btn-sm"><i
+                                            <a onclick="return confirm('Yakin dihapus ?')" href="{{ route("delete_user", $n->id) }}" class="btn btn-warning btn-sm"><i
                                                     class="bi bi-trash"></i></a>
                                         </td>
                                     </tr>

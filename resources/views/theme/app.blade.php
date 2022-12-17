@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Mazer Admin Dashboard</title>
+    <title>Admin Happy Kids</title>
 
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/css/main/app.css">
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/css/main/app-dark.css">
@@ -16,12 +16,18 @@
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/extensions/simple-datatables/style.css">
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/css/pages/simple-datatables.css">
     <link rel="stylesheet" href="{{ asset('css') }}/iziToast.min.css">
-
-
     @yield('styles')
 </head>
+@php
+    // $warna1 = DB::table('h1')->where('id_h1', 16)->first()->isi;
+    // $warna2 = DB::table('h1')->where('id_h1', 17)->first()->isi;
+    $warna1 = DB::table('cms_konten')->where('id',1)->first()->isi;
+    $warna2 = DB::table('cms_konten')->where('id',2)->first()->isi;
+    $warna3 = DB::table('cms_konten')->where('id',3)->first()->isi;
+    $warna4 = DB::table('cms_konten')->where('id',4)->first()->isi;
+@endphp
 
-<body>
+<body style="background-color: {{$warna2}}">
     <div id="app">
         @include('theme.navbar')
         @yield('content')
@@ -66,7 +72,23 @@
             });
         </script>
     @endif
-
+    <script>
+        $(document).on('change', '#warna1', function(){
+            $('.card').css('background-color', $(this).val())
+            $('.card-header').css('background-color', $(this).val())
+            $('.sidebar-wrapper').css('background-color', $(this).val())
+        })
+        $(document).on('change', '#warna2', function(){
+            $('body').css('background-color', $(this).val())
+        })
+        $(document).on('change', '#warna3', function(){
+            $('.sidebar-item.active>.sidebar-link').css('background-color', $(this).val())
+            $('.btn-primary').css('--bs-btn-bg', $(this).val())
+        })
+        $(document).on('change', '#warna4', function(){
+            $('.btn-warning').css('--bs-btn-bg', $(this).val())
+        })
+    </script>
     @yield('scripts')
 </body>
 

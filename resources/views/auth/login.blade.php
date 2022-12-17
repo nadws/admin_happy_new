@@ -1,3 +1,7 @@
+@php
+    $warna1 = DB::table('h1')->where('id_h1', 16)->first()->isi;
+    $warna2 = DB::table('h1')->where('id_h1', 17)->first()->isi;
+@endphp
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 <style>
     img{
@@ -6,7 +10,7 @@
 .login {
     height: 100%;
     width: 100%;
-    background: #ECED99;
+    background: {{$warna1}};
     position: relative;
 }
 .login_box {
@@ -16,7 +20,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-    background: #fff;
+    background: {{$warna2}};
     border-radius: 10px;
     box-shadow: 1px 4px 22px -8px #0004;
     display: flex;
@@ -50,7 +54,7 @@
 }
 .left h3{
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 .left input {
     border: none;
@@ -128,22 +132,28 @@
 
 </style>
 <body>
+
+  @php
+            $img = DB::table('h1')->where('id_h1', 2)->first()->isi;
+            $url_asset = ' http://127.0.0.1:2222/assets/img/';
+        @endphp
 	<section class="login">
 		<div class="login_box">
 			<div class="left">
 				<div class="contact">
 					<form method="POST" action="{{ route('login') }}">
             @csrf
+            <img src="{{$url_asset . $img}}"  style="width: 100px; object-fit: cover; text-align: center; margin-left: 90px; margin-bottom: 10px;" alt="">
 						<h3>SIGN IN</h3>
 						<input type="text" name="email" placeholder="EMAIL">
 						<input type="password" name="password" placeholder="PASSWORD">
+            <a href="{{ route('register') }}" class="register">Tidak punya akun ?</a>
 						<button class="submit">LOGIN</button>
 					</form>
-                    <a href="{{ route('register') }}" class="register">Tidak punya akun ?</a>
 				</div>
 			</div>
 			<div class="right">
-            <img src="http://127.0.0.1:2222/assets/img/logo.png" alt="">
+        <img src="{{ asset('images-upload/login.jpg') }}" alt="">
 				<div class="right-text">
 					<h2>Happy Kids Login</h2>
 					<h5>A UX BASED CREATIVE AGENCEY</h5>

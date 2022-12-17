@@ -58,10 +58,10 @@
                                             <span class="badge bg-{{$n->status == 'paid' ? 'primary' : 'warning'}}">{{ $n->status == 'paid' ? "$n->status : " . strtoupper($n->pembayaran) : $n->status }}</span>
                                         </td>
                                         <td>
-                                            <a href="{{ route('cetak_invoice') }}" class="btn btn-success btn-sm"><i
+                                            <a href="{{ route('cetak_invoice') }}" class="btn btn-primary btn-sm"><i
                                                     class="bi bi-printer"></i></a>
                                             <a href="#" data-bs-toggle="modal" id_invoice="{{ $n->id_invoice }}" data-bs-target="#pay"
-                                                class="btn btn-info btn-sm pay pay{{ $n->no_order }}"
+                                                class="btn btn-primary btn-sm pay pay{{ $n->no_order }}"
                                                 no_order="{{ $n->no_order }}"><i class="bi bi-credit-card"></i></a>
                                         </td>
                                     </tr>
