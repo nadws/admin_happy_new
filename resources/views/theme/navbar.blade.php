@@ -28,25 +28,30 @@
         margin-bottom: 10px;
         border-radius: 10px;
     }
+
     .card {
-        background-color: {{$warna1}};
+        background-color: {{ $warna1 }};
     }
+
     .card-header {
-        background-color: {{$warna1}};
+        background-color: {{ $warna1 }};
     }
+
     .sidebar-wrapper {
-        background-color: {{$warna1}};
+        background-color: {{ $warna1 }};
     }
+
     .btn-primary {
-        --bs-btn-bg: {{$warna3}};
+        --bs-btn-bg: {{ $warna3 }};
     }
+
     .sidebar-wrapper .menu .sidebar-item.active>.sidebar-link {
-        background-color: {{$warna3}};
+        background-color: {{ $warna3 }};
     }
+
     .btn-warning {
-        --bs-btn-bg: {{$warna4}};
+        --bs-btn-bg: {{ $warna4 }};
     }
-    
 </style>
 {{-- permission --}}
 
@@ -66,26 +71,30 @@
                 </div>
                 <div class="modal-body">
                     <center>
-                    <div class="row">
-                        <h5>Colors</h5>
-                        <div class="col-lg-3">
-                            <input class="form-control style1" id="warna1" type="color" value="{{ $warna1 }}" name="warna1">
-                            <label for="" class="text-secondary ml-2">Warna 1</label>
+                        <div class="row">
+                            <h5>Colors</h5>
+                            <div class="col-lg-3">
+                                <input class="form-control style1" id="warna1" type="color"
+                                    value="{{ $warna1 }}" name="warna1">
+                                <label for="" class="text-secondary ml-2">Warna 1</label>
+                            </div>
+                            <div class="col-lg-3">
+                                <input class="form-control style1" id="warna2" type="color"
+                                    value="{{ $warna2 }}" name="warna2">
+                                <label for="" class="text-secondary ml-2">Warna 2</label>
+                            </div>
+                            <div class="col-lg-3">
+                                <input class="form-control style1" id="warna3" type="color"
+                                    value="{{ $warna3 }}" name="warna3">
+                                <label for="" class="text-secondary ml-2">Warna 3</label>
+                            </div>
+                            <div class="col-lg-3">
+                                <input class="form-control style1" id="warna4" type="color"
+                                    value="{{ $warna4 }}" name="warna4">
+                                <label for="" class="text-secondary ml-2">Warna 4</label>
+                            </div>
                         </div>
-                        <div class="col-lg-3">
-                            <input class="form-control style1" id="warna2" type="color" value="{{ $warna2 }}" name="warna2">
-                            <label for="" class="text-secondary ml-2">Warna 2</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <input class="form-control style1" id="warna3" type="color" value="{{ $warna3 }}" name="warna3">
-                            <label for="" class="text-secondary ml-2">Warna 3</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <input class="form-control style1" id="warna4" type="color" value="{{ $warna4 }}" name="warna4">
-                            <label for="" class="text-secondary ml-2">Warna 4</label>
-                        </div>
-                    </div>
-                    {{-- <div class="row">
+                        {{-- <div class="row">
                         <h5>Buttons</h5>
                         <div class="col-lg-4">
                             <input class="form-control style1" id="warna1" type="color" value="{{ $warna1 }}" name="warna1">
@@ -100,7 +109,7 @@
                             <label for="" class="text-secondary ml-2">Warna 2</label>
                         </div>
                     </div> --}}
-                    {{-- <div class="row mt-5">
+                        {{-- <div class="row mt-5">
                         <h5>Font Colors</h5>
                         <div class="col-lg-4">
                             <input class="form-control style1" id="fwarna1" type="color" value="" name="fontc1">
@@ -116,7 +125,7 @@
                         </div>
                     </div> --}}
                     </center>
-                 </div>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                         <i class="bx bx-x d-block d-sm-none"></i>
@@ -148,7 +157,7 @@
                         <input class="form-check-input  me-0" type="checkbox" id="toggle-dark">
                         <label class="form-check-label"></label>
                     </div>
-                    
+
                 </div>
                 <div class="sidebar-toggler  x">
                     <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
@@ -234,14 +243,13 @@
                     @endphp
 
                     @foreach ($menu as $i => $m)
-                        <li
-                            class="sidebar-item has-sub {{ Request::is($m->url) ? 'active' : '' }}">
+                        <li class="sidebar-item has-sub {{ Request::is($m->url) ? 'active' : '' }}">
                             <a href="#" class='sidebar-link'>
                                 <i class="{{ $m->icon }}"></i>
                                 <span>{{ $m->menu }}</span>
                             </a>
                             @php
-                           
+                                
                                 $menu_p = DB::select(
                                     DB::raw(
                                         "SELECT b.id_sub_menu,a.id_user, b.url, b.sub_menu, c.id_menu, c.icon, c.menu
@@ -249,17 +257,15 @@
                                             LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
                                             LEFT JOIN tb_menu AS c ON c.id_menu = b.id_menu
                                             WHERE a.id_user ='$id_user' and b.id_menu = '$m->id_menu'
-                                        "
+                                        ",
                                     ),
-                                )
+                                );
                             @endphp
                             <ul class="submenu {{ Request::is($m->url) ? 'active' : '' }}">
                                 @foreach ($menu_p as $sm)
                                     <li class="submenu-item {{ Request::is($sm->url) ? 'active' : '' }}">
-                                        <a 
-                                        {{$sm->url == '#' ? 'data-bs-toggle="modal" data-bs-target="#theme"' : ''}}
-                                        href="{{ $sm->url == '#' ? '#' : route($sm->url) }}"
-                                        >{{$sm->sub_menu}}</a>
+                                        <a {{ $sm->url == '#' ? 'data-bs-toggle="modal" data-bs-target="#theme"' : '' }}
+                                            href="{{ $sm->url == '#' ? '#' : route($sm->url) }}">{{ $sm->sub_menu }}</a>
                                     </li>
                                 @endforeach
                                 {{-- <li class="submenu-item">
@@ -269,9 +275,8 @@
                         </li>
                     @endforeach
                 @else
-                @php
-                    $menu = DB::select(
-                    
+                    @php
+                        $menu = DB::select(
                             "SELECT a.id_user, b.url, c.id_menu, c.icon, c.menu
                             FROM tb_permission AS a
                             LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
@@ -279,54 +284,52 @@
                             WHERE a.id_user ='$id_user'
                             GROUP BY b.id_menu
                             order by c.urutan ASC
-                            "
-                    
-                    )
-                @endphp
-                @foreach ($menu as $m)
-                    @php
-                        $permission2 =  DB::selectOne(
-                            DB::raw(
-                                "SELECT a.id_user, a.permission, b.sub_menu, b.url, b.id_menu
+                            ",
+                        );
+                    @endphp
+                    @foreach ($menu as $m)
+                        @php
+                            $permission2 = DB::selectOne(
+                                DB::raw(
+                                    "SELECT a.id_user, a.permission, b.sub_menu, b.url, b.id_menu
                                 FROM tb_permission AS a
                                 LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
                                 WHERE a.id_user ='$id_user' AND a.permission = '$sub->id_sub_menu'
-                                "
-                            ),
-                        ) 
-                    @endphp
-                    <li
-                    class="sidebar-item has-sub {{ Request::is($m->url) ? 'active' : '' }}">
-                    <a href="#" class='sidebar-link'>
-                        <i class="{{ $m->icon }}"></i>
-                        <span>{{ $m->menu }}</span>
-                    </a>
-                    @php
-                   
-                   $menu_p = DB::select(
-                        DB::raw(
-                            "SELECT b.id_sub_menu,a.id_user, b.url, b.sub_menu, c.id_menu, c.icon, c.menu
+                                ",
+                                ),
+                            );
+                        @endphp
+                        <li class="sidebar-item has-sub {{ Request::is($m->url) ? 'active' : '' }}">
+                            <a href="#" class='sidebar-link'>
+                                <i class="{{ $m->icon }}"></i>
+                                <span>{{ $m->menu }}</span>
+                            </a>
+                            @php
+                                
+                                $menu_p = DB::select(
+                                    DB::raw(
+                                        "SELECT b.id_sub_menu,a.id_user, b.url, b.sub_menu, c.id_menu, c.icon, c.menu
                                 FROM tb_permission AS a
                                 LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
                                 LEFT JOIN tb_menu AS c ON c.id_menu = b.id_menu
                                 WHERE a.id_user ='$id_user' and b.id_menu = '$m->id_menu'
-                            "
-                        ),
-                    )
-                    @endphp
-                    <ul class="submenu {{ Request::is($m->url) ? 'active' : '' }}">
-                        @foreach ($menu_p as $sm)
-                            <li class="submenu-item {{ Request::is($sm->url) ? 'active' : '' }}">
-                                <a {{$sm->url == '#' ? 'data-bs-toggle=modal data-bs-target=#theme' : ''}}
-                                    href="{{ $sm->url == '#' ? '#' : route($sm->url) }}">{{$sm->sub_menu}}</a>
-                            </li>
-                        @endforeach
-                        {{-- <li class="submenu-item">
+                            ",
+                                    ),
+                                );
+                            @endphp
+                            <ul class="submenu {{ Request::is($m->url) ? 'active' : '' }}">
+                                @foreach ($menu_p as $sm)
+                                    <li class="submenu-item {{ Request::is($sm->url) ? 'active' : '' }}">
+                                        <a {{ $sm->url == '#' ? 'data-bs-toggle=modal data-bs-target=#theme' : '' }}
+                                            href="{{ $sm->url == '#' ? '#' : route($sm->url) }}">{{ $sm->sub_menu }}</a>
+                                    </li>
+                                @endforeach
+                                {{-- <li class="submenu-item">
                             <a target="_blank" href="http://127.0.0.1:2222/dashboard">CMS Website</a>
                         </li> --}}
-                    </ul>
-                </li>
-                @endforeach
+                            </ul>
+                        </li>
+                    @endforeach
                 @endif
                 <hr>
                 <li class="sidebar-item">
@@ -334,20 +337,20 @@
                         <i class="bi bi-arrow-left text-danger"></i>
                         <span>Logout</span>
                     </a>
-                    
+
                 </li>
             </ul>
         </div>
     </div>
 </div>
 @section('scripts')
-<script>
-    $(document).ready(function () {
-        
-        
-        $(document).on('change', '#warna2', function(){
-            $('.warna2').css('background-color', $(this).val())
-        })
-    });
-</script>
+    <script>
+        $(document).ready(function() {
+
+
+            $(document).on('change', '#warna2', function() {
+                $('.warna2').css('background-color', $(this).val())
+            })
+        });
+    </script>
 @endsection
