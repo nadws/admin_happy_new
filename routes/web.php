@@ -6,6 +6,7 @@ use App\Http\Controllers\DataPasienController;
 use App\Http\Controllers\FotoController;
 use App\Http\Controllers\Hasil_pemeriksaan;
 use App\Http\Controllers\Invoice;
+use App\Http\Controllers\Pertanyaan;
 use App\Http\Controllers\PertanyaanController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\UserController;
@@ -39,16 +40,16 @@ Route::post('save_permission', [UserController::class, 'save_permission'])->name
 Route::get('delete_user/{id}', [UserController::class, 'delete_user'])->name('delete_user');
 Route::get('verifikasi/{val}/{id}', [UserController::class, 'verifikasi'])->name('verifikasi');
 
-Route::post('save_theme', function(Request $r){
-    DB::table('cms_konten')->where('id',1)->update(['isi' => $r->warna1]);
-    DB::table('cms_konten')->where('id',2)->update(['isi' => $r->warna2]);
-    DB::table('cms_konten')->where('id',3)->update(['isi' => $r->warna3]);
-    DB::table('cms_konten')->where('id',4)->update(['isi' => $r->warna4]);
+Route::post('save_theme', function (Request $r) {
+    DB::table('cms_konten')->where('id', 1)->update(['isi' => $r->warna1]);
+    DB::table('cms_konten')->where('id', 2)->update(['isi' => $r->warna2]);
+    DB::table('cms_konten')->where('id', 3)->update(['isi' => $r->warna3]);
+    DB::table('cms_konten')->where('id', 4)->update(['isi' => $r->warna4]);
 
     return redirect()->back();
 })->middleware(['auth'])->name('save_theme');
 
-Route::get('cms', function(){
+Route::get('cms', function () {
     return redirect('http://127.0.0.1:2222/dashboard');
 })->name('cms');
 
@@ -86,6 +87,20 @@ Route::post('save_status', [Invoice::class, 'save_status'])->name('save_status')
 // Hasil Pemeriksaan
 Route::get('h_pemeriksaaan', [Hasil_pemeriksaan::class, 'index'])->name('h_pemeriksaaan');
 Route::get('cetak', [Hasil_pemeriksaan::class, 'cetak'])->name('cetak');
+
+// Pertanyaan 
+Route::get('kpertanyaan', [Pertanyaan::class, 'index'])->name('kpertanyaan');
+
+Route::get('form1', [Pertanyaan::class, 'form1'])->name('form1');
+Route::get('form2', [Pertanyaan::class, 'form2'])->name('form2');
+Route::get('form3', [Pertanyaan::class, 'form3'])->name('form3');
+Route::get('form4', [Pertanyaan::class, 'form4'])->name('form4');
+
+Route::get('/tbh_pertanyaan1', [Pertanyaan::class, 'tbh_pertanyaan1'])->name('tbh_pertanyaan1');
+Route::get('/tbh_pertanyaan2', [Pertanyaan::class, 'tbh_pertanyaan2'])->name('tbh_pertanyaan2');
+Route::get('/tbh_pertanyaan3', [Pertanyaan::class, 'tbh_pertanyaan3'])->name('tbh_pertanyaan3');
+Route::get('/tbh_pertanyaan4', [Pertanyaan::class, 'tbh_pertanyaan4'])->name('tbh_pertanyaan4');
+
 
 
 Route::get('/dashboard', function () {

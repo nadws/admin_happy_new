@@ -55,14 +55,37 @@
                                         <td>{{ $n->no_order }}</td>
                                         <td>{{ $n->nama_pasien }}</td>
                                         <td>
-                                            <span class="badge bg-{{$n->status == 'paid' ? 'primary' : 'warning'}}">{{ $n->status == 'paid' ? "$n->status : " . strtoupper($n->pembayaran) : $n->status }}</span>
+                                            <span
+                                                class="badge bg-{{ $n->status == 'paid' ? 'primary' : 'warning' }}">{{ $n->status == 'paid' ? "$n->status : " . strtoupper($n->pembayaran) : $n->status }}</span>
                                         </td>
                                         <td>
                                             <a href="{{ route('cetak_invoice') }}" class="btn btn-primary btn-sm"><i
                                                     class="bi bi-printer"></i></a>
-                                            <a href="#" data-bs-toggle="modal" id_invoice="{{ $n->id_invoice }}" data-bs-target="#pay"
+                                            <a href="#" data-bs-toggle="modal" id_invoice="{{ $n->id_invoice }}"
+                                                data-bs-target="#pay"
                                                 class="btn btn-primary btn-sm pay pay{{ $n->no_order }}"
                                                 no_order="{{ $n->no_order }}"><i class="bi bi-credit-card"></i></a>
+
+                                            @php
+                                                $order = DB::table('tb_order')
+                                                    ->where('no_order', $n->no_order)
+                                                    ->first();
+                                                
+                                                $jawaban = DB::selectOne("SELECT a.* FROM jawaban4 as a where a.no_order = '$n->no_order' group by a.no_order");
+                                            @endphp
+                                            @if (empty($order->no_order))
+                                            @else
+                                                @if (empty($jawaban->no_order))
+                                                    <a href="{{ route('kpertanyaan', ['no_order' => $n->no_order, 'member_id' => $n->member_id]) }}"
+                                                        class="btn btn-warning btn-sm"><i
+                                                            class="bi bi-file-earmark-check"></i></a>
+                                                @else
+                                                    <a href="{{ route('cetak', ['no_order' => $n->no_order, 'member_id' => $n->member_id]) }}"
+                                                        class="btn btn-warning btn-sm"><i class="bi bi-printer"></i></a>
+                                                @endif
+                                            @endif
+
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -165,7 +188,7 @@
                 }
             })
 
-            $(document).on('click', '.pay', function(){
+            $(document).on('click', '.pay', function() {
                 var id_invoice = $(this).attr('id_invoice')
                 $("#id_invoice").val(id_invoice);
             })
