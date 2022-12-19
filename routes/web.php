@@ -29,7 +29,11 @@ Route::get('/', function () {
 });
 
 // app dokter
+
 Route::get('app_dokter', [AppDokterController::class, 'index'])->middleware(['auth'])->name('app_dokter');
+Route::get('tambah_terapi', [AppDokterController::class, 'tambah_terapi'])->middleware(['auth'])->name('tambah_terapi');
+Route::post('save_dokter_app', [AppDokterController::class, 'save_dokter_app'])->middleware(['auth'])->name('save_dokter_app');
+Route::post('hapus_dokter_app', [AppDokterController::class, 'hapus_dokter_app'])->middleware(['auth'])->name('hapus_dokter_app');
 
 Route::get('tb_user', [UserController::class, 'index'])->middleware(['auth'])->name('tb_user');
 Route::post('save_user', [UserController::class, 'save_user'])->name('save_user');
