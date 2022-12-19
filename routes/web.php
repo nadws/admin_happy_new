@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppDokterController;
 use App\Http\Controllers\DataDokterController;
 use App\Http\Controllers\DataPasienController;
 use App\Http\Controllers\FotoController;
@@ -26,6 +27,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// app dokter
+Route::get('app_dokter', [AppDokterController::class, 'index'])->middleware(['auth'])->name('app_dokter');
 
 Route::get('tb_user', [UserController::class, 'index'])->middleware(['auth'])->name('tb_user');
 Route::post('save_user', [UserController::class, 'save_user'])->name('save_user');
