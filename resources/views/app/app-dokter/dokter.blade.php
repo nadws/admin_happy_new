@@ -6,7 +6,6 @@
                 <i class="bi bi-justify fs-3"></i>
             </a>
         </header>
-
         <div class="page-heading">
             <div class="page-title">
                 <div class="row">
@@ -26,18 +25,21 @@
             <section class="section">
                 <div class="card">
                     <div class="card-header">
-                        <a style="margin-right: 5px;" href="#" data-bs-toggle="modal" data-bs-target="#view-tgl" class="btn icon icon-left btn-primary"><i
-                                class="bi bi-calendar-check"></i>
+                        <a style="margin-right: 5px;" href="#" data-bs-toggle="modal" data-bs-target="#view-tgl"
+                            class="btn icon icon-left btn-primary"><i class="bi bi-calendar-check"></i>
                             View Tgl lain</a>
-                        <a style="margin-right: 5px;" href="#" data-bs-toggle="modal" data-bs-target="#plus-appointment" class="btn icon btn-primary"><i
-                            class="bi bi-plus"></i>
+                        <a style="margin-right: 5px;" href="#" data-bs-toggle="modal"
+                            data-bs-target="#plus-appointment" class="btn icon btn-primary"><i class="bi bi-plus"></i>
                             Appointment</a>
-                        <a style="margin-right: 5px;" href="#" data-bs-toggle="modal" data-bs-target="#hapus-appointment" class="btn icon btn-warning"><i
-                            class="bi bi-trash"></i>
-                            Hapus Appointment</a>
+                        {{-- <a style="margin-right: 5px;" href="#" data-bs-toggle="modal"
+                            data-bs-target="#hapus-appointment" class="btn icon btn-warning"><i class="bi bi-trash"></i>
+                            Hapus Appointment</a> --}}
+                        <a style="margin-right: 5px;" href="{{ route('kelola_appoinment', ['view_tgl' => $tgl]) }}"
+                            class="btn icon btn-primary"><i class="bi bi-card-checklist"></i>
+                            Kelola Appointment</a>
                     </div>
                     <div class="card-body">
-                      <div id="sked2"></div>
+                        <div id="sked2"></div>
                     </div>
                 </div>
             </section>
@@ -45,7 +47,7 @@
 
     </div>
 
-    
+
     {{-- form view tanggal  --}}
     <form action="" method="get">
         <div class="modal fade text-left" id="view-tgl" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
@@ -86,8 +88,8 @@
     {{-- plus app --}}
     <form id="save_terapi" action="{{ route('save_dokter_app') }}" method="post">
         @csrf
-        <div class="modal fade text-left" id="plus-appointment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
-            aria-hidden="true">
+        <div class="modal fade text-left" id="plus-appointment" tabindex="-1" role="dialog"
+            aria-labelledby="myModalLabel33" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -101,12 +103,14 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-4">
+                                <input type="hidden" name="tgl" value="{{ $tgl }}">
                                 <div class="form-group">
                                     <label for="">Customer</label>
                                     <select name="customer[]" id="" class="form-control">
                                         <option value="">- Pilih Costumer -</option>
                                         @foreach ($invoice as $i)
-                                            <option value="{{ $i->id_invoice }}">{{ $i->nama_pasien }}</option>
+                                            <option value="{{ $i->id_invoice }}">{{ $i->no_order }} -
+                                                {{ $i->nama_pasien }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -131,13 +135,14 @@
                             <div class="col-lg-2">
                                 <div class="form-group">
                                     <label for="">Aksi</label><br>
-                                    <button id="tambah_terapi" class="btn btn-sm btn-primary" type="button"><i class="bi bi-plus"></i></button>
+                                    <button id="tambah_terapi" class="btn btn-sm btn-primary" type="button"><i
+                                            class="bi bi-plus"></i></button>
                                 </div>
                             </div>
                         </div>
 
                         <div id="view_tambah_terapi"></div>
-                        
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
@@ -159,8 +164,8 @@
     {{-- form view tanggal  --}}
     <form action="{{ route('hapus_dokter_app') }}" method="post">
         @csrf
-        <div class="modal fade text-left" id="hapus-appointment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
-            aria-hidden="true">
+        <div class="modal fade text-left" id="hapus-appointment" tabindex="-1" role="dialog"
+            aria-labelledby="myModalLabel33" aria-hidden="true">
             <div class="modal-dialog modal-sm modal-dialog-scrollable" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -200,77 +205,80 @@
     {{-- form view tanggal  --}}
     <?php
     $tgl2 = date('Y-m-d', strtotime('+1 days', strtotime($tgl)));
-    $awal  = date_create($tgl2);
+    $awal = date_create($tgl2);
     $akhir = date_create();
-    $diff  = date_diff( $awal, $akhir );
+    $diff = date_diff($awal, $akhir);
     $hari = $diff->d;
     $jam = $diff->h;
-    $convert_jam = $hari*24;
+    $convert_jam = $hari * 24;
     ?>
-    
+
     <input type='hidden' id='jam' value='<?= $convert_jam ?>'>
 @endsection
 @section('scripts')
-<script>
-    
-    $(document).ready(function () {
-        var c = 1
-        tambahTerapi(c)
-        function tambahTerapi(c) {
-            $(document).on('click', '#tambah_terapi', function(){
-                c++
-                $.ajax({
-                    type: "GET",
-                    url: "{{route('tambah_terapi')}}?c="+c,
-                    success: function (r) {
-                        $("#view_tambah_terapi").append(r);
-                    }
-                });
-            })
+    <script>
+        $(document).ready(function() {
 
-            $(document).on('click', '.remove_terapi', function() {
-                var delete_row = $(this).attr("count");
-                $('#row' + delete_row).remove();
-            })
-        }
 
-        var locations = <?= $datas; ?>;
-        var events = <?= $event; ?>;
+            var c = 1
+            tambahTerapi(c)
+
+            function tambahTerapi(c) {
+                $(document).on('click', '#tambah_terapi', function() {
+                    c++
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ route('tambah_terapi') }}?c=" + c,
+                        success: function(r) {
+                            $("#view_tambah_terapi").append(r);
+                        }
+                    });
+                })
+
+                $(document).on('click', '.remove_terapi', function() {
+                    var delete_row = $(this).attr("count");
+                    $('#row' + delete_row).remove();
+                })
+            }
+
+            var locations = <?= $datas ?>;
+            var events = <?= $event ?>;
             // -------------------------- Helpers ------------------------------
             function today(hours, minutes) {
-              var date = new Date();
-              date.setHours(hours, minutes, 0, 0);
-              return date;
+                var date = new Date();
+                date.setHours(hours, minutes, 0, 0);
+                return date;
             }
 
             function custom(hours, minutes) {
-              var hour = document.getElementById("jam").value;
-              var a = parseInt(hour);
-              var date = today(hours, minutes);
-              date.setTime(date.getTime() - a * 60 * 60 * 1000);
-              return date;
+                var hour = document.getElementById("jam").value;
+                var a = parseInt(hour);
+                var date = today(hours, minutes);
+                date.setTime(date.getTime() - a * 60 * 60 * 1000);
+                return date;
             }
 
             function besok(hours, minutes) {
-              var hour = document.getElementById("jam").value;
-              var a = parseInt(hour);
-              var date = today(hours, minutes);
-              date.setTime(date.getTime() + a * 60 * 60 * 1000);
-              return date;
+                var hour = document.getElementById("jam").value;
+                var a = parseInt(hour);
+                var date = today(hours, minutes);
+                date.setTime(date.getTime() + a * 60 * 60 * 1000);
+                return date;
             }
 
             function yesterday(hours, minutes) {
-              var date = today(hours, minutes);
-              date.setTime(date.getTime() - 24 * 60 * 60 * 1000);
-              return date;
-            }
-            function tomorrow(hours, minutes) {
-              var date = today(hours, minutes);
-              date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
-              return date;
+                var date = today(hours, minutes);
+                date.setTime(date.getTime() - 24 * 60 * 60 * 1000);
+                return date;
             }
 
-        var sked2Config = {
+            function tomorrow(hours, minutes) {
+                var date = today(hours, minutes);
+                date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
+                return date;
+            }
+            // --------------------------- Example 2 ---------------------------
+            var sked2Config = {
                 caption: 'Dokter',
                 start: besok(8, 0),
                 end: besok(18, 0),
@@ -286,35 +294,44 @@
                 sorting: true,
                 orderBy: 'name',
                 formatters: {
-                  date: function (date) {
-                    return $.fn.skedTape.format.date(date, "l", ".");
-                  },
-                  duration: function (ms, opts) {
-                    return $.fn.skedTape.format.duration(ms, {
-                      hrs: " jam.",
-                      min: " menit."
-                    });
-                  },
+                    date: function(date) {
+                        return $.fn.skedTape.format.date(date, "l", ".");
+                    },
+                    duration: function(ms, opts) {
+                        return $.fn.skedTape.format.duration(ms, {
+                            hrs: " jam.",
+                            min: " menit."
+                        });
+                    },
                 },
                 postRenderEvent: function($el, event) {
 
-                if(event.className == 'Y'){
-                    $el.prepend('<span class="text-warning"><strong>PAID</strong></span> '); 
-                }else{
-                    if(event.url == 'Selesai'){
-                        $el.prepend('<i class="fas fa-thumbs-up"></i> ');
-                    }else{
-                    $el.prepend('<i class="fas fa-times-circle"></i>');
+                    if (event.className == 'Y') {
+                        $el.prepend('<span class="text-warning"><strong>PAID</strong></span> ');
+                    } else {
+                        if (event.url == 'Selesai') {
+                            $el.prepend('<i class="bi bi-check-circle"></i>');
+                        } else {
+                            $el.prepend('<i class="bi bi-x-circle"></i>');
+                        }
                     }
-                }
-                        
-                }   
-            };
-			var $sked2 = $.skedTape(sked2Config);
-			$sked2.appendTo('#sked2').skedTape('render');
-			//$sked2.skedTape('destroy');
-            $sked2.skedTape(sked2Config);
-    });
-</script>
-@endsection
 
+
+
+                }
+            };
+            var $sked2 = $.skedTape(sked2Config);
+            $sked2.appendTo('#sked2').skedTape('render');
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $(".sked-tape__event").each(function() {
+                var colorR = Math.floor((Math.random() * 256));
+                var colorG = Math.floor((Math.random() * 256));
+                var colorB = Math.floor((Math.random() * 256));
+                $(this).css("background-color", "rgb(" + colorR + "," + colorG + "," + colorB + ")");
+            });
+        });
+    </script>
+@endsection

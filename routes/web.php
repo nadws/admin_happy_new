@@ -35,6 +35,11 @@ Route::get('app_dokter', [AppDokterController::class, 'index'])->middleware(['au
 Route::get('tambah_terapi', [AppDokterController::class, 'tambah_terapi'])->middleware(['auth'])->name('tambah_terapi');
 Route::post('save_dokter_app', [AppDokterController::class, 'save_dokter_app'])->middleware(['auth'])->name('save_dokter_app');
 Route::post('hapus_dokter_app', [AppDokterController::class, 'hapus_dokter_app'])->middleware(['auth'])->name('hapus_dokter_app');
+Route::get('kelola_appoinment', [AppDokterController::class, 'kelola_appoinment'])->middleware(['auth'])->name('kelola_appoinment');
+Route::post('edit_jam_appoinment', [AppDokterController::class, 'edit_jam_appoinment'])->middleware(['auth'])->name('edit_jam_appoinment');
+Route::get('cancel_appoinment', [AppDokterController::class, 'cancel_appoinment'])->middleware(['auth'])->name('cancel_appoinment');
+Route::get('selesai_appoinment', [AppDokterController::class, 'selesai_appoinment'])->middleware(['auth'])->name('selesai_appoinment');
+Route::get('cancel_selesai_appoinment', [AppDokterController::class, 'cancel_selesai_appoinment'])->middleware(['auth'])->name('cancel_selesai_appoinment');
 
 Route::get('tb_user', [UserController::class, 'index'])->middleware(['auth'])->name('tb_user');
 Route::post('save_user', [UserController::class, 'save_user'])->name('save_user');

@@ -222,6 +222,7 @@
     min-width: 10px;
     cursor: default;
     line-height: 16px;
+    text-align: center;
   }
   
   .sked-tape__event:hover, .sked-tape__event--active {
