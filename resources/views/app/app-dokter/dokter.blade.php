@@ -105,9 +105,9 @@
                             <div class="col-lg-4">
                                 <input type="hidden" name="tgl" value="{{ $tgl }}">
                                 <div class="form-group">
-                                    <label for="">Customer</label>
+                                    <label for="">Pasien</label>
                                     <select name="customer[]" id="" class="form-control">
-                                        <option value="">- Pilih Costumer -</option>
+                                        <option value="">- Pilih Pasien -</option>
                                         @foreach ($invoice as $i)
                                             <option value="{{ $i->id_invoice }}">{{ $i->no_order }} -
                                                 {{ $i->nama_pasien }}</option>
@@ -218,8 +218,6 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-
-
             var c = 1
             tambahTerapi(c)
 
@@ -234,13 +232,11 @@
                         }
                     });
                 })
-
                 $(document).on('click', '.remove_terapi', function() {
                     var delete_row = $(this).attr("count");
                     $('#row' + delete_row).remove();
                 })
             }
-
             var locations = <?= $datas ?>;
             var events = <?= $event ?>;
             // -------------------------- Helpers ------------------------------
@@ -277,11 +273,10 @@
                 date.setTime(date.getTime() + 24 * 60 * 60 * 1000);
                 return date;
             }
-            // --------------------------- Example 2 ---------------------------
             var sked2Config = {
                 caption: 'Dokter',
                 start: besok(8, 0),
-                end: besok(18, 0),
+                end: besok(23, 0),
                 showEventTime: true,
                 showEventDuration: true,
                 locations: locations.map(function(location) {
@@ -305,23 +300,22 @@
                     },
                 },
                 postRenderEvent: function($el, event) {
-
                     if (event.className == 'Y') {
                         $el.prepend('<span class="text-warning"><strong>PAID</strong></span> ');
                     } else {
                         if (event.url == 'Selesai') {
-                            $el.prepend('<i class="bi bi-check-circle"></i>');
+                            $el.prepend('<i class="fas fa-thumbs-up"></i> ');
                         } else {
-                            $el.prepend('<i class="bi bi-x-circle"></i>');
+                            $el.prepend('<i class="fas fa-times-circle"></i>');
                         }
                     }
-
-
 
                 }
             };
             var $sked2 = $.skedTape(sked2Config);
             $sked2.appendTo('#sked2').skedTape('render');
+            //$sked2.skedTape('destroy');
+            $sked2.skedTape(sked2Config);
         });
     </script>
     <script>

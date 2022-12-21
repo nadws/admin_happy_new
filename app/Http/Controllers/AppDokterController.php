@@ -37,13 +37,19 @@ class AppDokterController extends Controller
             ];
             $datas[] = $d;
         }
+        $now = date('Y-m-d');
+        $now2 = date('D M d Y ', strtotime($now));
+
+
 
         foreach ($events as $e) {
+            $start_t = $now2 . $e->start . ' GMT+0800 (Central Indonesia Time)';
+            $end_t = $now2 . $e->end . ' GMT+0800 (Central Indonesia Time)';
             $d = [
                 'name' =>   "($e->no_order)" . '-' . $e->nama_pasien,
                 'location' =>  $e->location,
-                'start' =>  $e->start_t,
-                'end' =>  $e->end_t,
+                'start' =>  $start_t,
+                'end' =>   $end_t,
                 'url' => $e->status,
                 'className' => $e->bayar
             ];

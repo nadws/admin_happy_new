@@ -260,7 +260,9 @@
                                         ",
                                     ),
                                 );
+                                
                             @endphp
+
                             <ul class="submenu {{ Request::is($m->url) ? 'active' : '' }}">
                                 @foreach ($menu_p as $sm)
                                     <li class="submenu-item {{ Request::is($sm->url) ? 'active' : '' }}">
@@ -292,13 +294,15 @@
                             $permission2 = DB::selectOne(
                                 DB::raw(
                                     "SELECT a.id_user, a.permission, b.sub_menu, b.url, b.id_menu
-                                FROM tb_permission AS a
-                                LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
-                                WHERE a.id_user ='$id_user' AND a.permission = '$sub->id_sub_menu'
-                                ",
+                                    FROM tb_permission AS a
+                                    LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
+                                    WHERE a.id_user ='$id_user' AND a.permission = '$sub->id_sub_menu'
+                                    ",
                                 ),
                             );
+                            
                         @endphp
+
                         <li class="sidebar-item has-sub {{ Request::is($m->url) ? 'active' : '' }}">
                             <a href="#" class='sidebar-link'>
                                 <i class="{{ $m->icon }}"></i>

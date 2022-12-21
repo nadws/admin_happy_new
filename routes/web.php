@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppDokterController;
+use App\Http\Controllers\Data_dokter;
 use App\Http\Controllers\DataDokterController;
 use App\Http\Controllers\DataPasienController;
 use App\Http\Controllers\FotoController;
@@ -109,6 +110,12 @@ Route::get('/tbh_pertanyaan1', [Pertanyaan::class, 'tbh_pertanyaan1'])->name('tb
 Route::get('/tbh_pertanyaan2', [Pertanyaan::class, 'tbh_pertanyaan2'])->name('tbh_pertanyaan2');
 Route::get('/tbh_pertanyaan3', [Pertanyaan::class, 'tbh_pertanyaan3'])->name('tbh_pertanyaan3');
 Route::get('/tbh_pertanyaan4', [Pertanyaan::class, 'tbh_pertanyaan4'])->name('tbh_pertanyaan4');
+
+// dokter
+Route::get('tb_dokter', [Data_dokter::class, 'index'])->middleware(['auth'])->name('tb_dokter');
+Route::post('tbh_dokter', [Data_dokter::class, 'tbh_dokter'])->middleware(['auth'])->name('tbh_dokter');
+Route::post('edit_dokter', [Data_dokter::class, 'edit_dokter'])->middleware(['auth'])->name('edit_dokter');
+Route::get('hps_dokter', [Data_dokter::class, 'hps_dokter'])->middleware(['auth'])->name('hps_dokter');
 
 
 
