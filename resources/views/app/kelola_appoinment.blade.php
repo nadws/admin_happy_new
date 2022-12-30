@@ -40,68 +40,68 @@
                                     <tr>
                                         <th>No Order</th>
                                         <th>Nama Pasien</th>
+                                        <th>Dokter</th>
                                         <th>Jam Mulai</th>
                                         <th>Jam Selesai</th>
                                         <th style="text-align: center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($dokter2 as $d)
+
+                                    @foreach ($order as $o)
                                         <tr>
-                                            <th colspan="4">{{ $d->nm_dokter }}</th>
+                                            <td>{{ $o->no_order }}</td>
+                                            <td>{{ $o->nama_pasien }}</td>
+                                            <td>
+                                                <select name="dokter[]" id="" class="form-control">
+                                                    @foreach ($dokter as $i)
+                                                        <option value="{{ $i->id_dokter }}"
+                                                            {{ $i->id_dokter == $o->location ? 'Selected' : '' }}>
+                                                            {{ $i->nm_dokter }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="hidden" name="id_order[]" value="{{ $o->id_order }}">
+                                                <input type="hidden" name="id_terapis[]" value="{{ $o->id_terapis }}">
+                                                <input type="hidden" name="tgl" value="{{ $tgl }}">
+                                                <input type="time" name="start[]" id=""
+                                                    value="{{ $o->start }}" class="form-control"
+                                                    {{ $o->status == 'Selesai' ? 'readonly' : '' }}>
+                                            </td>
+                                            <td><input type="time" name="end[]" id=""
+                                                    value="{{ $o->end }}" class="form-control"
+                                                    {{ $o->status == 'Selesai' ? 'readonly' : '' }}></td>
+                                            <td align="center">
+                                                @php
+                                                    $jawaban = DB::selectOne("SELECT a.* FROM jawaban4 as a where a.no_order = '$o->no_order' group by a.no_order");
+                                                @endphp
+
+                                                @if ($o->status == 'Selesai')
+                                                    <a href="{{ route('cancel_selesai_appoinment', ['id_order' => $o->id_order, 'tgl' => $tgl]) }}"
+                                                        class="btn btn-warning btn-sm"><i class="bi bi-arrow-clockwise"></i>
+                                                        cancel</a>
+                                                @else
+                                                    <button type="submit" class="btn btn-primary btn-sm">simpan</button>
+                                                    <a href="{{ route('cancel_appoinment', ['id_order' => $o->id_order, 'id_terapis' => $o->id_terapis, 'tgl' => $tgl]) }}"
+                                                        class="btn btn-warning btn-sm">hapus</a>
+                                                    <a href="{{ route('selesai_appoinment', ['id_order' => $o->id_order, 'tgl' => $tgl]) }}"
+                                                        class="btn btn-primary btn-sm">selesai</a>
+                                                @endif
+                                                @if (empty($jawaban->no_order))
+                                                    <a href="{{ route('kpertanyaan', ['no_order' => $o->no_order, 'member_id' => $o->member_id]) }}"
+                                                        class="btn btn-primary btn-sm"><i
+                                                            class="bi bi-file-earmark-check"></i> form soal</a>
+                                                @else
+                                                    <a href="{{ route('cetak', ['no_order' => $o->no_order, 'member_id' => $o->member_id]) }}"
+                                                        class="btn btn-primary btn-sm" target="_blank"><i
+                                                            class="bi bi-printer"></i>
+                                                        cetak hasil</a>
+                                                @endif
+                                            </td>
                                         </tr>
-                                        @php
-                                            $order = DB::select("SELECT b.nama_pasien, a.*
-                                        FROM tb_order AS a
-                                        LEFT JOIN dt_pasien AS b ON b.member_id = a.member_id
-                                        WHERE a.location = '$d->nama_t' and a.tanggal = '$tgl'");
-                                        @endphp
-
-                                        @foreach ($order as $o)
-                                            <tr>
-                                                <td>{{ $o->no_order }}</td>
-                                                <td>{{ $o->nama_pasien }}</td>
-                                                <td>
-                                                    <input type="hidden" name="id_order[]" value="{{ $o->id_order }}">
-                                                    <input type="hidden" name="tgl" value="{{ $tgl }}">
-                                                    <input type="time" name="start[]" id=""
-                                                        value="{{ $o->start }}" class="form-control"
-                                                        {{ $o->status == 'Selesai' ? 'readonly' : '' }}>
-                                                </td>
-                                                <td><input type="time" name="end[]" id=""
-                                                        value="{{ $o->end }}" class="form-control"
-                                                        {{ $o->status == 'Selesai' ? 'readonly' : '' }}></td>
-                                                <td align="center">
-                                                    @php
-                                                        $jawaban = DB::selectOne("SELECT a.* FROM jawaban4 as a where a.no_order = '$o->no_order' group by a.no_order");
-                                                    @endphp
-
-                                                    @if ($o->status == 'Selesai')
-                                                        <a href="{{ route('cancel_selesai_appoinment', ['id_order' => $o->id_order, 'tgl' => $tgl]) }}"
-                                                            class="btn btn-warning btn-sm"><i
-                                                                class="bi bi-arrow-clockwise"></i> cancel</a>
-                                                    @else
-                                                        <button type="submit"
-                                                            class="btn btn-primary btn-sm">simpan</button>
-                                                        <a href="{{ route('cancel_appoinment', ['id_order' => $o->id_order, 'id_terapis' => $o->id_terapis, 'tgl' => $tgl]) }}"
-                                                            class="btn btn-warning btn-sm">hapus</a>
-                                                        <a href="{{ route('selesai_appoinment', ['id_order' => $o->id_order, 'tgl' => $tgl]) }}"
-                                                            class="btn btn-primary btn-sm">selesai</a>
-                                                    @endif
-                                                    @if (empty($jawaban->no_order))
-                                                        <a href="{{ route('kpertanyaan', ['no_order' => $o->no_order, 'member_id' => $o->member_id]) }}"
-                                                            class="btn btn-primary btn-sm"><i
-                                                                class="bi bi-file-earmark-check"></i> form soal</a>
-                                                    @else
-                                                        <a href="{{ route('cetak', ['no_order' => $o->no_order, 'member_id' => $o->member_id]) }}"
-                                                            class="btn btn-primary btn-sm" target="_blank"><i
-                                                                class="bi bi-printer"></i>
-                                                            cetak hasil</a>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
                                     @endforeach
+
 
                                 </tbody>
                             </table>
@@ -131,9 +131,10 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label for="">Customer</label>
+                                    <input type="hidden" name="tgl" value="{{ $tgl }}">
+                                    <label for="">Pasien</label>
                                     <select name="customer[]" id="" class="form-control">
-                                        <option value="">- Pilih Costumer -</option>
+                                        <option value="">- Pilih pasien -</option>
                                         @foreach ($invoice as $i)
                                             <option value="{{ $i->id_invoice }}">{{ $i->no_order }} -
                                                 {{ $i->nama_pasien }}</option>

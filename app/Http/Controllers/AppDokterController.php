@@ -175,6 +175,10 @@ class AppDokterController extends Controller
             'dokter2' => $dokter,
             'invoice' => $invoice,
             'dokter' => DB::table('dt_dokter')->get(),
+            'order' => DB::select("SELECT b.nama_pasien, a.*
+            FROM tb_order AS a
+            LEFT JOIN dt_pasien AS b ON b.member_id = a.member_id
+            WHERE  a.tanggal = '$tgl'")
         ];
         return view('app.kelola_appoinment', $data);
     }
@@ -186,6 +190,8 @@ class AppDokterController extends Controller
         $end = $r->end;
 
         $tgl = $r->tgl;
+        $dokter = $r->dokter;
+        $id_terapis = $r->id_terapis;
 
 
 
@@ -205,12 +211,17 @@ class AppDokterController extends Controller
                 return redirect()->route('kelola_appoinment')->with('error', 'Terjadi persamaan waktu didalam appoinment');
             } else {
                 $data = [
-                    'start'         => $start[$x],
+                    'start' => $start[$x],
                     'start_t'         => $start_t,
                     'end'           => $end[$x],
                     'end_t'           => $end_t,
+                    'location' => $dokter[$x]
                 ];
                 DB::table('tb_order')->where('id_order', $id_order[$x])->update($data);
+                $data = [
+                    'nama_t'    => $dokter[$x],
+                ];
+                DB::table('tb_app_dokter')->where('id_terapis', $id_terapis[$x])->update($data);
             }
         }
         return redirect()->route('kelola_appoinment')->with('sukses', 'sukses');
@@ -243,5 +254,31 @@ class AppDokterController extends Controller
 
 
         return redirect()->route('kelola_appoinment', ['view_tgl' => $r->tgl])->with('sukses', 'sukses');
+    }
+
+    public function print_appoinment(Request $r)
+    {
+        if ($r->dokter == 'all') {
+            $order = DB::select("SELECT b.nama_pasien, c.nm_dokter, a.*
+            FROM tb_order AS a
+            LEFT JOIN dt_pasien AS b ON b.member_id = a.member_id
+            LEFT JOIN dt_dokter AS c ON c.id_dokter = a.location
+            WHERE  a.tanggal between '$r->tgl1' and '$r->tgl2' ");
+        } else {
+            $order = DB::select("SELECT b.nama_pasien, c.nm_dokter, a.*
+            FROM tb_order AS a
+            LEFT JOIN dt_pasien AS b ON b.member_id = a.member_id
+            LEFT JOIN dt_dokter AS c ON c.id_dokter = a.location
+            WHERE  a.tanggal between '$r->tgl1' and '$r->tgl2' and a.location = '$r->dokter'");
+        }
+
+        $data = [
+            'title' => 'Print Appoinment',
+            'order' => $order,
+            'tgl1' => $r->tgl1,
+            'tgl2' => $r->tgl2
+        ];
+
+        return view('app.print_appoinment', $data);
     }
 }

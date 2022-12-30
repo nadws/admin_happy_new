@@ -1,21 +1,21 @@
 @php
-    $user_id = Auth::user()->id;
-    $sub_m = DB::table('tb_sub_menu')
-        ->where('url', Route::current()->getName())
-        ->first();
+$user_id = Auth::user()->id;
+$sub_m = DB::table('tb_sub_menu')
+->where('url', Route::current()->getName())
+->first();
 @endphp
 @if (!empty($sub_m->url))
-    @php
-        $per = DB::table('tb_permission')
-            ->where('permission', $sub_m->id_sub_menu)
-            ->where('id_user', $user_id)
-            ->first();
-    @endphp
+@php
+$per = DB::table('tb_permission')
+->where('permission', $sub_m->id_sub_menu)
+->where('id_user', $user_id)
+->first();
+@endphp
 @endif
 @if (empty($per->id_user))
-    <script>
-        // window.location.href = '{{ route('login') }}';
-    </script>
+<script>
+    // window.location.href = '{{ route('login') }}';
+</script>
 @endif
 
 <style>
@@ -30,27 +30,27 @@
     }
 
     .card {
-        background-color: {{ $warna1 }};
+        background-color: <?=$warna1 ?>;
     }
 
     .card-header {
-        background-color: {{ $warna1 }};
+        background-color: <?=$warna1 ?>;
     }
 
     .sidebar-wrapper {
-        background-color: {{ $warna1 }};
+        background-color: <?=$warna1 ?>;
     }
 
     .btn-primary {
-        --bs-btn-bg: {{ $warna3 }};
+        --bs-btn-bg: <?=$warna3 ?>;
     }
 
     .sidebar-wrapper .menu .sidebar-item.active>.sidebar-link {
-        background-color: {{ $warna3 }};
+        background-color: <?=$warna3 ?>;
     }
 
     .btn-warning {
-        --bs-btn-bg: {{ $warna4 }};
+        --bs-btn-bg: <?=$warna4 ?>;
     }
 </style>
 {{-- permission --}}
@@ -74,56 +74,59 @@
                         <div class="row">
                             <h5>Colors</h5>
                             <div class="col-lg-3">
-                                <input class="form-control style1" id="warna1" type="color"
-                                    value="{{ $warna1 }}" name="warna1">
+                                <input class="form-control style1" id="warna1" type="color" value="{{ $warna1 }}"
+                                    name="warna1">
                                 <label for="" class="text-secondary ml-2">Warna 1</label>
                             </div>
                             <div class="col-lg-3">
-                                <input class="form-control style1" id="warna2" type="color"
-                                    value="{{ $warna2 }}" name="warna2">
+                                <input class="form-control style1" id="warna2" type="color" value="{{ $warna2 }}"
+                                    name="warna2">
                                 <label for="" class="text-secondary ml-2">Warna 2</label>
                             </div>
                             <div class="col-lg-3">
-                                <input class="form-control style1" id="warna3" type="color"
-                                    value="{{ $warna3 }}" name="warna3">
+                                <input class="form-control style1" id="warna3" type="color" value="{{ $warna3 }}"
+                                    name="warna3">
                                 <label for="" class="text-secondary ml-2">Warna 3</label>
                             </div>
                             <div class="col-lg-3">
-                                <input class="form-control style1" id="warna4" type="color"
-                                    value="{{ $warna4 }}" name="warna4">
+                                <input class="form-control style1" id="warna4" type="color" value="{{ $warna4 }}"
+                                    name="warna4">
                                 <label for="" class="text-secondary ml-2">Warna 4</label>
                             </div>
                         </div>
                         {{-- <div class="row">
-                        <h5>Buttons</h5>
-                        <div class="col-lg-4">
-                            <input class="form-control style1" id="warna1" type="color" value="{{ $warna1 }}" name="warna1">
-                            <label for="" class="text-secondary ml-2">Warna 1</label>
-                        </div>
-                        <div class="col-lg-4">
-                            <input class="form-control style1" id="warna2" type="color" value="{{ $warna2 }}" name="warna2">
-                            <label for="" class="text-secondary ml-2">Warna 2</label>
-                        </div>
-                        <div class="col-lg-4">
-                            <input class="form-control style1" id="warna2" type="color" value="{{ $warna2 }}" name="warna2">
-                            <label for="" class="text-secondary ml-2">Warna 2</label>
-                        </div>
-                    </div> --}}
+                            <h5>Buttons</h5>
+                            <div class="col-lg-4">
+                                <input class="form-control style1" id="warna1" type="color" value="{{ $warna1 }}"
+                                    name="warna1">
+                                <label for="" class="text-secondary ml-2">Warna 1</label>
+                            </div>
+                            <div class="col-lg-4">
+                                <input class="form-control style1" id="warna2" type="color" value="{{ $warna2 }}"
+                                    name="warna2">
+                                <label for="" class="text-secondary ml-2">Warna 2</label>
+                            </div>
+                            <div class="col-lg-4">
+                                <input class="form-control style1" id="warna2" type="color" value="{{ $warna2 }}"
+                                    name="warna2">
+                                <label for="" class="text-secondary ml-2">Warna 2</label>
+                            </div>
+                        </div> --}}
                         {{-- <div class="row mt-5">
-                        <h5>Font Colors</h5>
-                        <div class="col-lg-4">
-                            <input class="form-control style1" id="fwarna1" type="color" value="" name="fontc1">
-                            <label for="" class="text-secondary ml-2">Warna 1</label>
-                        </div>
-                        <div class="col-lg-4">
-                            <input class="form-control style1" id="fwarna2" type="color" value="" name="fontc2">
-                            <label for="" class="text-secondary ml-2">Warna 2</label>
-                        </div>
-                        <div class="col-lg-4">
-                            <input class="form-control style1" id="fwarna3" type="color" value="" name="fontc3">
-                            <label for="" class="text-secondary ml-2">Warna 3</label>
-                        </div>
-                    </div> --}}
+                            <h5>Font Colors</h5>
+                            <div class="col-lg-4">
+                                <input class="form-control style1" id="fwarna1" type="color" value="" name="fontc1">
+                                <label for="" class="text-secondary ml-2">Warna 1</label>
+                            </div>
+                            <div class="col-lg-4">
+                                <input class="form-control style1" id="fwarna2" type="color" value="" name="fontc2">
+                                <label for="" class="text-secondary ml-2">Warna 2</label>
+                            </div>
+                            <div class="col-lg-4">
+                                <input class="form-control style1" id="fwarna3" type="color" value="" name="fontc3">
+                                <label for="" class="text-secondary ml-2">Warna 3</label>
+                            </div>
+                        </div> --}}
                     </center>
                 </div>
                 <div class="modal-footer">
@@ -152,7 +155,8 @@
                     </a>
                 </div>
                 <div class="theme-toggle d-flex gap-2  align-items-center mt-2">
-                    {{-- <a href="#" data-bs-toggle="modal" data-bs-target="#theme" class="text-sm"><i class="bi bi-sliders text-sm"></i> Theme Options</a> --}}
+                    {{-- <a href="#" data-bs-toggle="modal" data-bs-target="#theme" class="text-sm"><i
+                            class="bi bi-sliders text-sm"></i> Theme Options</a> --}}
                     <div style="display: none" class="form-check form-switch fs-6">
                         <input class="form-check-input  me-0" type="checkbox" id="toggle-dark">
                         <label class="form-check-label"></label>
@@ -198,7 +202,7 @@
                     </ul>
                 </li>
                 @php
-                    $pertanyaan = ['pertanyaan/1', 'pertanyaan/2', 'pertanyaan/3', 'pertanyaan/4'];
+                $pertanyaan = ['pertanyaan/1', 'pertanyaan/2', 'pertanyaan/3', 'pertanyaan/4'];
                 @endphp
                 <li class="sidebar-item has-sub {{ Request::is($pertanyaan) ? 'active' : '' }}">
                     <a href="#" class='sidebar-link'>
@@ -222,118 +226,118 @@
                     </ul>
                 </li> --}}
                 @php
-                    $id_user = Auth::user()->id;
-                    
-                    $sub = DB::table('tb_sub_menu')
-                        ->where('url', Route::current()->getName())
-                        ->first();
+                $id_user = Auth::user()->id;
+
+                $sub = DB::table('tb_sub_menu')
+                ->where('url', Route::current()->getName())
+                ->first();
                 @endphp
                 @if (empty($sub->url))
+                @php
+                $menu = DB::select(
+                "SELECT a.id_user, b.url, c.id_menu, c.icon, c.menu
+                FROM tb_permission AS a
+                LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
+                LEFT JOIN tb_menu AS c ON c.id_menu = b.id_menu
+                WHERE a.id_user ='$id_user'
+                GROUP BY b.id_menu
+                order by c.urutan ASC
+                ",
+                );
+                @endphp
+
+                @foreach ($menu as $i => $m)
+                <li class="sidebar-item has-sub {{ Request::is($m->url) ? 'active' : '' }}">
+                    <a href="#" class='sidebar-link'>
+                        <i class="{{ $m->icon }}"></i>
+                        <span>{{ $m->menu }}</span>
+                    </a>
                     @php
-                        $menu = DB::select(
-                            "SELECT a.id_user, b.url, c.id_menu, c.icon, c.menu
-                        FROM tb_permission AS a
-                        LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
-                        LEFT JOIN tb_menu AS c ON c.id_menu = b.id_menu
-                        WHERE a.id_user ='$id_user'
-                        GROUP BY b.id_menu
-                        order by c.urutan ASC
-                        ",
-                        );
+
+                    $menu_p = DB::select(
+                    DB::raw(
+                    "SELECT b.id_sub_menu,a.id_user, b.url, b.sub_menu, c.id_menu, c.icon, c.menu
+                    FROM tb_permission AS a
+                    LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
+                    LEFT JOIN tb_menu AS c ON c.id_menu = b.id_menu
+                    WHERE a.id_user ='$id_user' and b.id_menu = '$m->id_menu'
+                    ",
+                    ),
+                    );
+
                     @endphp
 
-                    @foreach ($menu as $i => $m)
-                        <li class="sidebar-item has-sub {{ Request::is($m->url) ? 'active' : '' }}">
-                            <a href="#" class='sidebar-link'>
-                                <i class="{{ $m->icon }}"></i>
-                                <span>{{ $m->menu }}</span>
-                            </a>
-                            @php
-                                
-                                $menu_p = DB::select(
-                                    DB::raw(
-                                        "SELECT b.id_sub_menu,a.id_user, b.url, b.sub_menu, c.id_menu, c.icon, c.menu
-                                            FROM tb_permission AS a
-                                            LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
-                                            LEFT JOIN tb_menu AS c ON c.id_menu = b.id_menu
-                                            WHERE a.id_user ='$id_user' and b.id_menu = '$m->id_menu'
-                                        ",
-                                    ),
-                                );
-                                
-                            @endphp
-
-                            <ul class="submenu {{ Request::is($m->url) ? 'active' : '' }}">
-                                @foreach ($menu_p as $sm)
-                                    <li class="submenu-item {{ Request::is($sm->url) ? 'active' : '' }}">
-                                        <a {{ $sm->url == '#' ? 'data-bs-toggle="modal" data-bs-target="#theme"' : '' }}
-                                            href="{{ $sm->url == '#' ? '#' : route($sm->url) }}">{{ $sm->sub_menu }}</a>
-                                    </li>
-                                @endforeach
-                                {{-- <li class="submenu-item">
-                                    <a target="_blank" href="http://127.0.0.1:2222/dashboard">CMS Website</a>
-                                </li> --}}
-                            </ul>
+                    <ul class="submenu {{ Request::is($m->url) ? 'active' : '' }}">
+                        @foreach ($menu_p as $sm)
+                        <li class="submenu-item {{ Request::is($sm->url) ? 'active' : '' }}">
+                            <a {{ $sm->url == '#' ? 'data-bs-toggle="modal" data-bs-target="#theme"' : '' }}
+                                href="{{ $sm->url == '#' ? '#' : route($sm->url) }}">{{ $sm->sub_menu }}</a>
                         </li>
-                    @endforeach
-                @else
-                    @php
-                        $menu = DB::select(
-                            "SELECT a.id_user, b.url, c.id_menu, c.icon, c.menu
-                            FROM tb_permission AS a
-                            LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
-                            LEFT JOIN tb_menu AS c ON c.id_menu = b.id_menu
-                            WHERE a.id_user ='$id_user'
-                            GROUP BY b.id_menu
-                            order by c.urutan ASC
-                            ",
-                        );
-                    @endphp
-                    @foreach ($menu as $m)
-                        @php
-                            $permission2 = DB::selectOne(
-                                DB::raw(
-                                    "SELECT a.id_user, a.permission, b.sub_menu, b.url, b.id_menu
-                                    FROM tb_permission AS a
-                                    LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
-                                    WHERE a.id_user ='$id_user' AND a.permission = '$sub->id_sub_menu'
-                                    ",
-                                ),
-                            );
-                            
-                        @endphp
-
-                        <li class="sidebar-item has-sub {{ Request::is($m->url) ? 'active' : '' }}">
-                            <a href="#" class='sidebar-link'>
-                                <i class="{{ $m->icon }}"></i>
-                                <span>{{ $m->menu }}</span>
-                            </a>
-                            @php
-                                
-                                $menu_p = DB::select(
-                                    DB::raw(
-                                        "SELECT b.id_sub_menu,a.id_user, b.url, b.sub_menu, c.id_menu, c.icon, c.menu
-                                FROM tb_permission AS a
-                                LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
-                                LEFT JOIN tb_menu AS c ON c.id_menu = b.id_menu
-                                WHERE a.id_user ='$id_user' and b.id_menu = '$m->id_menu'
-                            ",
-                                    ),
-                                );
-                            @endphp
-                            <ul class="submenu {{ Request::is($m->url) ? 'active' : '' }}">
-                                @foreach ($menu_p as $sm)
-                                    <li class="submenu-item {{ Request::is($sm->url) ? 'active' : '' }}">
-                                        <a {{ $sm->url == '#' ? 'data-bs-toggle=modal data-bs-target=#theme' : '' }}
-                                            href="{{ $sm->url == '#' ? '#' : route($sm->url) }}">{{ $sm->sub_menu }}</a>
-                                    </li>
-                                @endforeach
-                                {{-- <li class="submenu-item">
+                        @endforeach
+                        {{-- <li class="submenu-item">
                             <a target="_blank" href="http://127.0.0.1:2222/dashboard">CMS Website</a>
                         </li> --}}
-                            </ul>
+                    </ul>
+                </li>
+                @endforeach
+                @else
+                @php
+                $menu = DB::select(
+                "SELECT a.id_user, b.url, c.id_menu, c.icon, c.menu
+                FROM tb_permission AS a
+                LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
+                LEFT JOIN tb_menu AS c ON c.id_menu = b.id_menu
+                WHERE a.id_user ='$id_user'
+                GROUP BY b.id_menu
+                order by c.urutan ASC
+                ",
+                );
+                @endphp
+                @foreach ($menu as $m)
+                @php
+                $permission2 = DB::selectOne(
+                DB::raw(
+                "SELECT a.id_user, a.permission, b.sub_menu, b.url, b.id_menu
+                FROM tb_permission AS a
+                LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
+                WHERE a.id_user ='$id_user' AND a.permission = '$sub->id_sub_menu'
+                ",
+                ),
+                );
+
+                @endphp
+
+                <li class="sidebar-item has-sub {{ $permission2->id_menu == $m->id_menu  ? 'active' : '' }}">
+                    <a href="#" class='sidebar-link'>
+                        <i class="{{ $m->icon }}"></i>
+                        <span>{{ $m->menu }} </span>
+                    </a>
+                    @php
+
+                    $menu_p = DB::select(
+                    DB::raw(
+                    "SELECT b.id_sub_menu,a.id_user, b.url, b.sub_menu, c.id_menu, c.icon, c.menu
+                    FROM tb_permission AS a
+                    LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
+                    LEFT JOIN tb_menu AS c ON c.id_menu = b.id_menu
+                    WHERE a.id_user ='$id_user' and b.id_menu = '$m->id_menu'
+                    ",
+                    ),
+                    );
+                    @endphp
+                    <ul class="submenu {{ $permission2->id_menu == $m->id_menu  ? 'active' : '' }}">
+                        @foreach ($menu_p as $sm)
+                        <li class="submenu-item {{ Request::is($sm->url) ? 'active' : '' }}">
+                            <a {{ $sm->url == '#' ? 'data-bs-toggle=modal data-bs-target=#theme' : '' }}
+                                href="{{ $sm->url == '#' ? '#' : route($sm->url) }}">{{ $sm->sub_menu }}</a>
                         </li>
-                    @endforeach
+                        @endforeach
+                        {{-- <li class="submenu-item">
+                            <a target="_blank" href="http://127.0.0.1:2222/dashboard">CMS Website</a>
+                        </li> --}}
+                    </ul>
+                </li>
+                @endforeach
                 @endif
                 <hr>
                 <li class="sidebar-item">
@@ -348,13 +352,13 @@
     </div>
 </div>
 @section('scripts')
-    <script>
-        $(document).ready(function() {
+<script>
+    $(document).ready(function() {
 
 
             $(document).on('change', '#warna2', function() {
                 $('.warna2').css('background-color', $(this).val())
             })
         });
-    </script>
+</script>
 @endsection

@@ -7,6 +7,21 @@ use Illuminate\Support\Facades\DB;
 
 class PertanyaanController extends Controller
 {
+    public function index(Request $r)
+    {
+        $data = [
+            'title' => 'Pertanyaan',
+            'sub_title' => 'Pertanyaan',
+            'datas' => DB::select("SELECT * FROM `pertanyaan` as a
+            LEFT JOIN kelompok_gerak as b ON a.id_gerak = b.id_gerak
+            LEFT JOIN kel_kpsp as c ON a.id_kel_kpsp = c.id_kel_kpsp
+            WHERE a.kelompok_pertanyaan = '1'"),
+            'kel_gerak' => DB::table('kelompok_gerak')->get(),
+            'kel_kpsp' => DB::table('kel_kpsp')->get(),
+            'kelompok' => 1
+        ];
+        return view("pertanyaan.index", $data);
+    }
     public function pertanyaan($kelompok)
     {
         switch ($kelompok) {
@@ -44,7 +59,7 @@ class PertanyaanController extends Controller
 
     public function add_pertanyaan(Request $r)
     {
-        
+
         DB::table('pertanyaan')->insert([
             'pertanyaan' => $r->pertanyaan,
             'kelompok_pertanyaan' => $r->kelompok,

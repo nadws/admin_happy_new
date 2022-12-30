@@ -108,13 +108,12 @@
                     <table>
                         <tr>
                             <td class="title">
-                                <img src="{{ asset('images-upload/logo.png') }}" width="120" height="120"
-                                    alt="">
+                                <img src="{{ asset('images-upload/logo.png') }}" width="120" height="120" alt="">
                             </td>
 
                             <td>
-                                Invoice #: HK-1001<br />
-                                Created: {{ date('F d, Y') }}<br />
+                                Invoice #: {{$invoice->no_order}}<br />
+                                Created: {{ date('F d, Y',strtotime($invoice->tgl)) }}<br />
                                 Due: {{ date('F d, Y') }}
                             </td>
                         </tr>
@@ -128,8 +127,7 @@
                         <tr>
                             <td>
                                 Happy Kids<br />
-                                12345 Sunny Road<br />
-                                Jl K.S Tubun no. 165 – Banjarmasin
+                                {{$alamat->isi}}
                             </td>
 
 
@@ -145,7 +143,7 @@
             </tr>
 
             <tr class="details">
-                <td>Appointment</td>
+                <td>Invoice Screening</td>
 
                 <td>Rp. 200,000</td>
             </tr>
@@ -161,3 +159,7 @@
 </body>
 
 </html>
+
+<script>
+    window.print()
+</script>

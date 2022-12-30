@@ -145,6 +145,14 @@
     }
 
     .register {}
+
+    .caption_new {
+        background-color: #111;
+        color: #fff;
+        padding: 18px;
+        font-size: 25px;
+        letter-spacing: 10px;
+    }
 </style>
 
 <body>
@@ -172,12 +180,14 @@
                     </form>
                 </div>
             </div>
-            <div class="right">
-                <img src="{{ asset('images-upload/login.jpg') }}" alt="">
-                <div class="right-text">
-                    <h2>Happy Kids Login</h2>
-                    <h5>A UX BASED CREATIVE AGENCEY</h5>
-                </div>
+            <div class="right"
+                style="background-image: url({{ asset('images-upload/login.jpg') }});height: 100%;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                ">
+                {{-- <img src="{{ asset('images-upload/login.jpg') }}" alt=""> --}}
+
                 <div class="right-inductor"></div>
             </div>
         </div>

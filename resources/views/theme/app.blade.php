@@ -19,23 +19,29 @@
     <link rel="stylesheet" href="{{ asset('css') }}/jquery.skedTape.css">
 
 
+    <link rel="stylesheet" href="{{ asset('theme') }}/assets/extensions/choices.js/public/assets/styles/choices.css">
+
+
+
+
+
     @yield('styles')
 </head>
 @php
-    // $warna1 = DB::table('h1')->where('id_h1', 16)->first()->isi;
-    // $warna2 = DB::table('h1')->where('id_h1', 17)->first()->isi;
-    $warna1 = DB::table('cms_konten')
-        ->where('id', 1)
-        ->first()->isi;
-    $warna2 = DB::table('cms_konten')
-        ->where('id', 2)
-        ->first()->isi;
-    $warna3 = DB::table('cms_konten')
-        ->where('id', 3)
-        ->first()->isi;
-    $warna4 = DB::table('cms_konten')
-        ->where('id', 4)
-        ->first()->isi;
+// $warna1 = DB::table('h1')->where('id_h1', 16)->first()->isi;
+// $warna2 = DB::table('h1')->where('id_h1', 17)->first()->isi;
+$warna1 = DB::table('cms_konten')
+->where('id', 1)
+->first()->isi;
+$warna2 = DB::table('cms_konten')
+->where('id', 2)
+->first()->isi;
+$warna3 = DB::table('cms_konten')
+->where('id', 3)
+->first()->isi;
+$warna4 = DB::table('cms_konten')
+->where('id', 4)
+->first()->isi;
 @endphp
 <style>
     .sked-tape__caption {
@@ -47,6 +53,13 @@
         width: 100% !important;
 
     }
+
+    .select2-container--default .select2-selection--single {
+        background-color: #fff;
+        border: 1px solid #aaa;
+        border-radius: 4px;
+        height: 35px;
+    }
 </style>
 <style>
     a {
@@ -55,6 +68,10 @@
 
     #multi-step-form-container {
         margin-top: 2rem;
+    }
+
+    input:read-only {
+        background-color: #E9ECEF;
     }
 
 
@@ -226,40 +243,52 @@
     <script src="{{ asset('theme') }}/assets/js/pages/dashboard.js"></script>
     <script src="{{ asset('theme') }}/assets/extensions/simple-datatables/umd/simple-datatables.js"></script>
     <script src="{{ asset('theme') }}/assets/js/pages/simple-datatables.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
     {{-- <script src="{{ asset('theme') }}/assets/js/pages/form-element-select.js"></script> --}}
 
     {{-- choice select2 --}}
-    {{-- <script src="{{ asset('theme') }}/assets/extensions/choices.js/public/assets/scripts/choices.js"></script>
-    <script src="{{ asset('theme') }}/assets/js/pages/form-element-select.js"></script> --}}
+    <script src="{{ asset('theme') }}/assets/extensions/choices.js/public/assets/scripts/choices.js"></script>
+    <script src="{{ asset('theme') }}/assets/js/pages/form-element-select.js"></script>
+
+
+    {{-- <script src="{{ asset('theme') }}/assets/js/select2.min.js"></script> --}}
+
+
     <script>
         $(document).ready(function() {
             $('.select2').select2();
+        $(function() {
+            $('.select').select2()
+            $('.select').one('select2:open', function(e) {
+                $('input.select2-search__field').prop('placeholder', 'Search...');
+            });
         });
+        });
+        
     </script>
     @if (session()->has('sukses'))
-        <script>
-            $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
                 iziToast.success({
                     title: 'Sukses !',
                     message: "{{ session()->get('sukses') }}",
                     position: 'topRight'
                 });
             });
-        </script>
+    </script>
     @endif
 
     @if (session()->has('error'))
-        <script>
-            $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
                 iziToast.error({
                     title: 'ERROR !',
                     message: "{{ session()->get('error') }}",
                     position: 'topRight'
                 });
             });
-        </script>
+    </script>
     @endif
     <script>
         $(document).on('change', '#warna1', function() {

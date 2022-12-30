@@ -1,0 +1,78 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class Data_pasien extends Controller
+{
+    public function index(Request $r)
+    {
+        $data = [
+            'title' => 'Data Pasien',
+            'pasien' => DB::table('dt_pasien')->get(),
+        ];
+
+        return view('pasien.data_pasien', $data);
+    }
+
+    public function save_pasien(Request $r)
+    {
+        $member_id = $r->member_id;
+        $tgl_lahir = $r->tgl_lahir;
+        $nama = $r->nama;
+        $no_telpon = $r->no_telpon;
+
+        $data = [
+            'member_id' => $member_id,
+            'nama_pasien' => $nama,
+            'tgl_lahir' => $tgl_lahir,
+            'no_hp' => $no_telpon
+        ];
+
+        DB::table('dt_pasien')->insert($data);
+        return redirect()->route('data_pasien')->with('sukses', 'Berhasil disimpan');
+    }
+
+    public function delete_pasien(Request $r)
+    {
+        DB::table('dt_pasien')->where('id_pasien', $r->id_pasien)->delete();
+        return redirect()->route('data_pasien')->with('sukses', 'Berhasil dihapus');
+    }
+
+    public function get_edit_pasien(Request $r)
+    {
+        $data = [
+            'title' => 'Data Pasien',
+            'pasien' => DB::table('dt_pasien')->where('id_pasien', $r->id_pasien)->first(),
+        ];
+
+        return view('pasien.edit', $data);
+    }
+
+    public function edit_pasien(Request $r)
+    {
+        $member_id = $r->member_id;
+        $tgl_lahir = $r->tgl_lahir;
+        $nama = $r->nama;
+        $no_telpon = $r->no_telpon;
+
+        $data = [
+            'member_id' => $member_id,
+            'nama_pasien' => $nama,
+            'tgl_lahir' => $tgl_lahir,
+            'no_hp' => $no_telpon
+        ];
+
+        DB::table('dt_pasien')->where('id_pasien', $r->id_pasien)->update($data);
+        return redirect()->route('data_pasien')->with('sukses', 'Berhasil disimpan');
+    }
+
+    public function get_pasien(Request $r)
+    {
+        $pasien = DB::table('dt_pasien')->where('member_id', $r->member_id)->first();
+
+        echo $pasien->nama_pasien;
+    }
+}

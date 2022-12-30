@@ -25,18 +25,22 @@
             <section class="section">
                 <div class="card">
                     <div class="card-header">
-                        <a style="margin-right: 5px;" href="#" data-bs-toggle="modal" data-bs-target="#view-tgl"
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#view-tgl"
                             class="btn icon icon-left btn-primary"><i class="bi bi-calendar-check"></i>
-                            View Tgl lain</a>
-                        <a style="margin-right: 5px;" href="#" data-bs-toggle="modal"
-                            data-bs-target="#plus-appointment" class="btn icon btn-primary"><i class="bi bi-plus"></i>
-                            Appointment</a>
-                        {{-- <a style="margin-right: 5px;" href="#" data-bs-toggle="modal"
-                            data-bs-target="#hapus-appointment" class="btn icon btn-warning"><i class="bi bi-trash"></i>
-                            Hapus Appointment</a> --}}
-                        <a style="margin-right: 5px;" href="{{ route('kelola_appoinment', ['view_tgl' => $tgl]) }}"
-                            class="btn icon btn-primary"><i class="bi bi-card-checklist"></i>
-                            Kelola Appointment</a>
+                            View Tgl lain
+                        </a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#plus-appointment"
+                            class="btn icon btn-primary"><i class="bi bi-plus"></i>
+                            Appointment
+                        </a>
+                        <a href="{{ route('kelola_appoinment', ['view_tgl' => $tgl]) }}" class="btn icon btn-primary"><i
+                                class="bi bi-card-checklist"></i>
+                            Kelola Appointment
+                        </a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#print-appointment"
+                            class="btn icon btn-primary"><i class="bi bi-printer"></i>
+                            Print Appointment
+                        </a>
                     </div>
                     <div class="card-body">
                         <div id="sked2"></div>
@@ -48,6 +52,64 @@
     </div>
 
 
+    {{-- form view tanggal  --}}
+    <form action="{{ route('print_appoinment') }}" method="get">
+        <div class="modal fade text-left" id="print-appointment" tabindex="-1" role="dialog"
+            aria-labelledby="myModalLabel33" aria-hidden="true">
+            <div class="modal-dialog  modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel33">
+                            Pilih Tanggal
+                        </h4>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <i data-feather="x"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="">Dari</label>
+                                    <input type="date" name="tgl1" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="">Sampai</label>
+                                    <input type="date" name="tgl2" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label for="">Dokter</label>
+                                    <select name="dokter" id="" class="form-control">
+                                        <option value="all">All</option>
+                                        @foreach ($dokter as $i)
+                                            <option value="{{ $i->id_dokter }}">{{ $i->nm_dokter }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                            <i class="bx bx-x d-block d-sm-none"></i>
+                            <span class="d-none d-sm-block">Close</span>
+                        </button>
+                        <button type="submit" class="btn btn-primary ml-1" data-bs-dismiss="modal">
+                            <i class="bx bx-check d-block d-sm-none"></i>
+                            <span class="d-none d-sm-block">Save</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+    {{-- form view tanggal  --}}
     {{-- form view tanggal  --}}
     <form action="" method="get">
         <div class="modal fade text-left" id="view-tgl" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
@@ -129,7 +191,8 @@
                             <div class="col-lg-2">
                                 <div class="form-group">
                                     <label for="">Jam</label>
-                                    <input type="time" name="jam[]" class="form-control">
+                                    <input type="time" name="jam[]" min="09:00" max="15:00"
+                                        class="form-control">
                                 </div>
                             </div>
                             <div class="col-lg-2">
@@ -149,7 +212,7 @@
                             <i class="bx bx-x d-block d-sm-none"></i>
                             <span class="d-none d-sm-block">Close</span>
                         </button>
-                        <button type="submit" class="btn btn-primary ml-1" data-bs-dismiss="modal">
+                        <button type="submit" class="btn btn-primary ml-1">
                             <i class="bx bx-check d-block d-sm-none"></i>
                             <span class="d-none d-sm-block">Save</span>
                         </button>
@@ -204,7 +267,7 @@
     </form>
     {{-- form view tanggal  --}}
     <?php
-    $tgl2 = date('Y-m-d', strtotime('+1 days', strtotime($tgl)));
+    $tgl2 = date('Y-m-d');
     $awal = date_create($tgl2);
     $akhir = date_create();
     $diff = date_diff($awal, $akhir);
@@ -275,8 +338,8 @@
             }
             var sked2Config = {
                 caption: 'Dokter',
-                start: besok(8, 0),
-                end: besok(23, 0),
+                start: besok(9, 0),
+                end: besok(17, 0),
                 showEventTime: true,
                 showEventDuration: true,
                 locations: locations.map(function(location) {

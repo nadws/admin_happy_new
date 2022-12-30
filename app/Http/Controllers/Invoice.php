@@ -18,7 +18,7 @@ class Invoice extends Controller
             $tgl2 =  $r->tgl2;
         }
         $data = [
-            'title' => 'Data Invoive',
+            'title' => 'Data Invoice Screening',
             'dt_pasien' => DB::table('dt_pasien')->get(),
             'invoice' => DB::select("SELECT a.pembayaran,a.id_invoice,a.tgl, a.no_order, b.nama_pasien, b.member_id, a.status FROM invoice as a left join dt_pasien as b on b.member_id = a.member_id where a.tgl between '$tgl1' and '$tgl2' order by a.id_invoice DESC")
         ];
@@ -27,45 +27,52 @@ class Invoice extends Controller
 
     public function save_invoice(Request $r)
     {
-        $member_id = rand(1, 999999999999);
-        $nm_pasien = $r->nm_pasien;
-        $no_order = Str::random(10);
-        $id_member = $r->id_customer;
+        $member_id = $r->member_id;
+        $pembayaran = $r->pembayaran;
+        $keluhan = $r->keluhan;
+        $invoice = DB::selectOne("SELECT max(a.urutan) as urutan FROM invoice as a");
 
-        if (empty($nm_pasien)) {
-            $data = [
-                'no_order' => $no_order,
-                'member_id' => $id_member,
-                'tgl' => $r->tgl,
-                'rupiah' => '100000'
-            ];
-            DB::table('invoice2')->insert($data);
+        if (empty($invoice->urutan)) {
+            $no_order = 1001;
         } else {
-            $data = [
-                'nama_pasien' => $nm_pasien,
-                'member_id' => $member_id,
-            ];
-            DB::table('dt_pasien')->insert($data);
-            $data = [
-                'no_order' => $no_order,
-                'member_id' => $member_id,
-                'tgl' => $r->tgl,
-                'rupiah' => '100000'
-            ];
-            DB::table('invoice2')->insert($data);
+            $no_order = $invoice->urutan + 1;
         }
+
+
+        $data = [
+            'no_order' => 'HK' . $no_order,
+            'urutan' => $no_order,
+            'member_id' => $member_id,
+            'tgl' => $r->tgl,
+            'rupiah' => '200000',
+            'pembayaran' => $pembayaran,
+            'status' => 'paid'
+
+        ];
+        DB::table('invoice')->insert($data);
+
 
         return redirect()->route('invoice')->with('sukses', 'Berhasil tambah pertanyaan');
     }
 
     public function cetak_invoice(Request $r)
     {
-        return view('data-appointment.cetak_invoice');
+        $data = [
+            'invoice' => DB::table('invoice')->where('id_invoice', $r->id_invoice)->first(),
+            'alamat' => DB::table('h1')->where('id_h1', '12')->first()
+        ];
+        return view('data-appointment.cetak_invoice', $data);
     }
 
     public function save_status(Request $r)
     {
         DB::table('invoice')->where('id_invoice', $r->id_invoice)->update(['pembayaran' => $r->pembayaran, 'status' => 'paid']);
         return redirect()->route('invoice')->with('sukses', 'Berhasil paid appointment');
+    }
+
+    public function hapus_invoice(Request $r)
+    {
+        DB::table('invoice')->where('id_invoice', $r->id_invoice)->delete();
+        return redirect()->route('invoice')->with('sukses', 'Berhasil tambah pertanyaan');
     }
 }
