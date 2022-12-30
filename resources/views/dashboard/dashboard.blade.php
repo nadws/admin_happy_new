@@ -24,31 +24,118 @@
             </div>
         </div>
         <section class="section">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Default Layout</h4>
+            <div class="row">
+                <div class="col-6 col-lg-3 col-md-6">
+                    <a href="{{route('invoice')}}">
+                        <div class="card">
+                            <div class="card-body px-4 py-4-5">
+                                <div class="row ">
+                                    <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
+                                        <i class="fa-solid fa-file-invoice fa-3x"></i>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 mt-4 justify-content-center">
+                                        <h6 class="text-muted font-semibold text-center">
+                                            Invoice Screening
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-                <div class="card-body">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam, commodi? Ullam quaerat
-                    similique iusto
-                    temporibus, vero aliquam praesentium, odit deserunt eaque nihil saepe hic deleniti? Placeat
-                    delectus
-                    quibusdam ratione ullam!
+                <div class="col-6 col-lg-3 col-md-6">
+                    <a href="{{route('invoice')}}">
+                        <div class="card">
+                            <div class="card-body px-4 py-4-5">
+                                <div class="row ">
+                                    <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
+                                        <i class="fa-solid fa-person-circle-check fa-3x"></i>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 mt-4 justify-content-center">
+                                        <h6 class="text-muted font-semibold text-center">
+                                            Invoice Periksa
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
                 </div>
+                <div class="col-6 col-lg-3 col-md-6">
+                    <a href="{{route('invoice')}}">
+                        <div class="card">
+                            <div class="card-body px-4 py-4-5">
+                                <div class="row ">
+                                    <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
+                                        <i class="fa-solid fa-clipboard-list fa-3x"></i>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 mt-4 justify-content-center">
+                                        <h6 class="text-muted font-semibold text-center">
+                                            Invoice Theraphy & Paket
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-lg-3 col-md-6">
+                    <a href="{{route('invoice')}}">
+                        <div class="card">
+                            <div class="card-body px-4 py-4-5">
+                                <div class="row ">
+                                    <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
+                                        <i class="fa-solid fa-person-chalkboard fa-3x"></i>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 mt-4 justify-content-center">
+                                        <h6 class="text-muted font-semibold text-center">
+                                            Invoice Kunjungan
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-lg-3 col-md-6">
+                    <a href="{{route('invoice')}}">
+                        <div class="card">
+                            <div class="card-body px-4 py-4-5">
+                                <div class="row ">
+                                    <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
+                                        <i class="fa-solid fa-hospital-user fa-3x"></i>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 mt-4 justify-content-center">
+                                        <h6 class="text-muted font-semibold text-center">
+                                            Data Paket Pasien
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-lg-3 col-md-6">
+                    <a href="{{ route('logout') }}">
+                        <div class="card">
+                            <div class="card-body px-4 py-4-5">
+                                <div class="row ">
+                                    <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
+                                        <i class="fa-solid fa-right-from-bracket fa-3x"></i>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 mt-4 justify-content-center">
+                                        <h6 class="text-muted font-semibold text-center">
+                                            Logout
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
             </div>
         </section>
     </div>
-
-    <footer>
-        <div class="footer clearfix mb-0 text-muted">
-            <div class="float-start">
-                <p>2021 &copy; Mazer</p>
-            </div>
-            <div class="float-end">
-                <p>Crafted with <span class="text-danger"><i class="bi bi-heart"></i></span> by <a
-                        href="https://saugi.me">Saugi</a></p>
-            </div>
-        </div>
-    </footer>
 </div>
 @endsection

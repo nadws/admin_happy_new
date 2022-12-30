@@ -1,197 +1,145 @@
-@php
-    $warna1 = DB::table('h1')
-        ->where('id_h1', 16)
-        ->first()->isi;
-    $warna2 = DB::table('h1')
-        ->where('id_h1', 17)
-        ->first()->isi;
-@endphp
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-<style>
-    img {
-        width: 100%;
-    }
+<!DOCTYPE html>
+<html lang="en">
 
-    .login {
-        height: 100%;
-        width: 100%;
-        background: {{ $warna1 }};
-        position: relative;
-    }
+<head>
+    <title>Login </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    .login_box {
-        width: 1050px;
-        height: 600px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: {{ $warna2 }};
-        border-radius: 10px;
-        box-shadow: 1px 4px 22px -8px #0004;
-        display: flex;
-        overflow: hidden;
-    }
+    <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
 
-    .login_box .left {
-        width: 41%;
-        height: 100%;
-        padding: 25px 25px;
-
-    }
-
-    .login_box .right {
-        width: 59%;
-        height: 100%
-    }
-
-    .left .top_link a {
-        color: #452A5A;
-        font-weight: 400;
-    }
-
-    .left .top_link {
-        height: 20px
-    }
-
-    .left .contact {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        align-self: center;
-        height: 100%;
-        width: 73%;
-        margin: auto;
-    }
-
-    .left h3 {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .left input {
-        border: none;
-        width: 80%;
-        margin: 15px 0px;
-        border-bottom: 1px solid #4f30677d;
-        padding: 7px 9px;
-        width: 100%;
-        overflow: hidden;
-        background: transparent;
-        font-weight: 600;
-        font-size: 14px;
-    }
-
-    .left {
-        background: linear-gradient(-45deg, #dcd7e0, #fff);
-    }
-
-    .submit {
-        border: none;
-        padding: 15px 70px;
-        border-radius: 8px;
-        display: block;
-        margin: auto;
-        margin-top: 120px;
-        background: #583672;
-        color: #fff;
-        font-weight: bold;
-        -webkit-box-shadow: 0px 9px 15px -11px rgba(88, 54, 114, 1);
-        -moz-box-shadow: 0px 9px 15px -11px rgba(88, 54, 114, 1);
-        box-shadow: 0px 9px 15px -11px rgba(88, 54, 114, 1);
-    }
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/login/css/bootsrap.min.css">
 
 
 
 
 
-    .right .right-text {
-        height: 100%;
-        position: relative;
-        transform: translate(0%, 45%);
-    }
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/login/css/animate.css">
 
-    .right-text h2 {
-        display: block;
-        width: 100%;
-        text-align: center;
-        font-size: 50px;
-        font-weight: 500;
-    }
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/login/css/hamburgers.min.css">
 
-    .right-text h5 {
-        display: block;
-        width: 100%;
-        text-align: center;
-        font-size: 19px;
-        font-weight: 400;
-    }
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/login/css/animsition.min.css">
 
-    .right .right-inductor {
-        position: absolute;
-        width: 70px;
-        height: 7px;
-        background: #fff0;
-        left: 50%;
-        bottom: 70px;
-        transform: translate(-50%, 0%);
-    }
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/login/css/select2.min.css">
 
-    .top_link img {
-        width: 28px;
-        padding-right: 7px;
-        margin-top: -3px;
-    }
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/login/css/daterangepicker.css">
 
-    .register {}
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/login/css/util.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets') }}/login/css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600;700;900&display=swap"
+        rel="stylesheet">
 
-    .caption_new {
-        background-color: #111;
-        color: #fff;
-        padding: 18px;
-        font-size: 25px;
-        letter-spacing: 10px;
-    }
-</style>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
 
-<body>
+        .login100-form-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
 
-    @php
-        $img = DB::table('h1')
-            ->where('id_h1', 2)
-            ->first()->isi;
-        $url_asset = ' http://127.0.0.1:2222/assets/img/';
-    @endphp
-    <section class="login">
-        <div class="login_box">
-            <div class="left">
-                <div class="contact">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
-                        <img src="{{ asset('images-upload/logo.png') }}"
-                            style="width: 100px; object-fit: cover; text-align: center; margin-left: 90px; margin-bottom: 10px;"
-                            alt="">
-                        <h3>SIGN IN</h3>
-                        <input type="text" name="email" placeholder="EMAIL">
-                        <input type="password" name="password" placeholder="PASSWORD">
-                        <a href="{{ route('register') }}" class="register">Tidak punya akun ?</a>
-                        <button class="submit">LOGIN</button>
-                    </form>
+        .login100-form-btn {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        .login100-form {
+            width: 560px;
+            min-height: 100vh;
+            display: block;
+            background-color: #F8F8F8;
+            padding: 100px 55px 55px;
+        }
+    </style>
+
+
+    <meta name="robots" content="noindex, follow">
+    <script nonce="80f0ffa4-0239-40e0-9967-363677b3eb7e">
+        (function(w,d){!function(a,e,t,r){a.zarazData=a.zarazData||{};a.zarazData.executed=[];a.zaraz={deferred:[]};a.zaraz.q=[];a.zaraz._f=function(e){return function(){var t=Array.prototype.slice.call(arguments);a.zaraz.q.push({m:e,a:t})}};for(const e of["track","set","ecommerce","debug"])a.zaraz[e]=a.zaraz._f(e);a.zaraz.init=()=>{var t=e.getElementsByTagName(r)[0],z=e.createElement(r),n=e.getElementsByTagName("title")[0];n&&(a.zarazData.t=e.getElementsByTagName("title")[0].text);a.zarazData.x=Math.random();a.zarazData.w=a.screen.width;a.zarazData.h=a.screen.height;a.zarazData.j=a.innerHeight;a.zarazData.e=a.innerWidth;a.zarazData.l=a.location.href;a.zarazData.r=e.referrer;a.zarazData.k=a.screen.colorDepth;a.zarazData.n=e.characterSet;a.zarazData.o=(new Date).getTimezoneOffset();a.zarazData.q=[];for(;a.zaraz.q.length;){const e=a.zaraz.q.shift();a.zarazData.q.push(e)}z.defer=!0;for(const e of[localStorage,sessionStorage])Object.keys(e||{}).filter((a=>a.startsWith("_zaraz_"))).forEach((t=>{try{a.zarazData["z_"+t.slice(7)]=JSON.parse(e.getItem(t))}catch{a.zarazData["z_"+t.slice(7)]=e.getItem(t)}}));z.referrerPolicy="origin";z.src="/cdn-cgi/zaraz/s.js?z="+btoa(encodeURIComponent(JSON.stringify(a.zarazData)));t.parentNode.insertBefore(z,t)};["complete","interactive"].includes(e.readyState)?zaraz.init():a.addEventListener("DOMContentLoaded",zaraz.init)}(w,d,0,"script");})(window,document);
+    </script>
+</head>
+
+<body style="background-color: #666666;">
+    <div class="limiter">
+
+        <div class="container-login100">
+
+            <div class="wrap-login100">
+
+                <form class="login100-form validate-form" action="{{ route('login') }}" method="post">
+                    <center>
+                        <img src="{{ asset('images-upload') }}/logo.png" alt="" width="80px">
+                    </center>
+                    @csrf
+                    <span class="login100-form-title p-b-43">
+                        Login Form <br>
+                    </span>
+                    <center>
+                        <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
+                    </center>
+
+                    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                        <input class="input100" name="email" type="email" name="email" :value="old('email')" required>
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">Email</span>
+                    </div>
+                    <div class="wrap-input100 validate-input" data-validate="Password is required">
+                        <input class="input100" type="password" name="password" required
+                            autocomplete="current-password">
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">Password</span>
+                    </div>
+                    <div>
+                        <a href="{{ route('password.request') }}" class="float-right">Lupa Password</a>
+                    </div>
+                    <br>
+                    <div class="container-login100-form-btn mt-4">
+                        <button class="login100-form-btn" type="submit" style="background-color: #D3D335">
+                            Login
+                        </button>
+
+                    </div>
+                    <div class="container-login100-form-btn mt-2">
+                        <a class="login100-form-btn" href="{{ route('register') }}"
+                            style="background-color: #FFFFFF;color: #62646A; border: 1px solid #62646A;">
+                            Buat Akun Baru
+                        </a>
+
+                    </div>
+                </form>
+
+                <div class="login100-more" style="background-image: url({{asset('/images-upload/5852.JPG')}});">
                 </div>
             </div>
-            <div class="right"
-                style="background-image: url({{ asset('images-upload/login.jpg') }});height: 100%;
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: cover;
-                ">
-                {{-- <img src="{{ asset('images-upload/login.jpg') }}" alt=""> --}}
-
-                <div class="right-inductor"></div>
-            </div>
         </div>
-    </section>
+    </div>
+
+
+    <script src="{{ asset('assets') }}/login/js/jquery-3.2.1.min.js"></script>
+
+    <script src="{{ asset('assets') }}/login/js/animsition.min.js"></script>
+
+    <script src="{{ asset('assets') }}/login/js/popper.js"></script>
+    <script src="{{ asset('assets') }}/login/js/bootstrap.min.js"></script>
+
+    <script src="{{ asset('assets') }}/login/js/select2.min.js"></script>
+
+    <script src="{{ asset('assets') }}/login/js/moment.min.js"></script>
+    <script src="{{ asset('assets') }}/login/js/daterangepicker.js"></script>
+
+    <script src="{{ asset('assets') }}/login/js/countdowntime.js"></script>
+
+    <script src="{{ asset('assets') }}/login/js/main.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+
+    <script defer
+        src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194"
+        integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw=="
+        data-cf-beacon='{"rayId":"72ae9bf648c98964","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2022.6.0","si":100}'
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

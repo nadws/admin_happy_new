@@ -339,6 +339,7 @@ $per = DB::table('tb_permission')
                 </li>
                 @endforeach
                 @endif
+                {{--
                 <hr>
                 <li class="sidebar-item">
                     <a href="{{ route('logout') }}" class='sidebar-link'>
@@ -346,7 +347,7 @@ $per = DB::table('tb_permission')
                         <span>Logout</span>
                     </a>
 
-                </li>
+                </li> --}}
             </ul>
         </div>
     </div>
