@@ -8,6 +8,33 @@
         </tr>
     </thead>
     <tbody>
+        <tr>
+            <td>Menu Dashboard</td>
+            <td>
+                @foreach ($dashboard as $v)
+                    <label for="labdb{{ $v->id }}">{{ $v->teks }}</label>
+                    <br>
+                @endforeach
+            </td>
+            <td>
+                
+                @foreach ($dashboard as $v)
+                @php
+                    $menu_dashboard = DB::table('dashboard_permission')
+                            ->where('id_menu_dashboard', $v->id)
+                            ->where('id_user', $id_user)
+                            ->first()
+                @endphp
+                    @if (empty($menu_dashboard->id_menu_dashboard))
+                        <input type="checkbox" name="id_menu_dashboard[]" value="{{ $v->id }}" id="labdb{{$v->id}}"><br>
+                    @else
+                        <input type="checkbox" name="id_menu_dashboard[]" value="{{ $v->id }}" id="labdb{{$v->id}}" checked><br>
+                    @endif
+                @endforeach
+                
+            </td>
+            
+        </tr>
         <?php foreach ($menu as $m) : ?>
 
         <tr>
@@ -40,6 +67,33 @@
             </td>
         </tr>
         <?php endforeach ?>
+        <tr>
+            <td>Menu Void</td>
+            <td>
+                @foreach ($void as $v)
+                    <label for="labvoid{{ $v->id }}">{{ $v->teks }}</label>
+                    <br>
+                @endforeach
+            </td>
+            <td>
+                
+                @foreach ($void as $v)
+                @php
+                    $menu_void = DB::table('void_permission')
+                            ->where('id_menu_void', $v->id)
+                            ->where('id_user', $id_user)
+                            ->first()
+                @endphp
+                    @if (empty($menu_void->id_menu_void))
+                        <input type="checkbox" name="id_menu_void[]" value="{{ $v->id }}" id="labvoid{{$v->id}}"><br>
+                    @else
+                        <input type="checkbox" name="id_menu_void[]" value="{{ $v->id }}" id="labvoid{{$v->id}}" checked><br>
+                    @endif
+                @endforeach
+                
+            </td>
+            
+        </tr>
     </tbody>
 
 </table>

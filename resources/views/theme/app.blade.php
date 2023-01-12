@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/extensions/choices.js/public/assets/styles/choices.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
 
 
 
@@ -31,16 +33,16 @@
 @php
 // $warna1 = DB::table('h1')->where('id_h1', 16)->first()->isi;
 // $warna2 = DB::table('h1')->where('id_h1', 17)->first()->isi;
-$warna1 = DB::table('cms_konten')
+$warna1 = DB::table('cms_content')
 ->where('id', 1)
 ->first()->isi;
-$warna2 = DB::table('cms_konten')
+$warna2 = DB::table('cms_content')
 ->where('id', 2)
 ->first()->isi;
-$warna3 = DB::table('cms_konten')
+$warna3 = DB::table('cms_content')
 ->where('id', 3)
 ->first()->isi;
-$warna4 = DB::table('cms_konten')
+$warna4 = DB::table('cms_content')
 ->where('id', 4)
 ->first()->isi;
 @endphp
@@ -225,6 +227,7 @@ $warna4 = DB::table('cms_konten')
     .form-stepper a {
         cursor: default;
     }
+    
 </style>
 
 <body style="background-color: {{ $warna2 }}">
@@ -252,22 +255,11 @@ $warna4 = DB::table('cms_konten')
     <script src="{{ asset('theme') }}/assets/extensions/choices.js/public/assets/scripts/choices.js"></script>
     <script src="{{ asset('theme') }}/assets/js/pages/form-element-select.js"></script>
 
-
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     {{-- <script src="{{ asset('theme') }}/assets/js/select2.min.js"></script> --}}
 
 
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2();
-        $(function() {
-            $('.select').select2()
-            $('.select').one('select2:open', function(e) {
-                $('input.select2-search__field').prop('placeholder', 'Search...');
-            });
-        });
-        });
-        
-    </script>
+
     @if (session()->has('sukses'))
     <script>
         $(document).ready(function() {

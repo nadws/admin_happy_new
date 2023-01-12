@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Invoice_periksa extends Controller
@@ -19,14 +20,35 @@ class Invoice_periksa extends Controller
         $data = [
             'title' => 'Data Invoive Periksa',
             'dt_pasien' => DB::table('dt_pasien')->get(),
-            'invoice_periksa' => DB::select("SELECT a.pembayaran,a.id_invoice_periksa, a.status, a.tgl, a.no_order, b.nama_pasien, b.member_id , c.nm_dokter
+            'invoice_periksa' => DB::select("SELECT a.id_dokter,a.pembayaran,a.id_invoice_periksa, a.status, a.tgl, a.no_order, b.nama_pasien, b.member_id , c.nm_dokter
             FROM invoice_periksa as a 
             left join dt_pasien as b on b.member_id = a.member_id 
             left join dt_dokter as c on c.id_dokter = a.id_dokter
             where a.tgl BETWEEN '$tgl1' and '$tgl2' order by a.id_invoice_periksa DESC"),
-            'dokter' => DB::table('dt_dokter')->get()
+            'dokter' => DB::table('dt_dokter')->get(),
+            'nominal' => DB::table('tb_nominal')->where('jenis', 'inv_periksa')->get()
         ];
         return view('invoice_periksa.index', $data);
+    }
+
+    public function edit_invoice_periksa(Request $r)
+    {
+        DB::table('invoice_periksa')->where('id_invoice_periksa', $r->id_invoice_periksa)->update(
+            [
+                'id_dokter' => $r->id_dokter, 
+                'pembayaran' => $r->pembayaran
+            ]
+        );
+        return redirect()->route('inv_periksa')->with('sukses', 'Berhasil edit invoice periksa');
+    }
+
+    public function editInput(Request $r)
+    {
+        $data = [
+            'dokter' => DB::table('dt_dokter')->get(),
+            'id_inv_periksa' => $r->id,
+        ];
+        return view('invoice_periksa.edit', $data);
     }
 
     public function save_invoice_periksa(Request $r)
@@ -42,17 +64,16 @@ class Invoice_periksa extends Controller
             $no_order = $invoice->urutan + 1;
         }
 
-
         $data = [
             'no_order' => 'HK' . $no_order,
             'urutan' => $no_order,
             'member_id' => $member_id,
             'id_dokter' => $id_dokter,
             'tgl' => $r->tgl,
-            'rupiah' => '200000',
+            'rupiah' => $r->rupiah,
             'pembayaran' => $pembayaran,
-            'status' => 'paid'
-
+            'status' => 'paid',
+            'admin' => Auth::user()->name
         ];
         DB::table('invoice_periksa')->insert($data);
 
@@ -63,6 +84,6 @@ class Invoice_periksa extends Controller
     public function hapus_invoice_periksa(Request $r)
     {
         DB::table('invoice_periksa')->where('id_invoice_periksa', $r->id_invoice_periksa)->delete();
-        return redirect()->route('inv_periksa')->with('sukses', 'Berhasil tambah pertanyaan');
+        // return redirect()->route('inv_periksa')->with('sukses', 'Berhasil tambah pertanyaan');
     }
 }

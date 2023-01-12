@@ -13,7 +13,9 @@
         @foreach ($invoice as $no => $i)
         <tr>
             <td>{{$no+1}}</td>
-            <td>{{$i->nama_therapy}}</td>
+            <td>
+                <a href="#" class="editSaldo" id_saldo_therapy="{{$i->id_saldo_therapy}}" id_terapi="{{$i->id_therapy}}" member_id="{{$i->member_id}}" id_paket="{{$i->id_paket}}">{{$i->nama_therapy}}</a>
+            </td>
             <td>{{$i->nama_paket}}</td>
             <td>{{$i->debit - $i->kredit}}</td>
             <td>

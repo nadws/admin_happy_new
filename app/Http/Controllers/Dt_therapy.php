@@ -23,4 +23,10 @@ class Dt_therapy extends Controller
 
         return redirect()->route('tb_therapy')->with('sukses', 'sukses');
     }
+
+    public function edit_terapi(Request $r)
+    {
+        DB::table('dt_therapy')->where('id_therapy', $r->id_therapy)->update(['nama_therapy' => $r->nama_therapy]);
+        return redirect()->route('tb_therapy')->with('sukses', 'sukses');
+    }
 }

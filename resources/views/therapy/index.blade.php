@@ -39,7 +39,7 @@
                                     <tr>
                                         <th width="6%">#</th>
                                         <th>Nama Therapist</th>
-                                        <th width="15%">Aksi</th>
+                                        <th width="25%">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -54,25 +54,62 @@
                                             <a href="#" data-bs-toggle="modal"
                                                 data-bs-target="#edit{{ $d->id_therapy }}"
                                                 class="btn btn-sm icon btn-primary"><i class="bi bi-pencil"></i></a>
-                                            <a href="{{ route('hps_dokter', ['id_therapy' => $d->id_therapy]) }}"
+                                            <a onclick="return confirm('Yakin ingin dihapus')" href="{{ route('hps_dokter', ['id_therapy' => $d->id_therapy]) }}"
                                                 class="btn btn-sm icon btn-danger"><i class="bi bi-trash"></i></a>
                                         </td>
                                     </tr>
                                     @endforeach
-
-
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-
         </section>
     </div>
 
 </div>
 
+{{-- edit terapi --}}
+@foreach ($therapist as $i)    
+<form action="{{ route('edit_terapi') }}" method="POST">
+    @csrf
+    <div class="modal fade text-left" id="edit{{$i->id_therapy}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel33">
+                        Tambah Therapist
+                    </h4>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <i data-feather="x"></i>
+                    </button>
+                </div>
+                <form action="#">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Nama Therapist </label>
+                            <input type="hidden" name="id_therapy" value="{{ $i->id_therapy }}">
+                            <input type="text" value="{{ $i->nama_therapy }}" name="nama_therapy" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                            <i class="bx bx-x d-block d-sm-none"></i>
+                            <span class="d-none d-sm-block">Close</span>
+                        </button>
+                        <button type="submit" class="btn btn-primary ml-1" data-bs-dismiss="modal">
+                            <i class="bx bx-check d-block d-sm-none"></i>
+                            <span class="d-none d-sm-block">Save</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</form>
+@endforeach
 <form action="{{ route('tbh_therapy') }}" method="POST">
     @csrf
     <div class="modal fade text-left" id="tambah" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"

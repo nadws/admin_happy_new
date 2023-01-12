@@ -29,6 +29,9 @@
                     <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn icon icon-left btn-primary"
                         style="float: right;"><i class="bi bi-plus"></i>
                         Buat Invoice Baru</a>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#export" class="btn icon icon-left btn-primary"
+                        style="float: right; margin-right: 5px;"><i class="bi bi-file-excel"></i>
+                        Export</a>
                 </div>
                 <div class="card-body">
                     <table class="table" id="table1">
@@ -40,7 +43,6 @@
                                 <th>No Order</th>
                                 <th>Nama Pasien</th>
                                 <th>Pembayaran</th>
-                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -67,15 +69,11 @@
                                     <a target="_blank"
                                         href="{{route('cetak_invoice_tp',['id_invoice_therapy' => $n->id_invoice_therapy])}}"
                                         class="btn btn-primary btn-sm"><i class="bi bi-printer"></i></a>
-
-                                    <a href="#" class="btn btn-primary edit_invoice btn-sm" data-bs-toggle="modal"
+                                    
+                                    {{-- <a href="#" class="btn btn-primary edit_invoice btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#edit" id_invoice_therapy="{{$n->id_invoice_therapy}}"><i
                                             class="bi bi-pencil-square"></i>
-                                    </a>
-
-                                    <a href="{{ route('hapus_invoice_tp',['id_invoice_therapy' => $n->id_invoice_therapy]) }}"
-                                        class="btn btn-warning btn-sm"><i class="bi bi-trash"></i>
-                                    </a>
+                                    </a> --}}
                                 </td>
                             </tr>
                             @endforeach
@@ -103,22 +101,27 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
+                        <div class="col-lg-8">
+                            <div class="form-group">
+                            <label for="">No Rekam Medis</label>
+                            <select name="member_id" id="" class="choices form-select pilih_rek">
+                                <option value="">--Pilih data--</option>
+                                @foreach ($dt_pasien as $d)
+                                    <option value="{{$d->member_id}}">{{$d->member_id}} - {{ $d->nama_pasien }} - {{ $d->tgl_lahir }}</option>
+                                @endforeach
+                                
+                            </select>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="">Tanggal</label>
                                 <input required type="date" name="tgl" value="{{date('Y-m-d')}}" class="form-control">
                             </div>
                         </div>
-                        <div class="col-lg-4">
-                            <label for="">No Rekam Medis</label>
-                            <select name="member_id" id="" class="choices form-select pilih_rek">
-                                <option value="">--Pilih data--</option>
-                                @foreach ($dt_pasien as $d)
-                                <option value="{{$d->member_id}}">{{$d->member_id}}</option>
-                                @endforeach
-                            </select>
-
-                        </div>
+                        
 
                         <div class="col-lg-4">
                             <div class="form-group">
@@ -137,6 +140,8 @@
                                 </select>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-lg-12">
                             <hr>
                         </div>
@@ -236,7 +241,51 @@
 </div>
 
 
+{{-- edit  --}}
+<form action="{{ route('exportScreening') }}" method="post">
+    @csrf
+    <div class="modal fade text-left" id="export">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel33">
+                        Export Screening
+                    </h4>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <i data-feather="x"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="">Dari</label>
+                                <input required type="date" class="form-control" name="tgl1">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="">Sampai</label>
+                                <input required type="date" class="form-control" name="tgl2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                    <button type="submit" class="btn btn-primary ml-1">
+                        <i class="bx bx-check d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Save</span>
+                    </button>
+                </div>
 
+            </div>
+        </div>
+    </div>
+</form>
 
 @endsection
 @section('scripts')

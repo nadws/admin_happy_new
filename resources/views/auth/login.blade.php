@@ -75,7 +75,7 @@
                     </center>
                     @csrf
                     <span class="login100-form-title p-b-43">
-                        Login Form <br>
+                        Login <br>
                     </span>
                     <center>
                         <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
@@ -111,7 +111,7 @@
                     </div>
                 </form>
 
-                <div class="login100-more" style="background-image: url({{asset('/images-upload/5852.JPG')}});">
+                <div class="login100-more" style="background-image: url({{asset('/images-upload/login1.JPG')}});">
                 </div>
             </div>
         </div>

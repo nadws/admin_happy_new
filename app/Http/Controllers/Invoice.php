@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -17,10 +18,13 @@ class Invoice extends Controller
             $tgl1 = $r->tgl1;
             $tgl2 =  $r->tgl2;
         }
+        $member_id = DB::selectOne("SELECT max(member_id) as member_id FROM `dt_pasien` ORDER BY member_id ASC;");
         $data = [
             'title' => 'Data Invoice Screening',
             'dt_pasien' => DB::table('dt_pasien')->get(),
-            'invoice' => DB::select("SELECT a.pembayaran,a.id_invoice,a.tgl, a.no_order, b.nama_pasien, b.member_id, a.status FROM invoice as a left join dt_pasien as b on b.member_id = a.member_id where a.tgl between '$tgl1' and '$tgl2' order by a.id_invoice DESC")
+            'invoice' => DB::select("SELECT a.pembayaran,a.id_invoice,a.tgl, a.no_order, b.nama_pasien, b.member_id, a.status FROM invoice as a left join dt_pasien as b on b.member_id = a.member_id where a.tgl between '$tgl1' and '$tgl2' order by a.id_invoice DESC"),
+            'member_id' => empty($member_id) ? '50001' : $member_id->member_id,
+            'nominal' => DB::table('tb_nominal')->where('jenis', 'inv_screening')->get(),
         ];
         return view('data-appointment.appointment', $data);
     }
@@ -29,6 +33,7 @@ class Invoice extends Controller
     {
         $member_id = $r->member_id;
         $pembayaran = $r->pembayaran;
+        $rupiah = $r->rupiah;
         $keluhan = $r->keluhan;
         $invoice = DB::selectOne("SELECT max(a.urutan) as urutan FROM invoice as a");
 
@@ -44,15 +49,25 @@ class Invoice extends Controller
             'urutan' => $no_order,
             'member_id' => $member_id,
             'tgl' => $r->tgl,
-            'rupiah' => '200000',
+            'rupiah' => $rupiah,
             'pembayaran' => $pembayaran,
-            'status' => 'paid'
+            'status' => 'paid',
+            'admin' => Auth::user()->name
 
         ];
         DB::table('invoice')->insert($data);
 
 
-        return redirect()->route('invoice')->with('sukses', 'Berhasil tambah pertanyaan');
+        return redirect()->route('invoice')->with('sukses', 'Berhasil tambah invoice');
+    }
+
+    public function edit_invoice(Request $r)
+    {
+        if(!$r->pembayaran) {
+            return redirect()->back()->with('error', 'Pembayaran tidak diisi');
+        }
+        DB::table('invoice')->where('id_invoice', $r->id_invoice)->update(['pembayaran' => $r->pembayaran]);
+        return redirect()->route('invoice')->with('sukses', 'Berhasil ubah pembayaran');
     }
 
     public function cetak_invoice(Request $r)
@@ -73,6 +88,14 @@ class Invoice extends Controller
     public function hapus_invoice(Request $r)
     {
         DB::table('invoice')->where('id_invoice', $r->id_invoice)->delete();
-        return redirect()->route('invoice')->with('sukses', 'Berhasil tambah pertanyaan');
+        // return redirect()->route('invoice')->with('sukses', 'Berhasil hapus invoice');
+    }
+
+    public function noMedis(Request $r)
+    {
+        $data = [
+            'dt_pasien' => DB::table('dt_pasien')->orderBy('member_id', 'DESC')->get(),
+        ];
+        return view('data-appointment.noMedis', $data);
     }
 }

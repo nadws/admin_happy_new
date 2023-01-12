@@ -11,7 +11,7 @@ class Data_paket extends Controller
     {
         $data = [
             'title' => 'Data Paket',
-            'paket' => DB::table('dt_paket')->get(),
+            'paket' => DB::table('dt_paket')->orderBy('id_paket', 'desc')->get(),
         ];
 
         return view('paket.data_paket', $data);

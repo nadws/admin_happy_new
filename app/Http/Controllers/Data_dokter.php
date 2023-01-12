@@ -11,7 +11,7 @@ class Data_dokter extends Controller
     {
         $data = [
             'title' => 'Data Dokter',
-            'dokter' => DB::table('dt_dokter')->get()
+            'dokter' => DB::table('dt_dokter')->orderBy('id_dokter', 'desc')->get()
         ];
         return view('dokter.index', $data);
     }

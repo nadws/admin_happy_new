@@ -9,9 +9,11 @@ class Data_pasien extends Controller
 {
     public function index(Request $r)
     {
+        $member_id = DB::selectOne("SELECT max(member_id) as member_id FROM `dt_pasien` ORDER BY member_id ASC;");
         $data = [
             'title' => 'Data Pasien',
-            'pasien' => DB::table('dt_pasien')->get(),
+            'pasien' => DB::table('dt_pasien')->orderBy('member_id', 'DESC')->get(),
+            'member_id' => empty($member_id) ? '50001' : $member_id->member_id,
         ];
 
         return view('pasien.data_pasien', $data);
@@ -23,7 +25,17 @@ class Data_pasien extends Controller
         $tgl_lahir = $r->tgl_lahir;
         $nama = $r->nama;
         $no_telpon = $r->no_telpon;
+        $cek = DB::table('dt_pasien')->where('member_id', $member_id)->first();
+        
 
+        
+        if($cek){
+            if($r->page == 'screening') {
+                echo 'gagal';
+            } else {
+                return redirect()->route('data_pasien')->with('error', 'Member ID sudah ada');
+            }
+        }
         $data = [
             'member_id' => $member_id,
             'nama_pasien' => $nama,
@@ -32,7 +44,12 @@ class Data_pasien extends Controller
         ];
 
         DB::table('dt_pasien')->insert($data);
-        return redirect()->route('data_pasien')->with('sukses', 'Berhasil disimpan');
+        if($r->page == 'screening') {
+            echo 'sukses';
+        } else {
+            return redirect()->route('data_pasien')->with('sukses', 'Berhasil disimpan');
+        }
+
     }
 
     public function delete_pasien(Request $r)

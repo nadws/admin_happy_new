@@ -29,6 +29,9 @@
                     <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn icon icon-left btn-primary"
                         style="float: right;"><i class="bi bi-plus"></i>
                         Buat Invoice Baru</a>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#export" class="btn icon icon-left btn-primary"
+                        style="float: right; margin-right: 5px;"><i class="bi bi-file-excel"></i>
+                        Export</a>
                 </div>
                 <div class="card-body">
                     <table class="table table-hover" id="table1">
@@ -39,12 +42,12 @@
                                 <th>Member ID</th>
                                 <th>No Order</th>
                                 <th>Nama Pasien</th>
-                                <th>Aksi</th>
+                                {{-- <th>Aksi</th> --}}
                             </tr>
                         </thead>
                         <tbody>
                             @php
-                            $i = 1;
+                                $i = 1;
                             @endphp
                             @foreach ($invoice_kunjungan as $n)
                             <tr>
@@ -53,17 +56,16 @@
                                 <td>{{ $n->member_id }}</td>
                                 <td>{{ $n->no_order }}</td>
                                 <td>
-                                    {{ $n->nama_pasien }}
+                                    <a href="#" data-bs-toggle="modal" class="detailSaldo" data-bs-target="#detailSaldo" member_id="{{$n->member_id}}">
+                                        {{ $n->nama_pasien }}
+                                    </a>
                                 </td>
-                                <td>
+                                {{-- <td>
                                     <a href="#" class="btn btn-primary edit_invoice btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#edit" id_invoice_kunjungan="{{$n->id_invoice_kunjungan}}"><i
                                             class="bi bi-pencil-square"></i>
                                     </a>
-                                    <a href="{{ route('hapus_invoice_periksa',['id_invoice_kunjungan' => $n->id_invoice_kunjungan]) }}"
-                                        class="btn btn-warning btn-sm"><i class="bi bi-trash"></i>
-                                    </a>
-                                </td>
+                                </td> --}}
                             </tr>
                             @endforeach
                         </tbody>
@@ -78,7 +80,7 @@
 <form action="{{ route('save_invoice_kunjungan') }}" method="post">
     @csrf
     <div class="modal fade text-left" id="tambah">
-        <div class="modal-dialog  modal-lg " role="document">
+        <div class="modal-dialog  modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel33">
@@ -90,24 +92,29 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-8">
+                            <div class="form-group">
+                            <label for="">No Rekam Medis</label>
+                            <select name="member_id" id="" class="choices form-select pilih_rek">
+                                <option value="">--Pilih data--</option>
+                                @foreach ($dt_pasien as $d)
+                                <option value="{{$d->member_id}}">{{$d->member_id}} - {{$d->nama_pasien}} - {{$d->tgl_lahir}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="">Tanggal</label>
                                 <input required type="date" name="tgl" value="{{date('Y-m-d')}}" class="form-control">
                             </div>
                         </div>
-                        <div class="col-lg-4">
-                            <label for="">No Rekam Medis</label>
-                            <select name="member_id" id="" class="choices form-select pilih_rek">
-                                <option value="">--Pilih data--</option>
-                                @foreach ($dt_pasien as $d)
-                                <option value="{{$d->member_id}}">{{$d->member_id}}</option>
-                                @endforeach
-                            </select>
+                        
 
-                        </div>
-
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="">Nama Pasien</label>
                                 <input required type="text" class="form-control nama" disabled>
@@ -136,6 +143,50 @@
     </div>
 </form>
 
+<form action="{{ route('exportScreening') }}" method="post">
+    @csrf
+    <div class="modal fade text-left" id="export">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel33">
+                        Export Screening
+                    </h4>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <i data-feather="x"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="">Dari</label>
+                                <input required type="date" class="form-control" name="tgl1">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="">Sampai</label>
+                                <input required type="date" class="form-control" name="tgl2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                    <button type="submit" class="btn btn-primary ml-1">
+                        <i class="bx bx-check d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Save</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
 
 <div class="modal fade text-left" id="view">
     <div class="modal-dialog  modal-lg " role="document">
@@ -173,6 +224,12 @@
             </div>
 
         </div>
+    </div>
+</div>
+<div class="modal fade text-left" id="detailSaldo">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div id="loadDetailSaldo"></div>
+        
     </div>
 </div>
 
@@ -327,6 +384,18 @@
                     }
                 });
             });
+
+            $(document).on('click', '.detailSaldo', function(){
+                var member_id = $(this).attr('member_id')
+
+                $.ajax({
+                    type: "GET",
+                    url: "{{route('detailSaldo')}}?member_id="+member_id,
+                    success: function (r) {
+                        $("#loadDetailSaldo").html(r);
+                    }
+                });
+            })
 
         });
 </script>

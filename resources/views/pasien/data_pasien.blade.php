@@ -54,7 +54,7 @@
                                     <a href="#" class="btn btn-primary btn-sm edit" data-bs-toggle="modal"
                                         data-bs-target="#edit" id_pasien="{{$n->id_pasien}}"><i
                                             class="bi bi-pencil-square"></i></a>
-                                    <a href="{{route('delete_pasien',['id_pasien' =>$n->id_pasien ])}}"
+                                    <a onclick="return confirm('yakin dihapus ?')" href="{{route('delete_pasien',['id_pasien' =>$n->id_pasien ])}}"
                                         class="btn btn-warning btn-sm"><i class="bi bi-trash"></i></a>
                                 </td>
                             </tr>
@@ -88,7 +88,7 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="">No Rekam Medis</label>
-                                <input required type="text" name="member_id" class="form-control">
+                                <input readonly value="{{ $member_id+1 }}" required type="text" name="member_id" class="form-control">
                             </div>
                         </div>
                         <div class="col-lg-4">

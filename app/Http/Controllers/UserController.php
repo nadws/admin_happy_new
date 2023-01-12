@@ -16,6 +16,7 @@ class UserController extends Controller
         $data = [
             'title' => 'Tb User',
             'users' => User::all(),
+            
         ];
 
         return view('user.user',$data);
@@ -67,6 +68,8 @@ class UserController extends Controller
             'menu' => DB::table('tb_menu')->get(),
             'id_user' => $id_user,
             'logout' => $r->session()->get('logout'),
+            'void' => DB::table('tb_menu_void')->get(),
+            'dashboard' => DB::table('tb_menu_dashboard')->get(),
         ];
 
         return view('user.permission', $data);
@@ -76,19 +79,46 @@ class UserController extends Controller
     {
         $id_user = $r->kd_user;
         $permission =  $r->permission;
-
+        $id_menu_void =  $r->id_menu_void;
+        $id_menu_dashboard =  $r->id_menu_dashboard;
 
         DB::table('tb_permission')->where('id_user', $id_user)->delete();
+        DB::table('void_permission')->where('id_user', $id_user)->delete();
+        DB::table('dashboard_permission')->where('id_user', $id_user)->delete();
 
-        for ($i = 0; $i < count($r->permission); $i++) {
-            $data_permission = [
-                'id_user' => $id_user,
-                'permission' => $permission[$i]
-            ];
-
-            // var_dump($id_user);
-            DB::table('tb_permission')->insert($data_permission);
+        if(!empty($permission)) {
+            for ($i = 0; $i < count($r->permission); $i++) {
+                $data_permission = [
+                    'id_user' => $id_user,
+                    'permission' => $permission[$i]
+                ];
+    
+                DB::table('tb_permission')->insert($data_permission);
+            }
         }
+        
+        if(!empty($id_menu_dashboard)) {
+            for ($i = 0; $i < count($r->id_menu_dashboard); $i++) {
+                $data_dashboard = [
+                    'id_user' => $id_user,
+                    'id_menu_dashboard' => $id_menu_dashboard[$i]
+                ];
+    
+                DB::table('dashboard_permission')->insert($data_dashboard);
+            }
+        }
+
+        if(!empty($id_menu_void)) {
+            for ($i = 0; $i < count($r->id_menu_void); $i++) {
+                $data_void = [
+                    'id_user' => $id_user,
+                    'id_menu_void' => $id_menu_void[$i]
+                ];
+    
+                DB::table('void_permission')->insert($data_void);
+            }
+        }
+
         return redirect()->route('tb_user')->with('sukses', 'Sukses atur permssion');
     }
 }

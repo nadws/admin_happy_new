@@ -3,21 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Invoice_tp extends Controller
 {
     function index(Request $r)
     {
-        if (empty($r->tgl1)) {
-            $tgl1 = date('Y-m-01');
-            $tgl2 = date('Y-m-t');
-        } else {
-            $tgl1 = $r->tgl1;
-            $tgl2 =  $r->tgl2;
-        }
+
+        $tgl1 = $r->tgl1 ?? date('Y-m-01');
+        $tgl2 =  $r->tgl2 ?? date('Y-m-t');
+
         $data = [
-            'title' => 'Data Invoive Therapy & Paket',
+            'title' => 'Data Invoice Therapy & Paket',
             'dt_pasien' => DB::table('dt_pasien')->get(),
             'invoice_tp' => DB::select("SELECT a.pembayaran, a.id_invoice_therapy, a.tgl, a.no_order, b.nama_pasien, a.member_id, c.saldo
             FROM invoice_therapy AS a
@@ -74,7 +72,9 @@ class Invoice_tp extends Controller
             'no_order' => 'HK-' . $no_order,
             'urutan' => $no_order,
             'member_id' => $member_id,
-            'pembayaran' => $r->pembayaran
+            'pembayaran' => $r->pembayaran,
+            'rupiah' => 0,
+            'admin' => Auth::user()->name
         ];
         DB::table('invoice_therapy')->insert($data);
 
@@ -160,6 +160,12 @@ class Invoice_tp extends Controller
 
     public function hapus_invoice_tp(Request $r)
     {
-        # code...
+        $id = $r->id_invoice_therapy;
+        $member = DB::table('invoice_therapy')->where('no_order', $id)->first()->member_id;
+
+        DB::table('invoice_therapy')->where('no_order', $id)->delete();
+        DB::table('saldo_therapy')->where('no_order', $id)->delete();
+        // DB::table('invoice_kunjungan')->where('member_id', $member)->delete();
+        return redirect()->route('invoice_tp')->with('sukses', 'Berhasil hapus invoice');
     }
 }

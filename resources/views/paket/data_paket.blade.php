@@ -155,16 +155,20 @@
 <script>
     $(document).ready(function() {
             $('.edit').click(function() {
+             
                 var id_paket = $(this).attr('id_paket');
                 $.ajax({
                     url: "{{ route('get_edit_paket') }}?id_paket="+id_paket,
                     method: "Get",
                     success: function(data) {
                         $('#edit_modal').html(data);
+                        
                     }
                 });
 
             });
+
+            
         });
 </script>
 @endsection

@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-lg-10">
+    <div class="col-lg-12">
         <table class="table table-hover">
             <tr>
                 <th>Therapist</th>
@@ -8,6 +8,10 @@
                 <th width="20%">Dipakai</th>
             </tr>
             @foreach ($invoice_kunjungan as $i)
+            @php
+                $ttl = $i->debit - $i->kredit;
+            @endphp
+            @if ($ttl > 0)
             <tr>
                 <td>
                     {{$i->nama_therapy}}
@@ -17,10 +21,11 @@
                     {{$i->nama_paket}}
                     <input type="hidden" name="id_paket[]" value="{{$i->id_paket}}">
                 </td>
-                <td>{{$i->debit - $i->kredit}}</td>
-                <td><input type="number" name="kredit[]" style="text-align: right" class="form-control" value="0"></td>
-
+                <td>{{$ttl}}</td>
+                <td><input type="number" name="kredit[]" min="0" max="{{$ttl}}" style="text-align: right" class="form-control" value="0"></td>
             </tr>
+            @endif
+            
             @endforeach
         </table>
     </div>

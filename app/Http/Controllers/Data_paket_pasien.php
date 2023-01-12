@@ -30,7 +30,7 @@ class Data_paket_pasien extends Controller
         $member_id =  $r->member_id;
 
         $data = [
-            'invoice' => DB::select("SELECT a.id_paket, b.nama_paket, c.nama_therapy, sum(a.debit) as debit, sum(a.kredit) as kredit, a.total_rp, a.no_order, a.member_id
+            'invoice' => DB::select("SELECT a.id_saldo_therapy,a.id_paket, b.nama_paket, c.id_therapy,c.nama_therapy, sum(a.debit) as debit, sum(a.kredit) as kredit, a.total_rp, a.no_order, a.member_id
             FROM saldo_therapy as a 
             LEFT JOIN dt_paket as b on b.id_paket = a.id_paket
             LEFT JOIN dt_therapy AS c ON c.id_therapy = a.id_therapist
@@ -56,5 +56,34 @@ class Data_paket_pasien extends Controller
             'paket' => DB::table('dt_paket')->where('id_paket', $id_paket)->first()
         ];
         return view('dt_paket_pasien.view2', $data);
+    }
+
+    public function viewEditTerapi(Request $r)
+    {
+        $member_id =  $r->member_id;
+        $id_paket =  $r->id_paket;
+        $data = [
+            'invoice' => DB::select("SELECT a.id_saldo_therapy,a.id_paket, b.nama_paket, c.nama_therapy, sum(a.debit) as debit, sum(a.kredit) as kredit, a.total_rp, a.no_order, a.member_id
+            FROM saldo_therapy as a 
+            LEFT JOIN dt_paket as b on b.id_paket = a.id_paket
+            LEFT JOIN dt_therapy AS c ON c.id_therapy = a.id_therapist
+            WHERE a.member_id = '$member_id'
+            GROUP BY a.id_paket"),
+            'data_tp' => DB::table('dt_therapy')->get(),
+            'id_terapi' => $r->id_terapi,
+            'id_saldo_therapy' => $r->id_saldo_therapy
+        ];
+        return view('dt_paket_pasien.viewEditTerapi', $data);
+    }
+
+    public function editPaketTerapi(Request $r)
+    {
+        DB::table('saldo_therapy')->where('id_saldo_therapy', $r->id_saldo_terapi)->update([
+            'id_therapist' => $r->id_terapi
+        ]);
+        $member = DB::table('saldo_therapy')->where('id_saldo_therapy',$r->id_saldo_terapi)->first()->member_id;
+        echo $member;
+
+
     }
 }
