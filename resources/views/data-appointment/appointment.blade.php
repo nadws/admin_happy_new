@@ -57,7 +57,7 @@
                                 <td>{{ $n->member_id }}</td>
                                 <td>{{ $n->no_order }}</td>
                                 <td>{{ $n->nama_pasien }}</td>
-                                <td>
+                                <td> 
                                     <span class="badge bg-{{ $n->status == 'paid' ? 'primary' : 'warning' }}">{{
                                         $n->status == 'paid' ? "$n->status : " . strtoupper($n->pembayaran) : $n->status
                                         }}</span>
