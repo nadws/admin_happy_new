@@ -93,7 +93,7 @@
                         <span class="label-input100">Password</span>
                     </div>
                     <div>
-                        <a href="{{ route('password.request') }}" class="float-right">Lupa Password</a>
+
                     </div>
                     <br>
                     <div class="container-login100-form-btn mt-4">
