@@ -24,40 +24,42 @@
                 </div>
             </div>
             <section class="section">
-                <div class="card">
-                    <div class="card-header">
-                        <a href="#" id="sukses" data-bs-toggle="modal" data-bs-target="#tambah"
-                            class="btn icon icon-left btn-primary"><i class="bi bi-plus-circle"></i> Tambah</a>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-hover" id="table1">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>City</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Graiden</td>
-                                    <td>vehicula.aliquet@semconsequat.co.uk</td>
-                                    <td>076 4820 8838</td>
-                                    <td>Offenburg</td>
-                                    <td>
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#edit"
-                                            class="btn btn-sm icon btn-primary"><i class="bi bi-pencil"></i></a>
-                                        <a href="#" class="btn btn-sm icon btn-danger"><i class="bi bi-trash"></i></a>
-                                    </td>
-                                </tr>
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <a href="#" id="sukses" data-bs-toggle="modal" data-bs-target="#tambah"
+                                class="btn icon icon-left btn-primary"><i class="bi bi-plus-circle"></i> Tambah</a>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-hover" id="table1">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>City</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Graiden</td>
+                                        <td>vehicula.aliquet@semconsequat.co.uk</td>
+                                        <td>076 4820 8838</td>
+                                        <td>Offenburg</td>
+                                        <td>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit"
+                                                class="btn btn-sm icon btn-primary"><i class="bi bi-pencil"></i></a>
+                                            <a href="#" class="btn btn-sm icon btn-danger"><i class="bi bi-trash"></i></a>
+                                        </td>
+                                    </tr>
 
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </section>

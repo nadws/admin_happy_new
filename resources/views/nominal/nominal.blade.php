@@ -28,7 +28,7 @@
                 <div class="col-6 col-lg-2 col-md-6">
                     <a href="{{ route('data_nominal',1) }}">
                         <div class="card">
-                            <div class="card-body px-4 py-4-5">
+                            <div class="card-body px-4 py-4-5" style="height: 170px">
                                 <div class="row ">
                                     <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
                                         <i class="fa-solid fa-file-invoice fa-3x"></i>
@@ -46,8 +46,8 @@
                 
                 <div class="col-6 col-lg-2 col-md-6">
                     <a href="{{ route('data_nominal',2) }}">
-                        <div class="card">
-                            <div class="card-body px-4 py-4-5" >
+                        <div class="card" >
+                            <div class="card-body px-4 py-4-5" style="height: 170px" >
                                 <div class="row ">
                                     <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
                                         <i class="fa-solid fa-person-circle-check fa-3x"></i>
@@ -65,7 +65,7 @@
                 <div class="col-6 col-lg-2 col-md-6">
                     <a href="{{ route('data_nominal',3) }}">
                         <div class="card">
-                            <div class="card-body px-4 py-4-5" >
+                            <div class="card-body px-4 py-4-5" style="height: 170px">
                                 <div class="row ">
                                     <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
                                         <i class="fa-solid fa-address-card fa-3x"></i>
@@ -146,7 +146,6 @@
                         </table>
                     </div>
                 </div>
-
 
             </div>
             <div class="modal-footer">

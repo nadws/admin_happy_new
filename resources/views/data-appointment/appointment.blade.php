@@ -187,7 +187,24 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div id="loadNomedis" ></div>
+                    {{-- <div id="loadNoMedis1">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                <label for="">No Rekam Medis</label>
+                                <select  name="member_id" id="" class="choices form-select pilih_rek">
+                                    <option value="">--Pilih data--</option>
+                                    <option value="plusPasien"><a href="{{ route('data_pasien') }}">+ Pasien</a></option>
+                                    @foreach ($dt_pasien as $d)
+                                        <option value="{{$d->member_id}}">{{$d->member_id}} - {{ $d->nama_pasien }} - {{ $d->tgl_lahir }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            </div>
+                            
+                        </div>
+                    </div> --}}
+                    <div id="loadNomedis"></div>
                     {{-- <div class="row">
                         <div class="col-lg-12">
                             <div class="form-group">
@@ -274,33 +291,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <input type="hidden" name="page" value="screening">
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="">No Rekam Medis</label>
-                                <input readonly required value="{{ $member_id + 1 }}" type="text" name="member_id" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="">Tanggal Lahir</label>
-                                <input required type="date" name="tgl_lahir" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="">Nama Pasien</label>
-                                <input required type="text" name="nama" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="">No Telpon / Hp</label>
-                                <input required type="text" name="no_telpon" class="form-control">
-                            </div>
-                        </div>
-                    </div>
+                    <div id="loadTambahPasien"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
@@ -411,7 +402,10 @@
                     url: "{{route('noMedis')}}",
                     success: function (r) {
                         $("#loadNomedis").html(r);
-                        $('.select2').select2();
+                        $('.select2').select2({
+                            dropdownParent: $('#tambah')
+                        });
+
                     }
                 });
             }
@@ -441,6 +435,8 @@
                         }
                         
                         $('#tambahPasien').modal('hide')
+                        $('#loadNoMedis1').css("display", "none");
+                        $('#loadNomedis').css("display", "block");
                         loadNomedis()
                         $('.select2').select2();
                     }
@@ -449,7 +445,14 @@
             $(document).on('change', '.pilih_rek', function() {
                 var member_id = $(this).val();
                 if(member_id == 'plusPasien'){
-                    $('#tambahPasien').modal('show')
+                    $.ajax({
+                        type: "GET",
+                        url: "{{route('loadTambahPasien')}}",
+                        success: function (r) {
+                            $("#loadTambahPasien").html(r);
+                            $('#tambahPasien').modal('show')
+                        }
+                    });
                 }
                 $.ajax({
                     url: "{{ route('get_pasien') }}",
@@ -459,6 +462,7 @@
                     type: "GET",
                     success: function(data) {
                         $('.nama').val(data);
+                        
                     }
                 });
             })

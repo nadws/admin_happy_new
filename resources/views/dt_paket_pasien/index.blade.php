@@ -244,7 +244,9 @@
                 },
                 success: function (r) {
                     $("#viewEditTerapi").html(r)
-                    $('.select2').select2()
+                    $('.select2').select2({
+                        dropdownParent: $('#viewEditSaldo')
+                    });
                 }
             });
         })

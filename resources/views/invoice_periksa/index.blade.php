@@ -67,9 +67,11 @@
                                 <td>
                                     <a href="{{ route('cetak_invoice') }}" class="btn btn-primary btn-sm"><i
                                             class="bi bi-printer"></i></a>
+                                    @if (Auth::user()->id == 2)
                                     <a href="#" class="btn btn-primary edit_invoice btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#edit{{$n->id_invoice_periksa}}" id_invoice_periksa="{{$n->id_invoice_periksa}}"><i
                                             class="bi bi-pencil-square"></i></a>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach

@@ -115,14 +115,13 @@ class Invoice_kunjungan extends Controller
     public function detailSaldo(Request $r)
     {
         $member_id = $r->member_id;
+        $no_order = $r->no_order;
         $nama = DB::table('dt_pasien')->where('member_id', $member_id)->first()->nama_pasien;
         $data = [
-            'invoice_kunjungan' => DB::select("SELECT a.id_paket, a.id_therapist,  b.nama_paket, c.nama_therapy, sum(a.debit) as debit, sum(a.kredit) as kredit, a.total_rp, a.no_order
-            FROM saldo_therapy as a 
+            'invoice_kunjungan' => DB::select("SELECT a.debit,a.kredit,a.no_order,c.nama_therapy,b.nama_paket FROM `saldo_therapy` as a
             LEFT JOIN dt_paket as b on b.id_paket = a.id_paket
             LEFT JOIN dt_therapy AS c ON c.id_therapy = a.id_therapist
-            WHERE a.member_id = '$member_id'
-            GROUP BY a.id_paket"),
+            WHERE a.no_order = '$no_order' AND a.kredit != 0"),
             'nama' => $nama
         ];
         return view('invoice_kunjungan.detailSaldo', $data);

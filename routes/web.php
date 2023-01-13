@@ -137,6 +137,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('save_status', [Invoice::class, 'save_status'])->name('save_status');
     Route::get('hapus_invoice', [Invoice::class, 'hapus_invoice'])->name('hapus_invoice');
     Route::get('noMedis', [Invoice::class, 'noMedis'])->name('noMedis');
+    Route::get('loadTambahPasien', [Invoice::class, 'loadTambahPasien'])->name('loadTambahPasien');
     
     // data pasien
     Route::get('data_pasien', [Data_pasien::class, 'index'])->name('data_pasien');
@@ -146,13 +147,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('get_edit_pasien', [Data_pasien::class, 'get_edit_pasien'])->name('get_edit_pasien');
     Route::post('edit_pasien', [Data_pasien::class, 'edit_pasien'])->name('edit_pasien');
     
-    
     Route::get('inv_periksa', [Invoice_periksa::class, 'index'])->name('inv_periksa');
     Route::get('editInput', [Invoice_periksa::class, 'editInput'])->name('editInput');
     Route::post('save_invoice_periksa', [Invoice_periksa::class, 'save_invoice_periksa'])->name('save_invoice_periksa');
     Route::post('edit_invoice_periksa', [Invoice_periksa::class, 'edit_invoice_periksa'])->name('edit_invoice_periksa');
     Route::get('hapus_invoice_periksa', [Invoice_periksa::class, 'hapus_invoice_periksa'])->name('hapus_invoice_periksa');
-    
     
     Route::get('dt_paket', [Data_paket::class, 'index'])->name('dt_paket');
     Route::post('save_paket', [Data_paket::class, 'save_paket'])->name('save_paket');
@@ -168,7 +167,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('view_paket2', [Invoice_tp::class, 'view_paket2'])->name('view_paket2');
     Route::get('cetak_invoice_tp', [Invoice_tp::class, 'cetak_invoice_tp'])->name('cetak_invoice_tp');
     Route::get('hapus_invoice_tp', [Invoice_tp::class, 'hapus_invoice_tp'])->name('hapus_invoice_tp');
-    
     
     Route::get('invoice_kunjungan', [Invoice_kunjungan::class, 'index'])->name('invoice_kunjungan');
     Route::get('get_paket_kunjungan', [Invoice_kunjungan::class, 'get_paket'])->name('get_paket_kunjungan');
@@ -204,12 +202,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('tambah_nominal/{tipe}', [NominalController::class, 'tambah_nominal'])->name('tambah_nominal');
     Route::post('edit_nominal', [NominalController::class, 'edit_nominal'])->name('edit_nominal');
     Route::get('hapus_nominal/{id}/{tipe}', [NominalController::class, 'hapus_nominal'])->name('hapus_nominal');
-    Route::get('s', function(){
-        $data = [
-            'dt_pasien' => DB::table('dt_pasien')->get()
-        ];
-        return view('s', $data);
-    });
+
 });
 
 require __DIR__ . '/auth.php';

@@ -24,6 +24,7 @@
             </div>
         </div>
         <section class="section">
+            <div class="col-lg-8">
             <div class="card">
                 <div class="card-header">
                     <a href="#" id="sukses" data-bs-toggle="modal" data-bs-target="#tambah"
@@ -35,7 +36,7 @@
                             <tr>
                                 <th width="6%">#</th>
                                 <th>Nama Dokter</th>
-                                <th width="15%">Aksi</th>
+                                <th width="25%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,6 +60,7 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
             </div>
         </section>
     </div>

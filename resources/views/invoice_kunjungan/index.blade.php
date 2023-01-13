@@ -56,7 +56,7 @@
                                 <td>{{ $n->member_id }}</td>
                                 <td>{{ $n->no_order }}</td>
                                 <td>
-                                    <a href="#" data-bs-toggle="modal" class="detailSaldo" data-bs-target="#detailSaldo" member_id="{{$n->member_id}}">
+                                    <a href="#" data-bs-toggle="modal" class="detailSaldo" no_order="{{$n->no_order}}" data-bs-target="#detailSaldo" member_id="{{$n->member_id}}">
                                         {{ $n->nama_pasien }}
                                     </a>
                                 </td>
@@ -387,10 +387,15 @@
 
             $(document).on('click', '.detailSaldo', function(){
                 var member_id = $(this).attr('member_id')
+                var no_order = $(this).attr('no_order')
 
                 $.ajax({
                     type: "GET",
-                    url: "{{route('detailSaldo')}}?member_id="+member_id,
+                    url: "{{route('detailSaldo')}}",
+                    data:{
+                        member_id:member_id,
+                        no_order:no_order
+                    },
                     success: function (r) {
                         $("#loadDetailSaldo").html(r);
                     }

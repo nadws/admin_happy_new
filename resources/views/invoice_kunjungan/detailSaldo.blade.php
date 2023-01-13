@@ -15,10 +15,16 @@
                     <tr>
                         <th>Therapist</th>
                         <th>Paket</th>
-                        <th>Jumlah</th>
                         <th width="20%">Dipakai</th>
                     </tr>
-                    @php
+                    @foreach ($invoice_kunjungan as $i)
+                        <tr>
+                            <td>{{ $i->nama_therapy }}</td>
+                            <td>{{ $i->nama_paket }}</td>
+                            <td>{{ $i->kredit }}</td>
+                        </tr>
+                    @endforeach
+                    {{-- @php
                         $debit = 0;
                         $kredit = 0;
                     @endphp
@@ -43,7 +49,7 @@
                     </tr>
                     @endif
                     
-                    @endforeach
+                    @endforeach --}}
                 </table>
             </div>
         

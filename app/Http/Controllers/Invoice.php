@@ -21,7 +21,7 @@ class Invoice extends Controller
         $member_id = DB::selectOne("SELECT max(member_id) as member_id FROM `dt_pasien` ORDER BY member_id ASC;");
         $data = [
             'title' => 'Data Invoice Screening',
-            'dt_pasien' => DB::table('dt_pasien')->get(),
+            'dt_pasien' => DB::table('dt_pasien')->orderBy('member_id', 'DESC')->get(),
             'invoice' => DB::select("SELECT a.pembayaran,a.id_invoice,a.tgl, a.no_order, b.nama_pasien, b.member_id, a.status FROM invoice as a left join dt_pasien as b on b.member_id = a.member_id where a.tgl between '$tgl1' and '$tgl2' order by a.id_invoice DESC"),
             'member_id' => empty($member_id) ? '50001' : $member_id->member_id,
             'nominal' => DB::table('tb_nominal')->where('jenis', 'inv_screening')->get(),
@@ -97,5 +97,14 @@ class Invoice extends Controller
             'dt_pasien' => DB::table('dt_pasien')->orderBy('member_id', 'DESC')->get(),
         ];
         return view('data-appointment.noMedis', $data);
+    }
+
+    public function loadTambahPasien(Request $r)
+    {
+        $member_id = DB::selectOne("SELECT max(member_id) as member_id FROM `dt_pasien` ORDER BY member_id ASC;");
+        $data = [
+            'member_id' => empty($member_id) ? '50001' : $member_id->member_id,
+        ];
+        return view('data-appointment.tambahPasien', $data);
     }
 }

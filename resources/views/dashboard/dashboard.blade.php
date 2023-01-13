@@ -35,7 +35,7 @@
                 @endphp
                 @foreach ($perm as $p)
                     <div class="col-6 col-lg-2 col-md-6">
-                        <a href="{{route($p->link)}}">
+                        <a href="{{route($p->link)}}" target="_blank">
                             <div class="card">
                                 <div class="card-body px-4 py-4-5" style="height: 170px" >
                                     <div class="row ">
