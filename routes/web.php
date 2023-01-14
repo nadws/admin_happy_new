@@ -209,10 +209,15 @@ Route::middleware(['auth'])->group(function () {
 
     // export server
     Route::get('exportServer', [ExportServerController::class, 'index'])->name('exportServer');
+    Route::get('exportUser', [ExportServerController::class, 'exportUser'])->name('exportUser');
 
     // import server
     Route::get('importServer', [ImportServerController::class, 'index'])->name('importServer');
     Route::get('importUser', [ImportServerController::class, 'importUser'])->name('importUser');
+    Route::get('importDokter', [ImportServerController::class, 'importDokter'])->name('importDokter');
+    Route::get('importPasien', [ImportServerController::class, 'importPasien'])->name('importPasien');
+    Route::get('importPaket', [ImportServerController::class, 'importPaket'])->name('importPaket');
+    Route::get('importNominal', [ImportServerController::class, 'importNominal'])->name('importNominal');
 
 });
 

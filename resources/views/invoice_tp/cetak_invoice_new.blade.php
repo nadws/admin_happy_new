@@ -74,6 +74,61 @@
             </div>
 
         </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <hr>
+            </div>
+            <div class="col-6 ">
+                <div class="float-start">
+                    <img src="{{ asset('images-upload/logo.png') }}" width="120" height="120" alt="">
+                </div>
+            </div>
+            <div class="col-6 mt-4">
+                <div class="float-end">
+                    Invoice #: {{$invoice->no_order}}
+                    <br />
+                    Created: {{ date('F d, Y',strtotime($invoice->tgl)) }}<br />
+                    Due: {{ date('F d, Y') }}
+                </div>
+            </div>
+            <div class="col-6 mt-4">
+                <div class="float-start">
+                    Happy Kids<br />
+                    {{$alamat->isi}}
+                </div>
+
+            </div>
+            <div class="col-lg-12 mt-2">
+                <table class="table table-sm">
+                    <tr class="table-active">
+                        <th>Paket</th>
+                        <th style="text-align: right">Qty</th>
+                        <th style="text-align: right">Harga Satuan</th>
+                        <th style="text-align: right">Total Harga</th>
+                    </tr>
+                    @php
+                    $total = 0;
+                    @endphp
+                    @foreach ($paket as $p)
+                    @php
+                    $total += $p->total_rp;
+                    @endphp
+                    <tr class="details">
+                        <td>{{$p->nama_paket}}</td>
+                        <td align="right">{{$p->debit}}</td>
+                        <td align="right">Rp. {{number_format($p->total_rp / $p->debit,0)}}</td>
+                        <td align="right">Rp. {{number_format($p->total_rp ,0)}}</td>
+                    </tr>
+                    @endforeach
+                    <tr>
+                        <th colspan="3"></th>
+                        <th style="text-align: right">Total: Rp. {{number_format($total,0)}}</th>
+                    </tr>
+
+                </table>
+            </div>
+
+        </div>
 
 
     </div>

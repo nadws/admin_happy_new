@@ -20,7 +20,7 @@ class Data_paket_pasien extends Controller
             GROUP BY a.member_id, a.id_paket
             HAVING SUM(a.debit - a.kredit) = 1
             ) AS c ON c.no_order = a.no_order
-            GROUP BY a.member_id"),
+            GROUP BY a.member_id ORDER BY b.member_id DESC"),
         ];
         return view('dt_paket_pasien.index', $data);
     }
