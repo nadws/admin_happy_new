@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Nama Therapish</th>
+            <th>Nama Therapist</th>
             <th>Nama Paket</th>
             <th>Jumlah Paket</th>
             <th>Status</th>

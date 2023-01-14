@@ -9,8 +9,10 @@ use App\Http\Controllers\DataDokterController;
 use App\Http\Controllers\DataPasienController;
 use App\Http\Controllers\Dt_therapy;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\ExportServerController;
 use App\Http\Controllers\FotoController;
 use App\Http\Controllers\Hasil_pemeriksaan;
+use App\Http\Controllers\ImportServerController;
 use App\Http\Controllers\inv_registrasi;
 use App\Http\Controllers\Invoice;
 use App\Http\Controllers\Invoice_kunjungan;
@@ -202,6 +204,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('tambah_nominal/{tipe}', [NominalController::class, 'tambah_nominal'])->name('tambah_nominal');
     Route::post('edit_nominal', [NominalController::class, 'edit_nominal'])->name('edit_nominal');
     Route::get('hapus_nominal/{id}/{tipe}', [NominalController::class, 'hapus_nominal'])->name('hapus_nominal');
+
+    // export server
+    Route::get('exportServer', [ExportServerController::class, 'index'])->name('exportServer');
+
+    // import server
+    Route::get('importServer', [ImportServerController::class, 'index'])->name('importServer');
+    Route::get('importUser', [ImportServerController::class, 'importUser'])->name('importUser');
 
 });
 

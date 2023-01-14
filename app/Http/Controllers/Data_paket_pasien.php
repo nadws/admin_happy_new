@@ -78,7 +78,7 @@ class Data_paket_pasien extends Controller
 
     public function editPaketTerapi(Request $r)
     {
-        DB::table('saldo_therapy')->where('id_saldo_therapy', $r->id_saldo_terapi)->update([
+        DB::table('saldo_therapy')->where([['id_therapist', $r->id_terapi_sebelum],['kredit', 0]])->update([
             'id_therapist' => $r->id_terapi
         ]);
         $member = DB::table('saldo_therapy')->where('id_saldo_therapy',$r->id_saldo_terapi)->first()->member_id;

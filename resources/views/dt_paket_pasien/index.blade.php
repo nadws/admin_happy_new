@@ -211,11 +211,10 @@
                 loadView(member_id)
         });
 
-        function loadView2(){
-            $(document).on('click', '.view2', function() {
+        $(document).on('click', '.view2', function() {
                     var member_id = $(this).attr('member_id');
                     var id_paket = $(this).attr('id_paket');
-                    
+                  
                     $.ajax({
                         url: "{{ route('view_paket_pasien2') }}?member_id=" + member_id + "&id_paket=" + id_paket,
                         type: "Get",
@@ -225,13 +224,13 @@
                         }
                     });
                 });
-        }
-        
         $(document).on('click', '.editSaldo', function(){
             var member_id = $(this).attr('member_id')
             var id_paket = $(this).attr('id_paket')
             var id_terapi = $(this).attr('id_terapi')
             var id_saldo_therapy = $(this).attr('id_saldo_therapy')
+            // alert(id_terapi)
+
             $("#viewEditSaldo").modal('show')
             $.ajax({
                 type: "GET",
@@ -255,13 +254,15 @@
             e.preventDefault()
             var namaTerapi = $("#namaTerapi").val()
             var id_saldo_therapy = $("#id_saldo_therapy").val()
+            var id_terapi_sebelum = $("#id_terapi_sebelum").val()
 
             $.ajax({
                 type: "GET",
                 url: "{{route('editPaketTerapi')}}",
                 data: {
                     id_terapi:namaTerapi,
-                    id_saldo_terapi:id_saldo_therapy
+                    id_saldo_terapi:id_saldo_therapy,
+                    id_terapi_sebelum:id_terapi_sebelum,
                 },
                 success: function (r) {
                     loadView(r)

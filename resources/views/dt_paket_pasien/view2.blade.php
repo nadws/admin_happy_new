@@ -13,7 +13,7 @@
                 <th>#</th>
                 <th>Tanggal</th>
                 <th>No Order</th>
-                <th>Nama Therapish</th>
+                <th>Nama Therapist</th>
                 <th>Beli</th>
                 <th>Dipakai</th>
                 <th>Sisa</th>

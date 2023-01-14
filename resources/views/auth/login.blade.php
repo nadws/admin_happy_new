@@ -75,7 +75,7 @@
                     </center>
                     @csrf
                     <span class="login100-form-title p-b-43">
-                        Login <br>
+                        Login Front Office <br>
                     </span>
                     <center>
                         <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />

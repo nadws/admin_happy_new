@@ -55,95 +55,7 @@ $per = DB::table('tb_permission')
 </style>
 {{-- permission --}}
 
-<form action="{{ route('save_theme') }}" method="post">
-    @csrf
-    <div class="modal fade text-left" id="theme" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel33">
-                        Edit theme
-                    </h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <i data-feather="x"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <center>
-                        <div class="row">
-                            <h5>Colors</h5>
-                            <div class="col-lg-3">
-                                <input class="form-control style1" id="warna1" type="color" value="{{ $warna1 }}"
-                                    name="warna1">
-                                <label for="" class="text-secondary ml-2">Warna 1</label>
-                            </div>
-                            <div class="col-lg-3">
-                                <input class="form-control style1" id="warna2" type="color" value="{{ $warna2 }}"
-                                    name="warna2">
-                                <label for="" class="text-secondary ml-2">Warna 2</label>
-                            </div>
-                            <div class="col-lg-3">
-                                <input class="form-control style1" id="warna3" type="color" value="{{ $warna3 }}"
-                                    name="warna3">
-                                <label for="" class="text-secondary ml-2">Warna 3</label>
-                            </div>
-                            <div class="col-lg-3">
-                                <input class="form-control style1" id="warna4" type="color" value="{{ $warna4 }}"
-                                    name="warna4">
-                                <label for="" class="text-secondary ml-2">Warna 4</label>
-                            </div>
-                        </div>
-                        {{-- <div class="row">
-                            <h5>Buttons</h5>
-                            <div class="col-lg-4">
-                                <input class="form-control style1" id="warna1" type="color" value="{{ $warna1 }}"
-                                    name="warna1">
-                                <label for="" class="text-secondary ml-2">Warna 1</label>
-                            </div>
-                            <div class="col-lg-4">
-                                <input class="form-control style1" id="warna2" type="color" value="{{ $warna2 }}"
-                                    name="warna2">
-                                <label for="" class="text-secondary ml-2">Warna 2</label>
-                            </div>
-                            <div class="col-lg-4">
-                                <input class="form-control style1" id="warna2" type="color" value="{{ $warna2 }}"
-                                    name="warna2">
-                                <label for="" class="text-secondary ml-2">Warna 2</label>
-                            </div>
-                        </div> --}}
-                        {{-- <div class="row mt-5">
-                            <h5>Font Colors</h5>
-                            <div class="col-lg-4">
-                                <input class="form-control style1" id="fwarna1" type="color" value="" name="fontc1">
-                                <label for="" class="text-secondary ml-2">Warna 1</label>
-                            </div>
-                            <div class="col-lg-4">
-                                <input class="form-control style1" id="fwarna2" type="color" value="" name="fontc2">
-                                <label for="" class="text-secondary ml-2">Warna 2</label>
-                            </div>
-                            <div class="col-lg-4">
-                                <input class="form-control style1" id="fwarna3" type="color" value="" name="fontc3">
-                                <label for="" class="text-secondary ml-2">Warna 3</label>
-                            </div>
-                        </div> --}}
-                    </center>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                        <i class="bx bx-x d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Close</span>
-                    </button>
-                    <button type="submit" class="btn btn-primary ml-1" data-bs-dismiss="modal">
-                        <i class="bx bx-check d-block d-sm-none"></i>
-                        <span class="d-none d-sm-block">Save</span>
-                    </button>
-                </div>
 
-            </div>
-        </div>
-    </div>
-</form>
 
 <div id="sidebar" class="active">
     <div class="sidebar-wrapper active">
@@ -260,7 +172,7 @@ $per = DB::table('tb_permission')
                     FROM tb_permission AS a
                     LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
                     LEFT JOIN tb_menu AS c ON c.id_menu = b.id_menu
-                    WHERE a.id_user ='$id_user' and b.id_menu = '$m->id_menu'
+                    WHERE a.id_user ='$id_user' and b.id_menu = '$m->id_menu' ORDER BY b.urutan ASC
                     ",
                     ),
                     );
@@ -270,7 +182,7 @@ $per = DB::table('tb_permission')
                     <ul class="submenu {{ Request::is($m->url) ? 'active' : '' }}">
                         @foreach ($menu_p as $sm)
                         <li class="submenu-item {{ Request::is($sm->url) ? 'active' : '' }}">
-                            <a {{ $sm->url == '#' ? 'data-bs-toggle="modal" data-bs-target="#theme"' : '' }}
+                            <a {{ $sm->url == '#' ? 'data-bs-toggle=modal data-bs-target=#theme' : ''}}
                                 href="{{ $sm->url == '#' ? '#' : route($sm->url) }}">{{ $sm->sub_menu }}</a>
                         </li>
                         @endforeach
@@ -300,7 +212,7 @@ $per = DB::table('tb_permission')
                 "SELECT a.id_user, a.permission, b.sub_menu, b.url, b.id_menu
                 FROM tb_permission AS a
                 LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
-                WHERE a.id_user ='$id_user' AND a.permission = '$sub->id_sub_menu'
+                WHERE a.id_user ='$id_user' AND a.permission = '$sub->id_sub_menu' ORDER BY b.urutan ASC
                 ",
                 ),
                 );
@@ -320,7 +232,7 @@ $per = DB::table('tb_permission')
                     FROM tb_permission AS a
                     LEFT JOIN tb_sub_menu AS b ON b.id_sub_menu = a.permission
                     LEFT JOIN tb_menu AS c ON c.id_menu = b.id_menu
-                    WHERE a.id_user ='$id_user' and b.id_menu = '$m->id_menu'
+                    WHERE a.id_user ='$id_user' and b.id_menu = '$m->id_menu' ORDER BY b.urutan ASC
                     ",
                     ),
                     );
