@@ -152,6 +152,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('save_invoice_periksa', [Invoice_periksa::class, 'save_invoice_periksa'])->name('save_invoice_periksa');
     Route::post('edit_invoice_periksa', [Invoice_periksa::class, 'edit_invoice_periksa'])->name('edit_invoice_periksa');
     Route::get('hapus_invoice_periksa', [Invoice_periksa::class, 'hapus_invoice_periksa'])->name('hapus_invoice_periksa');
+    Route::get('cetak_inv_periksa', [Invoice_periksa::class, 'cetak_inv_periksa'])->name('cetak_inv_periksa');
     
     Route::get('dt_paket', [Data_paket::class, 'index'])->name('dt_paket');
     Route::post('save_paket', [Data_paket::class, 'save_paket'])->name('save_paket');
@@ -195,6 +196,7 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('inv_registrasi', [inv_registrasi::class, 'index'])->name('inv_registrasi');
     Route::post('save_registrasi', [inv_registrasi::class, 'save_registrasi'])->name('save_registrasi');
+    Route::get('cetak_registrasi', [inv_registrasi::class, 'cetak_registrasi'])->name('cetak_registrasi');
 
     // nominal
     Route::get('nominal', [NominalController::class, 'index'])->name('nominal');

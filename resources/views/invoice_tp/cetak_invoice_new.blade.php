@@ -43,8 +43,8 @@
                 </div>
 
             </div>
-            <div class="col-lg-12 mt-3">
-                <table class="table table-sm table-bordered">
+            <div class="col-lg-12 mt-2">
+                <table class="table table-sm">
                     <tr class="table-active">
                         <th>Paket</th>
                         <th style="text-align: right">Qty</th>

@@ -76,7 +76,7 @@ class Invoice extends Controller
             'invoice' => DB::table('invoice')->where('id_invoice', $r->id_invoice)->first(),
             'alamat' => DB::table('h1')->where('id_h1', '12')->first()
         ];
-        return view('data-appointment.cetak_invoice', $data);
+        return view('data-appointment.cetak_invoice_new', $data);
     }
 
     public function save_status(Request $r)

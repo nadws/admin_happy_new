@@ -43,7 +43,7 @@
                                 <th>No Order</th>
                                 <th>Nama Pasien</th>
                                 <th>Status</th>
-                                {{-- <th>Aksi</th> --}}
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -61,6 +61,10 @@
                                     <span class="badge bg-{{ $n->status == 'paid' ? 'primary' : 'warning' }}">{{
                                         $n->status == 'paid' ? "$n->status : " . strtoupper($n->pembayaran) : $n->status
                                         }}</span>
+                                </td>
+                                <td>
+                                    <a href="{{ route('cetak_registrasi',['id_registrasi' => $n->id_registrasi]) }}"
+                                        target="_blank" class="btn btn-primary btn-sm"><i class="bi bi-printer"></i></a>
                                 </td>
                                 {{-- <td>
                                     <a href="{{ route('cetak_invoice',['id_registrasi' => $n->id_registrasi]) }}"
@@ -80,7 +84,7 @@
 
 </div>
 
-{{-- edit  --}}
+{{-- edit --}}
 <form action="{{ route('exportScreening') }}" method="post">
     @csrf
     <div class="modal fade text-left" id="export">
@@ -148,13 +152,15 @@
                                 <select required name="member_id" id="" class="choices form-select pilih_rek">
                                     <option value="">--Pilih data--</option>
                                     @foreach ($dt_pasien as $d)
-                                        <option value="{{$d->member_id}}">{{$d->member_id}} - {{ $d->nama_pasien }} - {{ $d->tgl_lahir }}</option>
+                                    <option value="{{$d->member_id}}">{{$d->member_id}} - {{ $d->nama_pasien }} - {{
+                                        $d->tgl_lahir }}</option>
                                     @endforeach
-                                        <option value="plusPasien"><a href="{{ route('data_pasien') }}">+ Pasien Baru</a></option>
+                                    <option value="plusPasien"><a href="{{ route('data_pasien') }}">+ Pasien Baru</a>
+                                    </option>
                                 </select>
                             </div>
                         </div>
-                        
+
                     </div>
                     <div class="row">
                         <div class="col-lg-6">
@@ -189,7 +195,7 @@
                                 <select name="rupiah" class="form-control choices">
                                     <option value="">- Pilih Nominal -</option>
                                     @foreach ($nominal as $n)
-                                        <option value="{{ $n->nominal }}">{{ number_format($n->nominal,0) }}</option>
+                                    <option value="{{ $n->nominal }}">{{ number_format($n->nominal,0) }}</option>
                                     @endforeach
                                 </select>
                             </div>

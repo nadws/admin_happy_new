@@ -65,11 +65,13 @@
                                         }}</span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('cetak_invoice') }}" class="btn btn-primary btn-sm"><i
-                                            class="bi bi-printer"></i></a>
+                                    <a href="{{ route('cetak_inv_periksa',['id_invoice' => $n->id_invoice_periksa]) }}"
+                                        class="btn btn-primary btn-sm"><i class="bi bi-printer"></i>
+                                    </a>
                                     @if (Auth::user()->id == 2)
                                     <a href="#" class="btn btn-primary edit_invoice btn-sm" data-bs-toggle="modal"
-                                        data-bs-target="#edit{{$n->id_invoice_periksa}}" id_invoice_periksa="{{$n->id_invoice_periksa}}"><i
+                                        data-bs-target="#edit{{$n->id_invoice_periksa}}"
+                                        id_invoice_periksa="{{$n->id_invoice_periksa}}"><i
                                             class="bi bi-pencil-square"></i></a>
                                     @endif
                                 </td>
@@ -84,7 +86,7 @@
 
 </div>
 
-@foreach ($invoice_periksa as $i)    
+@foreach ($invoice_periksa as $i)
 <form action="{{ route('edit_invoice_periksa') }}" method="post">
     @csrf
     <div class="modal fade text-left" id="edit{{$i->id_invoice_periksa}}">
@@ -106,24 +108,26 @@
                                 <label for="">Nama Dokter</label>
                                 <select name="id_dokter" id="" class="choices form-select">
                                     @foreach ($dokter as $d)
-                                        <option {{ $d->id_dokter == $n->id_dokter ? 'selected' : '' }} value="{{$d->id_dokter}}">{{$d->nm_dokter}}</option>
+                                    <option {{ $d->id_dokter == $n->id_dokter ? 'selected' : '' }}
+                                        value="{{$d->id_dokter}}">{{$d->nm_dokter}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-                        
+
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="">Pembayaran</label>
                                 <select name="pembayaran" id="" class="form-control choices">
                                     <option {{ $i->pembayaran == 'cash' ? 'selected' : '' }} value="CASH">CASH</option>
                                     <option {{ $i->pembayaran == 'bca' ? 'selected' : '' }} value="BCA">BCA</option>
-                                    <option {{ $i->pembayaran == 'mandiri' ? 'selected' : '' }} value="MANDIRI">MANDIRI</option>
+                                    <option {{ $i->pembayaran == 'mandiri' ? 'selected' : '' }} value="MANDIRI">MANDIRI
+                                    </option>
                                 </select>
                             </div>
                         </div>
                         {{-- <div id="editInput"></div> --}}
-                        
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -143,7 +147,7 @@
 </form>
 @endforeach
 
-{{-- edit  --}}
+{{-- edit --}}
 <form action="{{ route('exportScreening') }}" method="post">
     @csrf
     <div class="modal fade text-left" id="export">
@@ -209,7 +213,8 @@
                             <select name="member_id" id="" class="choices form-select pilih_rek">
                                 <option value="">--Pilih data--</option>
                                 @foreach ($dt_pasien as $d)
-                                <option value="{{$d->member_id}}">{{$d->member_id}} - {{ $d->nama_pasien }} - {{ $d->tgl_lahir }}</option>
+                                <option value="{{$d->member_id}}">{{$d->member_id}} - {{ $d->nama_pasien }} - {{
+                                    $d->tgl_lahir }}</option>
                                 @endforeach
                             </select>
 
@@ -222,7 +227,7 @@
                                 <input required type="date" name="tgl" value="{{date('Y-m-d')}}" class="form-control">
                             </div>
                         </div>
-                        
+
 
                         <div class="col-lg-6">
                             <div class="form-group">
@@ -236,7 +241,7 @@
                                 <select name="id_dokter" id="" class="choices form-select">
                                     <option value="">--Pilih dokter--</option>
                                     @foreach ($dokter as $d)
-                                        <option value="{{$d->id_dokter}}">{{$d->nm_dokter}}</option>
+                                    <option value="{{$d->id_dokter}}">{{$d->nm_dokter}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -260,7 +265,7 @@
                                 <select name="rupiah" class="form-control choices">
                                     <option value="">- Pilih Nominal -</option>
                                     @foreach ($nominal as $n)
-                                        <option value="{{ $n->nominal }}">{{ number_format($n->nominal,0) }}</option>
+                                    <option value="{{ $n->nominal }}">{{ number_format($n->nominal,0) }}</option>
                                     @endforeach
                                 </select>
                             </div>

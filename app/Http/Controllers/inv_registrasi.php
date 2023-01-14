@@ -48,4 +48,13 @@ class inv_registrasi extends Controller
 
         return redirect()->route('inv_registrasi')->with('sukses', 'Berhasil tambah invoice');
     }
+
+    public function cetak_registrasi(Request $r)
+    {
+        $data = [
+            'invoice' => DB::table('invoice_registrasi')->where('id_registrasi', $r->id_registrasi)->first(),
+            'alamat' => DB::table('h1')->where('id_h1', '12')->first()
+        ];
+        return view('invoice_registrasi.cetak_invoice_new', $data);
+    }
 }
