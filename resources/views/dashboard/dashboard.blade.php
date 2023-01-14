@@ -26,16 +26,17 @@
         <section class="section">
             <div class="row">
                 @php
-                    $dashboard = DB::table('tb_menu_dashboard')->get();
+                $dashboard = DB::table('tb_menu_dashboard')->get();
                 @endphp
                 @foreach ($dashboard as $d)
                 @php
-                    $id_user = Auth::user()->id;
-                    $perm = DB::select("SELECT * FROM dashboard_permission as a LEFT JOIN tb_menu_dashboard as b ON a.id_menu_dashboard = b.id WHERE a.id_user = '$id_user' AND b.id = '$d->id'");
+                $id_user = Auth::user()->id;
+                $perm = DB::select("SELECT * FROM dashboard_permission as a LEFT JOIN tb_menu_dashboard as b ON
+                a.id_menu_dashboard = b.id WHERE a.id_user = '$id_user' AND b.id = '$d->id'");
                 @endphp
                 @foreach ($perm as $p)
                     <div class="col-6 col-lg-2 col-md-6">
-                        <a href="{{route($p->link)}}" >
+                        <a href="{{route($p->link)}}" target="_blank">
                             <div class="card">
                                 <div class="card-body px-4 py-4-5" style="height: 170px" >
                                     <div class="row ">

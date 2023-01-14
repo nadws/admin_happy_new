@@ -86,4 +86,13 @@ class Invoice_periksa extends Controller
         DB::table('invoice_periksa')->where('id_invoice_periksa', $r->id_invoice_periksa)->delete();
         // return redirect()->route('inv_periksa')->with('sukses', 'Berhasil tambah pertanyaan');
     }
+
+    public function cetak_inv_periksa(Request $r)
+    {
+        $data = [
+            'invoice' => DB::table('invoice_periksa')->where('id_invoice_periksa', $r->id_invoice)->first(),
+            'alamat' => DB::table('h1')->where('id_h1', '12')->first()
+        ];
+        return view('invoice_periksa.cetak_invoice_new', $data);
+    }
 }

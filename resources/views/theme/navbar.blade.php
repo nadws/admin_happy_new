@@ -222,7 +222,7 @@ $per = DB::table('tb_permission')
                 <li class="sidebar-item has-sub {{ $permission2->id_menu == $m->id_menu  ? 'active' : '' }}">
                     <a href="#" class='sidebar-link'>
                         <i class="{{ $m->icon }}"></i>
-                        <span>{{ $m->menu }} </span>
+                        <span>{{ $m->menu }}</span>
                     </a>
                     @php
 
@@ -264,6 +264,95 @@ $per = DB::table('tb_permission')
         </div>
     </div>
 </div>
+<form action="{{ route('save_theme') }}" method="post">
+    @csrf
+    <div class="modal fade text-left" id="theme" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel33">
+                        Edit theme
+                    </h4>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <i data-feather="x"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <center>
+                        <div class="row">
+                            <h5>Colors</h5>
+                            <div class="col-lg-3">
+                                <input class="form-control style1" id="warna1" type="color" value="{{ $warna1 }}"
+                                    name="warna1">
+                                <label for="" class="text-secondary ml-2">Warna 1</label>
+                            </div>
+                            <div class="col-lg-3">
+                                <input class="form-control style1" id="warna2" type="color" value="{{ $warna2 }}"
+                                    name="warna2">
+                                <label for="" class="text-secondary ml-2">Warna 2</label>
+                            </div>
+                            <div class="col-lg-3">
+                                <input class="form-control style1" id="warna3" type="color" value="{{ $warna3 }}"
+                                    name="warna3">
+                                <label for="" class="text-secondary ml-2">Warna 3</label>
+                            </div>
+                            <div class="col-lg-3">
+                                <input class="form-control style1" id="warna4" type="color" value="{{ $warna4 }}"
+                                    name="warna4">
+                                <label for="" class="text-secondary ml-2">Warna 4</label>
+                            </div>
+                        </div>
+                        {{-- <div class="row">
+                            <h5>Buttons</h5>
+                            <div class="col-lg-4">
+                                <input class="form-control style1" id="warna1" type="color" value="{{ $warna1 }}"
+                                    name="warna1">
+                                <label for="" class="text-secondary ml-2">Warna 1</label>
+                            </div>
+                            <div class="col-lg-4">
+                                <input class="form-control style1" id="warna2" type="color" value="{{ $warna2 }}"
+                                    name="warna2">
+                                <label for="" class="text-secondary ml-2">Warna 2</label>
+                            </div>
+                            <div class="col-lg-4">
+                                <input class="form-control style1" id="warna2" type="color" value="{{ $warna2 }}"
+                                    name="warna2">
+                                <label for="" class="text-secondary ml-2">Warna 2</label>
+                            </div>
+                        </div> --}}
+                        {{-- <div class="row mt-5">
+                            <h5>Font Colors</h5>
+                            <div class="col-lg-4">
+                                <input class="form-control style1" id="fwarna1" type="color" value="" name="fontc1">
+                                <label for="" class="text-secondary ml-2">Warna 1</label>
+                            </div>
+                            <div class="col-lg-4">
+                                <input class="form-control style1" id="fwarna2" type="color" value="" name="fontc2">
+                                <label for="" class="text-secondary ml-2">Warna 2</label>
+                            </div>
+                            <div class="col-lg-4">
+                                <input class="form-control style1" id="fwarna3" type="color" value="" name="fontc3">
+                                <label for="" class="text-secondary ml-2">Warna 3</label>
+                            </div>
+                        </div> --}}
+                    </center>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                    <button type="submit" class="btn btn-primary ml-1" data-bs-dismiss="modal">
+                        <i class="bx bx-check d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Save</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
 @section('scripts')
 <script>
     $(document).ready(function() {
