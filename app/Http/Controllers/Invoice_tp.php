@@ -30,6 +30,7 @@ class Invoice_tp extends Controller
             ORDER BY a.id_invoice_therapy DESC"),
             'paket' => DB::table('dt_paket')->get(),
             'therapist' => DB::table('dt_therapy')->get(),
+            'nominal' => DB::table('tb_nominal')->where('jenis', 'inv_registrasi')->get()
 
         ];
         return view('invoice_tp.index', $data);
@@ -58,6 +59,8 @@ class Invoice_tp extends Controller
     {
         $tgl = $r->tgl;
         $member_id = $r->member_id;
+        $pembayaran = $r->pembayaran;
+        $rupiah = $r->rupiah;
 
         $invoice = DB::selectOne("SELECT max(a.urutan) as urutan FROM invoice_therapy as a");
 
@@ -95,6 +98,24 @@ class Invoice_tp extends Controller
             ];
             DB::table('saldo_therapy')->insert($data);
         }
+        if (empty($rupiah)) {
+            # code...
+        } else {
+            $data = [
+                'no_order' => 'HK-' . $no_order,
+                'urutan' => $no_order,
+                'member_id' => $member_id,
+                'tgl' => $r->tgl,
+                'rupiah' => $rupiah,
+                'pembayaran' => $r->pembayaran,
+                'status' => 'paid',
+                'admin' => Auth::user()->name
+
+            ];
+            DB::table('invoice_registrasi')->insert($data);
+        }
+
+
 
         return redirect()->route('invoice_tp')->with('sukses', 'Berhasil tambah pertanyaan');
     }
@@ -152,6 +173,7 @@ class Invoice_tp extends Controller
             'title' => 'Invoice',
             'invoice' => $invoice,
             'paket' => $paket,
+            'invoice2' => DB::table('invoice_registrasi')->where('no_order', "$invoice->no_order")->first(),
             'alamat' => DB::table('h1')->where('id_h1', '12')->first(),
             'email' => DB::table('h1')->where('id_h1', '14')->first()
         ];
