@@ -56,9 +56,9 @@
                                 <td>{{ $n->member_id }}</td>
                                 <td>{{ $n->no_order }}</td>
                                 <td>
-                                    <a href="#" data-bs-toggle="modal" class="detailSaldo" no_order="{{$n->no_order}}" data-bs-target="#detailSaldo" member_id="{{$n->member_id}}">
-                                        {{ $n->nama_pasien }}
-                                    </a>
+                                    {{ $n->nama_pasien }}
+                                    {{-- <a href="#" data-bs-toggle="modal" class="detailSaldo" no_order="{{$n->no_order}}" data-bs-target="#detailSaldo" member_id="{{$n->member_id}}">
+                                    </a> --}}
                                 </td>
                                 {{-- <td>
                                     <a href="#" class="btn btn-primary edit_invoice btn-sm" data-bs-toggle="modal"

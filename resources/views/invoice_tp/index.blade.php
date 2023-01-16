@@ -26,6 +26,20 @@
         <section class="section">
             <div class="card">
                 <div class="card-header">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link {{Request::is('invoice') ? 'active' : ''}}"
+                                aria-current="page" href="{{ route('invoice') }}">Screening</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{Request::is('inv_periksa') ? 'active' : ''}}"
+                                aria-current="page" href="{{ route('inv_periksa') }}">Periksa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{Request::is('invoice_tp') ? 'active' : ''}}"
+                                aria-current="page" href="{{ route('invoice_tp') }}">Therapy & Paket</a>
+                        </li>
+                    </ul>
                     <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn icon icon-left btn-primary"
                         style="float: right;"><i class="bi bi-plus"></i>
                         Buat Invoice Baru</a>

@@ -1,94 +1,96 @@
 @extends('theme.app')
 @section('content')
-<div id="main">
-    <header class="mb-3">
-        <a href="#" class="burger-btn d-block d-xl-none">
-            <i class="bi bi-justify fs-3"></i>
-        </a>
-    </header>
+    <div id="main">
+        <header class="mb-3">
+            <a href="#" class="burger-btn d-block d-xl-none">
+                <i class="bi bi-justify fs-3"></i>
+            </a>
+        </header>
 
-    <div class="page-heading">
-        <div class="page-title">
-            <div class="row">
-                <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Nominal Inv {{ $title }}</h3>
-                </div>
-                <div class="col-12 col-md-6 order-md-2 order-first">
-                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">{{ $title }}</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-        <section class="section">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="card">
-                        <div class="card-header">
-                            <a href="#" id="sukses" data-bs-toggle="modal" data-bs-target="#tambah"
-                                class="btn icon icon-left btn-primary" style="float: right"><i
-                                    class="bi bi-plus-circle"></i>
-                                Tambah</a>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-hover" id="table1">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Nominal</th>
-                                        <th width="25%">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($query as $no => $d)
-                                    <tr>
-                                        <td>{{ $no+1 }}</td>
-                                        <td>{{ number_format($d->nominal,0) }}</td>
-                                        <td>
-                                            <a href="#" data-bs-toggle="modal"
-                                                data-bs-target="#edit{{ $d->id_nominal }}"
-                                                class="btn btn-sm icon btn-primary"><i class="bi bi-pencil"></i></a>
-                                            <a onclick="return confirm('Yakin ingin dihapus')" href="{{ route('hapus_nominal', [$d->id_nominal,$tipe]) }}"
-                                                class="btn btn-sm icon btn-danger"><i class="bi bi-trash"></i></a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+        <div class="page-heading">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-12 col-md-6 order-md-1 order-last">
+                        <h3>{{ $title }}</h3>
+                    </div>
+                    <div class="col-12 col-md-6 order-md-2 order-first">
+                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">{{ $title }}</li>
+                            </ol>
+                        </nav>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
-
-</div>
-
-@foreach ($query as $d)
-<form action="{{ route('edit_nominal') }}" method="POST">
-    @csrf
-    <div class="modal fade text-left" id="edit{{$d->id_nominal}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-sm" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel33">
-                        Edit Nominal
-                    </h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <i data-feather="x"></i>
-                    </button>
+            <section class="section">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#export"
+                                    class="btn icon icon-left btn-primary" style="float: right; margin-right: 5px;"><i
+                                        class="bi bi-file-excel"></i>
+                                    Export</a>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-hover" id="table1">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nama Therapist</th>
+                                            <th width="25%">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($history as $no => $d)
+                                            <tr>
+                                                <td>{{ $no + 1 }}</td>
+                                                <td>{{ $d->nama_therapy }}</td>
+                                                <td>
+                                                    <a href="#" class="btn btn-primary btn-sm view2"
+                                                        id_therapy="{{ $d->id_therapy }}">History
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <form action="#">
+            </section>
+        </div>
+
+    </div>
+    <form action="{{ route('exportTherapist') }}" method="post">
+        @csrf
+        <div class="modal fade text-left" id="export">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel33">
+                            Export Screening
+                        </h4>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <i data-feather="x"></i>
+                        </button>
+                    </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label>Nominal </label>
-                            <input type="hidden" name="id_nominal" value="{{ $d->id_nominal }}">
-                            <input type="hidden" name="tipe" value="{{ $tipe }}">
-                            <input value="{{ $d->nominal }}" type="number" style="text-align:right;" name="nominal" class="form-control" />
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="">Dari</label>
+                                    <input required type="date" class="form-control" name="tgl1">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="">Sampai</label>
+                                    <input required type="date" class="form-control" name="tgl2">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -96,53 +98,96 @@
                             <i class="bx bx-x d-block d-sm-none"></i>
                             <span class="d-none d-sm-block">Close</span>
                         </button>
-                        <button type="submit" class="btn btn-primary ml-1" data-bs-dismiss="modal">
+                        <button type="submit" class="btn btn-primary ml-1">
                             <i class="bx bx-check d-block d-sm-none"></i>
                             <span class="d-none d-sm-block">Save</span>
                         </button>
                     </div>
-                </form>
+
+                </div>
             </div>
         </div>
-    </div>
-</form>
-@endforeach
+    </form>
 
-<form action="{{ route('tambah_nominal',$tipe) }}" method="POST">
-    @csrf
-    <div class="modal fade text-left" id="tambah" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-sm" role="document">
+    <div class="modal fade text-left" id="history">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel33">
-                        Tambah Nominal
+                        History Detail
                     </h4>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <i data-feather="x"></i>
                     </button>
                 </div>
-                <form action="#">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Nominal </label>
-                            <input type="number" style="text-align:right;" name="nominal" class="form-control" />
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="">Dari</label>
+                                <input type="date" id="tgl1" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="">Sampai</label>
+                                <input type="date" id="tgl2" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="">Aksi</label><br>
+                                <button type="submit" id="btnHistory" class="btn btn-sm btn-primary">View</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                            <i class="bx bx-x d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Close</span>
-                        </button>
-                        <button type="submit" class="btn btn-primary ml-1" data-bs-dismiss="modal">
-                            <i class="bx bx-check d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Save</span>
-                        </button>
-                    </div>
-                </form>
+                    <div id="loadHistory"></div>
+                </div>
+
             </div>
         </div>
     </div>
-</form>
+@endsection
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.view2', function() {
+                $("#history").modal('show')
+                var id_therapy = $(this).attr('id_therapy')
+                $("#tgl1").val('')
+                $("#tgl2").val('')
 
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('historyDetail') }}" ,
+                    data: {
+                        id_therapy: id_therapy,
+                    },
+                    success: function(r) {
+                        $("#loadHistory").html(r);
+                    }
+                });
+                
+                $(document).on('click', '#btnHistory', function() {
+                    var tgl1 = $("#tgl1").val()
+                    var tgl2 = $("#tgl2").val()
+                    
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ route('historyDetail') }}" ,
+                        data: {
+                            id_therapy: id_therapy,
+                            tgl1: tgl1,
+                            tgl2: tgl2
+                        },
+                        success: function(r) {
+                            $("#loadHistory").html(r);
+                        }
+                    });
+                })
+
+            })
+            
+        });
+    </script>
 @endsection

@@ -196,20 +196,21 @@ Route::middleware(['auth'])->group(function () {
     Route::get('loadTerapi', [VoidController::class, 'loadTerapi'])->name('loadTerapi');
     Route::get('loadKunjungan', [VoidController::class, 'loadKunjungan'])->name('loadKunjungan');
     
-    // export data
-    Route::post('exportScreening', [ExportController::class, 'exportScreening'])->name('exportScreening');
-    Route::get('exportTherapist/{tgl1}/{tgl2}', [ExportTherapist::class, 'index'])->name('exportTherapist');
     
     Route::get('inv_registrasi', [inv_registrasi::class, 'index'])->name('inv_registrasi');
     Route::post('save_registrasi', [inv_registrasi::class, 'save_registrasi'])->name('save_registrasi');
     Route::get('cetak_registrasi', [inv_registrasi::class, 'cetak_registrasi'])->name('cetak_registrasi');
-
+    
     // nominal
     Route::get('nominal', [NominalController::class, 'index'])->name('nominal');
     Route::get('data_nominal/{tipe}', [NominalController::class, 'data_nominal'])->name('data_nominal');
     Route::post('tambah_nominal/{tipe}', [NominalController::class, 'tambah_nominal'])->name('tambah_nominal');
     Route::post('edit_nominal', [NominalController::class, 'edit_nominal'])->name('edit_nominal');
     Route::get('hapus_nominal/{id}/{tipe}', [NominalController::class, 'hapus_nominal'])->name('hapus_nominal');
+    
+    // export data
+    Route::post('exportScreening', [ExportController::class, 'exportScreening'])->name('exportScreening');
+    Route::post('exportTherapist', [ExportTherapist::class, 'index'])->name('exportTherapist');
 
     // export server
     Route::get('exportServer', [ExportServerController::class, 'index'])->name('exportServer');
@@ -225,6 +226,7 @@ Route::middleware(['auth'])->group(function () {
     
     // history therapist
     Route::get('historyTherapist', [HistoryTherapistController::class, 'index'])->name('historyTherapist');
+    Route::get('historyDetail', [HistoryTherapistController::class, 'historyDetail'])->name('historyDetail');
 
 
 });
