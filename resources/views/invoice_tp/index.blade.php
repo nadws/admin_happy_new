@@ -69,7 +69,7 @@
                                     <a target="_blank"
                                         href="{{route('cetak_invoice_tp',['id_invoice_therapy' => $n->id_invoice_therapy])}}"
                                         class="btn btn-primary btn-sm"><i class="bi bi-printer"></i></a>
-                                    
+
                                     {{-- <a href="#" class="btn btn-primary edit_invoice btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#edit" id_invoice_therapy="{{$n->id_invoice_therapy}}"><i
                                             class="bi bi-pencil-square"></i>
@@ -103,15 +103,16 @@
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="form-group">
-                            <label for="">No Rekam Medis</label>
-                            <select name="member_id" id="" class="choices form-select pilih_rek">
-                                <option value="">--Pilih data--</option>
-                                @foreach ($dt_pasien as $d)
-                                    <option value="{{$d->member_id}}">{{$d->member_id}} - {{ $d->nama_pasien }} - {{ $d->tgl_lahir }}</option>
-                                @endforeach
-                                
-                            </select>
-                        </div>
+                                <label for="">No Rekam Medis</label>
+                                <select name="member_id" id="" class="choices form-select pilih_rek">
+                                    <option value="">--Pilih data--</option>
+                                    @foreach ($dt_pasien as $d)
+                                    <option value="{{$d->member_id}}">{{$d->member_id}} - {{ $d->nama_pasien }} - {{
+                                        $d->tgl_lahir }}</option>
+                                    @endforeach
+
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -121,7 +122,7 @@
                                 <input required type="date" name="tgl" value="{{date('Y-m-d')}}" class="form-control">
                             </div>
                         </div>
-                        
+
 
                         <div class="col-lg-4">
                             <div class="form-group">
@@ -142,6 +143,26 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-lg-12">
+                            <hr>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="">Invoice Registrasi</label> &nbsp;
+                                <input type="checkbox" class="show" name="" id="" style="transform: scale(2)">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 reg">
+                            <div class="form-group">
+                                <label for="">Nominal</label>
+                                <select name="rupiah" class="form-control inp-reg select2">
+                                    <option value="">- Pilih Nominal -</option>
+                                    @foreach ($nominal as $n)
+                                    <option value="{{ $n->nominal }}">{{ number_format($n->nominal,0) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <div class="col-lg-12">
                             <hr>
                         </div>
@@ -166,7 +187,7 @@
 
                         <div class="col-lg-2">
                             <label for="">Jumlah</label>
-                            <input type="number" name="jumlah[]" class="form-control jumlah1 jumlah" value="1"
+                            <input type="number" name="jumlah[]" class="form-control  jumlah1 jumlah" value="1"
                                 count="1">
                         </div>
                         <div class="col-lg-3">
@@ -241,7 +262,7 @@
 </div>
 
 
-{{-- edit  --}}
+{{-- edit --}}
 <form action="{{ route('exportScreening') }}" method="post">
     @csrf
     <div class="modal fade text-left" id="export">
@@ -293,6 +314,20 @@
     $(document).ready(function() {
             $('.pilihan').hide();
             $('.pilihan').attr('disabled', 'true');
+            $('.reg').hide();
+            $('.inp-reg').attr('disabled', 'true');
+
+            $(document).on('click', '.show', function() {
+                if($(this).prop("checked") == true){
+                    $('.reg').show();
+                    $('.inp-reg').removeAttr('disabled');
+                }
+                else if($(this).prop("checked") == false){
+                    $('.reg').hide();
+                    $('.inp-reg').attr('disabled', 'true');
+                }
+                
+            });
 
             $(document).on('change', '.select-pilihan', function() {
                 var id_pilihan = $(this).val();
@@ -308,7 +343,7 @@
                     $('.input_manual').hide();
                     $('.input_manual').attr('disabled', 'true');
                 }
-            })
+            });
             $(document).on('change', '.pilih_rek', function() {
                 var member_id = $(this).val();
                 $.ajax({

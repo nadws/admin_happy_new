@@ -65,16 +65,29 @@
                         <td align="right">Rp. {{number_format($p->total_rp ,0)}}</td>
                     </tr>
                     @endforeach
+                    @if (empty($invoice2->rupiah))
+
+                    @else
+                    <tr>
+                        <td>Registrasi</td>
+                        <td align="right">1</td>
+                        <td align="right">Rp. {{ number_format($invoice2->rupiah,0)}}</td>
+                        <td align="right">Rp. {{ number_format($invoice2->rupiah,0)}}</td>
+                    </tr>
+                    @endif
+                    @php
+                    $invo = empty($invoice2->rupiah) ? '0' : $invoice2->rupiah
+                    @endphp
                     <tr>
                         <th colspan="3"></th>
-                        <th style="text-align: right">Total: Rp. {{number_format($total,0)}}</th>
+                        <th style="text-align: right">Total: Rp. {{number_format($total + $invo,0)}}</th>
                     </tr>
 
                 </table>
             </div>
 
         </div>
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-lg-12">
                 <hr>
             </div>
@@ -128,7 +141,7 @@
                 </table>
             </div>
 
-        </div>
+        </div> --}}
 
 
     </div>
