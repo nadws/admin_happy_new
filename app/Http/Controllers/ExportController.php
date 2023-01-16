@@ -239,7 +239,7 @@ class ExportController extends Controller
 
         $dt_pasien = DB::table('dt_pasien')->get();
         $kolpas = 2;
-        
+        $nom = 1;
         foreach($dt_pasien as $no => $r){
             $detail = DB::select("SELECT a.id_paket, a.id_therapist,  b.nama_paket, c.nama_therapy, sum(a.debit) as debit, sum(a.kredit) as kredit, a.total_rp, a.no_order
             FROM saldo_therapy as a 
@@ -249,15 +249,14 @@ class ExportController extends Controller
             GROUP BY a.id_paket");
 
             if(!empty($detail)) {
-                $sheet6
-                ->setCellValue("A$kolpas", $no+1)
-                ->setCellValue("B$kolpas", $r->nama_pasien)
-                ->setCellValue("C$kolpas", $r->member_id);
+                
 
                 foreach($detail as $n) {
                     $ttl = $n->debit - $n->kredit;
-
                     $sheet6
+                    ->setCellValue("A$kolpas", $nom++)
+                    ->setCellValue("B$kolpas", $r->nama_pasien)
+                    ->setCellValue("C$kolpas", $r->member_id)
                     ->setCellValue("F$kolpas", $n->nama_therapy)
                     ->setCellValue("G$kolpas", $n->nama_paket)
                     ->setCellValue("H$kolpas", $n->debit)
@@ -269,9 +268,8 @@ class ExportController extends Controller
          
         }
         
-        // $bataspas = $kolpas - 1;
-        // $sheet6->getStyle('A1:C' . $bataspas)->applyFromArray($style);
-        
+        $bataspas = $kolpas - 1;
+        $sheet6->getStyle('A1:J' . $bataspas)->applyFromArray($style);
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Invoice & Paket Pasien.xlsx"');

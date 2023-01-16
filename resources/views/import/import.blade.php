@@ -53,7 +53,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-6 col-lg-2 col-md-6">
+                {{-- <div class="col-6 col-lg-2 col-md-6">
                     <a href="{{route('importPasien')}}">
                         <div class="card">
                             <div class="card-body" style="height: 130px" >
@@ -80,7 +80,7 @@
                             </div>
                         </div>
                     </a>
-                </div>
+                </div> --}}
                 <div class="col-6 col-lg-2 col-md-6">
                     <a href="{{route('importPaket')}}">
                         <div class="card">

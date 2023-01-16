@@ -10,6 +10,7 @@ use App\Http\Controllers\DataPasienController;
 use App\Http\Controllers\Dt_therapy;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\ExportServerController;
+use App\Http\Controllers\ExportTherapist;
 use App\Http\Controllers\FotoController;
 use App\Http\Controllers\Hasil_pemeriksaan;
 use App\Http\Controllers\HistoryTherapistController;
@@ -195,7 +196,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('loadTerapi', [VoidController::class, 'loadTerapi'])->name('loadTerapi');
     Route::get('loadKunjungan', [VoidController::class, 'loadKunjungan'])->name('loadKunjungan');
     
+    // export data
     Route::post('exportScreening', [ExportController::class, 'exportScreening'])->name('exportScreening');
+    Route::get('exportTherapist/{tgl1}/{tgl2}', [ExportTherapist::class, 'index'])->name('exportTherapist');
     
     Route::get('inv_registrasi', [inv_registrasi::class, 'index'])->name('inv_registrasi');
     Route::post('save_registrasi', [inv_registrasi::class, 'save_registrasi'])->name('save_registrasi');
