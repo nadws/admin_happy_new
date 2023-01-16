@@ -26,7 +26,7 @@
         <section class="section">
             <div class="row">
                 @php
-                $dashboard = DB::table('tb_menu_dashboard')->get();
+                    $dashboard = DB::table('tb_menu_dashboard')->orderBy('urutan', 'ASC')->get();
                 @endphp
                 @foreach ($dashboard as $d)
                 @php

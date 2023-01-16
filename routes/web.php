@@ -12,6 +12,7 @@ use App\Http\Controllers\ExportController;
 use App\Http\Controllers\ExportServerController;
 use App\Http\Controllers\FotoController;
 use App\Http\Controllers\Hasil_pemeriksaan;
+use App\Http\Controllers\HistoryTherapistController;
 use App\Http\Controllers\ImportServerController;
 use App\Http\Controllers\inv_registrasi;
 use App\Http\Controllers\Invoice;
@@ -218,6 +219,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('importPasien', [ImportServerController::class, 'importPasien'])->name('importPasien');
     Route::get('importPaket', [ImportServerController::class, 'importPaket'])->name('importPaket');
     Route::get('importNominal', [ImportServerController::class, 'importNominal'])->name('importNominal');
+    
+    // history therapist
+    Route::get('historyTherapist', [HistoryTherapistController::class, 'index'])->name('historyTherapist');
+
 
 });
 
