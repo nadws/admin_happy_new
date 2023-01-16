@@ -26,7 +26,7 @@
         <section class="section">
             <div class="row">
                 @php
-                    $dashboard = DB::table('tb_menu_dashboard')->orderBy('urutan', 'ASC')->get();
+                $dashboard = DB::table('tb_menu_dashboard')->orderBy('urutan', 'ASC')->get();
                 @endphp
                 @foreach ($dashboard as $d)
                 @php
@@ -35,24 +35,24 @@
                 a.id_menu_dashboard = b.id WHERE a.id_user = '$id_user' AND b.id = '$d->id'");
                 @endphp
                 @foreach ($perm as $p)
-                    <div class="col-6 col-lg-2 col-md-6">
-                        <a href="{{route($p->link)}}" target="_blank">
-                            <div class="card">
-                                <div class="card-body px-4 py-4-5" style="height: 170px" >
-                                    <div class="row ">
-                                        <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
-                                            <i class="fa-solid {{$p->icon}} fa-3x"></i>
-                                        </div>
-                                        <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 mt-4 justify-content-center">
-                                            <h6 class="text-muted font-semibold text-center">
-                                                {{ ucwords($p->teks) }}
-                                            </h6>
-                                        </div>
+                <div class="col-6 col-lg-2 col-md-6">
+                    <a href="{{route($p->link)}}" target="_blank">
+                        <div class="card">
+                            <div class="card-body px-4 py-4-5" style="height: 170px">
+                                <div class="row ">
+                                    <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 d-flex justify-content-center">
+                                        <i class="fa-solid {{$p->icon}} fa-3x"></i>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 mt-4 justify-content-center">
+                                        <h6 class="text-muted font-semibold text-center">
+                                            {{ ucwords($p->teks) }}
+                                        </h6>
                                     </div>
                                 </div>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
+                </div>
                 @endforeach
                 @endforeach
                 <div class="col-6 col-lg-2 col-md-6">
