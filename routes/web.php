@@ -214,7 +214,7 @@ Route::middleware(['auth'])->group(function () {
 
     // export server
     Route::get('exportServer', [ExportServerController::class, 'index'])->name('exportServer');
-    Route::get('exportUser', [ExportServerController::class, 'exportUser'])->name('exportUser');
+    Route::get('exportPasien', [ExportServerController::class, 'exportPasien'])->name('exportPasien');
 
     // import server
     Route::get('importServer', [ImportServerController::class, 'index'])->name('importServer');

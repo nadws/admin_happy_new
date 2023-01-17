@@ -17,24 +17,26 @@ class ExportServerController extends Controller
         return view('export.export',$data);
     }
 
-    public function exportUser(Request $r)
+    public function exportPasien(Request $r)
     {
-        $user = Http::get("https://happykids.ptagafood.com/api/users");
-        $dt_user = json_decode($user, TRUE);
-        DB::table('users')->truncate();
-        
-        foreach ($dt_user['users'] as $v) {
-            $data = [
-                'id' => $v['id'],
-                'name' => $v['name'],
-                'email' => $v['email'],
-                'password' => $v['password'],
-                'created_at' => $v['created_at'],
-                'updated_at' => $v['updated_at'],
-                'role' => $v['role'],
-                'verifikasi' => $v['verifikasi'],
-            ];
-            DB::table('users')->insert($data);
+        $data  = DB::table('dt_pasien')->where('export', 'T')->get();
+
+        $id_data = [];
+        $datas = [];
+
+        foreach($data as $n) {
+            $id_data[] = $n->id_pasien;
+            array_push($datas, [
+                'id_pasien' => $n->id_pasien,
+                'member_id' => $n->member_id,
+                'nama_pasien' => $n->nama_pasien,
+                'tgl_lahir' => $n->tgl_lahir,
+                'no_hp' => $n->no_hp,
+            ]);
         }
+        $response = Http::acceptJson()->post('https://happykids.ptagafood.com/api/dt_pasien', $datas);
+
+        DB::table('dt_pasien')->whereIn('id_pasien', $id_data)->update(['export' => 'Y']);
+        
     }
 }

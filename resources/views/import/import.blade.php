@@ -35,7 +35,7 @@
                                     </div>
                                     <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 mt-4 justify-content-center">
                                         <h6 class="text-muted font-semibold text-center">
-                                           TB User
+                                           Data User
                                         </h6>
                                     </div>
                                 </div>
@@ -63,7 +63,7 @@
                                     </div>
                                     <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 mt-4 justify-content-center">
                                         <h6 class="text-muted font-semibold text-center">
-                                           TB Pasien
+                                           Data Pasien
                                         </h6>
                                     </div>
                                 </div>
@@ -91,7 +91,7 @@
                                     </div>
                                     <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 mt-4 justify-content-center">
                                         <h6 class="text-muted font-semibold text-center">
-                                           TB Paket
+                                           Data Paket
                                         </h6>
                                     </div>
                                 </div>
@@ -119,7 +119,7 @@
                                     </div>
                                     <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 mt-4 justify-content-center">
                                         <h6 class="text-muted font-semibold text-center">
-                                           TB Dokter & Therapist
+                                           Data Dokter & Therapist
                                         </h6>
                                     </div>
                                 </div>
@@ -147,7 +147,7 @@
                                     </div>
                                     <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 mt-4 justify-content-center">
                                         <h6 class="text-muted font-semibold text-center">
-                                           TB Nomoinal Inv
+                                           Data Nomoinal Inv
                                         </h6>
                                     </div>
                                 </div>

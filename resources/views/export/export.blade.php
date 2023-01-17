@@ -16,7 +16,7 @@
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Import </a> <p class="text-danger"></p></li>
+                            <li class="breadcrumb-item"><a href="#">Export </a> <p class="text-danger"></p></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $title }}</li>
                         </ol>
                     </nav>
@@ -25,10 +25,8 @@
         </div>
         <section class="section">
             <div class="row">
-                @foreach ($menu as $m)
-                    
                 <div class="col-6 col-lg-2 col-md-6">
-                    <a href="{{route('exportUser')}}">
+                    <a href="{{route('exportPasien')}}">
                         <div class="card">
                             <div class="card-body" style="height: 130px" >
                                 <div class="row ">
@@ -37,14 +35,14 @@
                                     </div>
                                     <div class="col-md-12 col-lg-12 col-xl-12 col-xxl-12 mt-4 justify-content-center">
                                         <h6 class="text-muted font-semibold text-center">
-                                           Tb User
+                                           Data Pasien
                                         </h6>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-footer">
                                 <center>
-                                    <a href="{{route('exportUser')}}" class="btn btn-info export1" id="export1">import</a>
+                                    <a href="{{route('exportPasien')}}" class="btn btn-info export1" id="export1">Export</a>
                                     <button class="btn btn-info save_loading1" type="button" disabled>
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                         Loading...
@@ -55,7 +53,6 @@
                         </div>
                     </a>
                 </div>
-                @endforeach
 
             </div>
         </section>

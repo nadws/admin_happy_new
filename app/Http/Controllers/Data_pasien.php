@@ -71,19 +71,24 @@ class Data_pasien extends Controller
     public function edit_pasien(Request $r)
     {
         $member_id = $r->member_id;
-        $tgl_lahir = $r->tgl_lahir;
-        $nama = $r->nama;
-        $no_telpon = $r->no_telpon;
-
-        $data = [
-            'member_id' => $member_id,
-            'nama_pasien' => $nama,
-            'tgl_lahir' => $tgl_lahir,
-            'no_hp' => $no_telpon
-        ];
-
-        DB::table('dt_pasien')->where('id_pasien', $r->id_pasien)->update($data);
-        return redirect()->route('data_pasien')->with('sukses', 'Berhasil disimpan');
+        $cek = DB::table('dt_pasien')->where('member_id', $member_id)->first();
+        if(!$cek){
+            $tgl_lahir = $r->tgl_lahir;
+            $nama = $r->nama;
+            $no_telpon = $r->no_telpon;
+    
+            $data = [
+                'member_id' => $member_id,
+                'nama_pasien' => $nama,
+                'tgl_lahir' => $tgl_lahir,
+                'no_hp' => $no_telpon
+            ];
+    
+            DB::table('dt_pasien')->where('id_pasien', $r->id_pasien)->update($data);
+            return redirect()->route('data_pasien')->with('sukses', 'Berhasil disimpan');
+        } else {
+            return redirect()->route('data_pasien')->with('error', 'Data yang sudah di export tidak bisa di edit !!');
+        }
     }
 
     public function get_pasien(Request $r)

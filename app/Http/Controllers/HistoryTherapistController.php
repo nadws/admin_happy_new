@@ -20,6 +20,7 @@ class HistoryTherapistController extends Controller
     {
         $tgl1 = $r->tgl1 ?? date('Y-m-1');
         $tgl2 = $r->tgl2 ?? date('Y-m-t');
+        
         $data = [
             'detail' => DB::select("SELECT b.no_order,b.tgl,a.nama_therapy,b.kredit,c.nama_paket,d.member_id,d.nama_pasien FROM dt_therapy a
             LEFT JOIN saldo_therapy b ON a.id_therapy = b.id_therapist
