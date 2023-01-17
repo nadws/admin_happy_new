@@ -20,6 +20,7 @@ use App\Http\Controllers\Invoice;
 use App\Http\Controllers\Invoice_kunjungan;
 use App\Http\Controllers\Invoice_periksa;
 use App\Http\Controllers\Invoice_tp;
+use App\Http\Controllers\Komtherapist;
 use App\Http\Controllers\NominalController;
 use App\Http\Controllers\Pertanyaan;
 use App\Http\Controllers\PertanyaanController;
@@ -79,21 +80,21 @@ Route::middleware(['auth'])->group(function () {
         DB::table('cms_content')->where('id', 2)->update(['isi' => $r->warna2]);
         DB::table('cms_content')->where('id', 3)->update(['isi' => $r->warna3]);
         DB::table('cms_content')->where('id', 4)->update(['isi' => $r->warna4]);
-    
+
         return redirect()->back();
     })->name('save_theme');
 
     Route::get('cms', function () {
         return redirect('http://127.0.0.1:2222/dashboard');
     })->name('cms');
-    
+
     Route::get('data_dokter', [DataDokterController::class, 'index'])->name('data_dokter');
-    
+
     // data pasien
     Route::get('data_pasien', [DataPasienController::class, 'index'])->name('data_pasien');
     Route::get('load_view_pasien', [DataPasienController::class, 'load_view_pasien'])->name('load_view_pasien');
     Route::get('load_view_member', [DataPasienController::class, 'load_view_member'])->name('load_view_member');
-    
+
     // pertanyaan
     Route::get('prtnyaan', [PertanyaanController::class, 'index'])->name('prtnyaan');
     Route::get('pertanyaan/{kelompok}', [PertanyaanController::class, 'pertanyaan'])->name('pertanyaan');
@@ -105,34 +106,34 @@ Route::middleware(['auth'])->group(function () {
     Route::get('del_pertanyaan/{id}/{kelompok}', [PertanyaanController::class, 'del_pertanyaan'])->name('del_pertanyaan');
     Route::get('get_gerak', [PertanyaanController::class, 'get_gerak'])->name('get_gerak');
     Route::get('get_kpsp', [PertanyaanController::class, 'get_kpsp'])->name('get_kpsp');
-    
+
     // foto
     Route::get('foto', [FotoController::class, 'index'])->name('foto');
     Route::post('add_foto', [FotoController::class, 'add_foto'])->name('add_foto');
-    
+
     // Hasil Pemeriksaan
     Route::get('h_pemeriksaaan', [Hasil_pemeriksaan::class, 'index'])->name('h_pemeriksaaan');
     Route::get('cetak', [Hasil_pemeriksaan::class, 'cetak'])->name('cetak');
-    
+
     // Pertanyaan 
     Route::get('kpertanyaan', [Pertanyaan::class, 'index'])->name('kpertanyaan');
-    
+
     Route::get('form1', [Pertanyaan::class, 'form1'])->name('form1');
     Route::get('form2', [Pertanyaan::class, 'form2'])->name('form2');
     Route::get('form3', [Pertanyaan::class, 'form3'])->name('form3');
     Route::get('form4', [Pertanyaan::class, 'form4'])->name('form4');
-    
+
     Route::get('/tbh_pertanyaan1', [Pertanyaan::class, 'tbh_pertanyaan1'])->name('tbh_pertanyaan1');
     Route::get('/tbh_pertanyaan2', [Pertanyaan::class, 'tbh_pertanyaan2'])->name('tbh_pertanyaan2');
     Route::get('/tbh_pertanyaan3', [Pertanyaan::class, 'tbh_pertanyaan3'])->name('tbh_pertanyaan3');
     Route::get('/tbh_pertanyaan4', [Pertanyaan::class, 'tbh_pertanyaan4'])->name('tbh_pertanyaan4');
-    
+
     // dokter
     Route::get('tb_dokter', [Data_dokter::class, 'index'])->name('tb_dokter');
     Route::post('tbh_dokter', [Data_dokter::class, 'tbh_dokter'])->name('tbh_dokter');
     Route::post('edit_dokter', [Data_dokter::class, 'edit_dokter'])->name('edit_dokter');
     Route::get('hps_dokter', [Data_dokter::class, 'hps_dokter'])->name('hps_dokter');
-    
+
     // Invoice
     Route::get('invoice', [Invoice::class, 'index'])->name('invoice');
     Route::post('edit_invoice', [Invoice::class, 'edit_invoice'])->name('edit_invoice');
@@ -142,7 +143,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('hapus_invoice', [Invoice::class, 'hapus_invoice'])->name('hapus_invoice');
     Route::get('noMedis', [Invoice::class, 'noMedis'])->name('noMedis');
     Route::get('loadTambahPasien', [Invoice::class, 'loadTambahPasien'])->name('loadTambahPasien');
-    
+
     // data pasien
     Route::get('data_pasien', [Data_pasien::class, 'index'])->name('data_pasien');
     Route::get('get_pasien', [Data_pasien::class, 'get_pasien'])->name('get_pasien');
@@ -150,20 +151,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('delete_pasien', [Data_pasien::class, 'delete_pasien'])->name('delete_pasien');
     Route::get('get_edit_pasien', [Data_pasien::class, 'get_edit_pasien'])->name('get_edit_pasien');
     Route::post('edit_pasien', [Data_pasien::class, 'edit_pasien'])->name('edit_pasien');
-    
+
     Route::get('inv_periksa', [Invoice_periksa::class, 'index'])->name('inv_periksa');
     Route::get('editInput', [Invoice_periksa::class, 'editInput'])->name('editInput');
     Route::post('save_invoice_periksa', [Invoice_periksa::class, 'save_invoice_periksa'])->name('save_invoice_periksa');
     Route::post('edit_invoice_periksa', [Invoice_periksa::class, 'edit_invoice_periksa'])->name('edit_invoice_periksa');
     Route::get('hapus_invoice_periksa', [Invoice_periksa::class, 'hapus_invoice_periksa'])->name('hapus_invoice_periksa');
     Route::get('cetak_inv_periksa', [Invoice_periksa::class, 'cetak_inv_periksa'])->name('cetak_inv_periksa');
-    
+
     Route::get('dt_paket', [Data_paket::class, 'index'])->name('dt_paket');
     Route::post('save_paket', [Data_paket::class, 'save_paket'])->name('save_paket');
     Route::get('get_edit_paket', [Data_paket::class, 'get_edit_paket'])->name('get_edit_paket');
     Route::post('edit_paket', [Data_paket::class, 'edit_paket'])->name('edit_paket');
     Route::get('delete_paket', [Data_paket::class, 'delete_paket'])->name('delete_paket');
-    
+
     Route::get('invoice_tp', [Invoice_tp::class, 'index'])->name('invoice_tp');
     Route::get('tambah_paket', [Invoice_tp::class, 'tambah_paket'])->name('tambah_paket');
     Route::get('get_paket', [Invoice_tp::class, 'get_paket'])->name('get_paket');
@@ -172,18 +173,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('view_paket2', [Invoice_tp::class, 'view_paket2'])->name('view_paket2');
     Route::get('cetak_invoice_tp', [Invoice_tp::class, 'cetak_invoice_tp'])->name('cetak_invoice_tp');
     Route::get('hapus_invoice_tp', [Invoice_tp::class, 'hapus_invoice_tp'])->name('hapus_invoice_tp');
-    
+
     Route::get('invoice_kunjungan', [Invoice_kunjungan::class, 'index'])->name('invoice_kunjungan');
     Route::get('get_paket_kunjungan', [Invoice_kunjungan::class, 'get_paket'])->name('get_paket_kunjungan');
     Route::get('data_paket_kunjungan', [Invoice_kunjungan::class, 'data_paket_kunjungan'])->name('data_paket_kunjungan');
     Route::post('save_invoice_kunjungan', [Invoice_kunjungan::class, 'save_invoice_kunjungan'])->name('save_invoice_kunjungan');
     Route::get('hapus_invoice_kunjungan', [Invoice_kunjungan::class, 'hapus_invoice_kunjungan'])->name('hapus_invoice_kunjungan');
     Route::get('detailSaldo', [Invoice_kunjungan::class, 'detailSaldo'])->name('detailSaldo');
-    
+    Route::get('export_cronjob', [Invoice_kunjungan::class, 'export_cronjob'])->name('export_cronjob');
+    Route::get('download_cronjob', [Invoice_kunjungan::class, 'download_cronjob'])->name('download_cronjob');
+
     Route::get('tb_therapy', [Dt_therapy::class, 'index'])->name('tb_therapy');
     Route::post('tbh_therapy', [Dt_therapy::class, 'tbh_therapy'])->name('tbh_therapy');
     Route::post('edit_terapi', [Dt_therapy::class, 'edit_terapi'])->name('edit_terapi');
-    
+
     Route::get('dt_paket_pasien', [Data_paket_pasien::class, 'index'])->name('dt_paket_pasien');
     Route::get('view_paket_pasien', [Data_paket_pasien::class, 'view_paket_pasien'])->name('view_paket_pasien');
     Route::get('view_paket_pasien2', [Data_paket_pasien::class, 'view_paket_pasien2'])->name('view_paket_pasien2');
@@ -195,19 +198,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('loadPeriksa', [VoidController::class, 'loadPeriksa'])->name('loadPeriksa');
     Route::get('loadTerapi', [VoidController::class, 'loadTerapi'])->name('loadTerapi');
     Route::get('loadKunjungan', [VoidController::class, 'loadKunjungan'])->name('loadKunjungan');
-    
-    
+
+    // export data
+    Route::post('exportScreening', [ExportController::class, 'exportScreening'])->name('exportScreening');
+    Route::get('exportTherapist/{tgl1}/{tgl2}', [ExportTherapist::class, 'index'])->name('exportTherapist');
+
     Route::get('inv_registrasi', [inv_registrasi::class, 'index'])->name('inv_registrasi');
     Route::post('save_registrasi', [inv_registrasi::class, 'save_registrasi'])->name('save_registrasi');
     Route::get('cetak_registrasi', [inv_registrasi::class, 'cetak_registrasi'])->name('cetak_registrasi');
-    
+
     // nominal
     Route::get('nominal', [NominalController::class, 'index'])->name('nominal');
     Route::get('data_nominal/{tipe}', [NominalController::class, 'data_nominal'])->name('data_nominal');
     Route::post('tambah_nominal/{tipe}', [NominalController::class, 'tambah_nominal'])->name('tambah_nominal');
     Route::post('edit_nominal', [NominalController::class, 'edit_nominal'])->name('edit_nominal');
     Route::get('hapus_nominal/{id}/{tipe}', [NominalController::class, 'hapus_nominal'])->name('hapus_nominal');
-    
+
     // export data
     Route::post('exportScreening', [ExportController::class, 'exportScreening'])->name('exportScreening');
     Route::post('exportTherapist', [ExportTherapist::class, 'index'])->name('exportTherapist');
@@ -223,12 +229,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('importPasien', [ImportServerController::class, 'importPasien'])->name('importPasien');
     Route::get('importPaket', [ImportServerController::class, 'importPaket'])->name('importPaket');
     Route::get('importNominal', [ImportServerController::class, 'importNominal'])->name('importNominal');
-    
+
     // history therapist
     Route::get('historyTherapist', [HistoryTherapistController::class, 'index'])->name('historyTherapist');
+    Route::get('komTherapist', [Komtherapist::class, 'index'])->name('komTherapist');
     Route::get('historyDetail', [HistoryTherapistController::class, 'historyDetail'])->name('historyDetail');
-
-
 });
 
 require __DIR__ . '/auth.php';

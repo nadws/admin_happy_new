@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\kunjungan;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class Invoice_kunjungan extends Controller
 {
@@ -63,22 +68,22 @@ class Invoice_kunjungan extends Controller
         $invoice = DB::selectOne("SELECT max(a.urutan) as urutan FROM invoice_kunjungan as a");
 
         $no_order = empty($invoice->urutan) ? 1001 : $invoice->urutan + 1;
-        
+
         $id_therapist = $r->id_therapist;
         $id_paket = $r->id_paket;
         $kredit = $r->kredit;
         $kosong = true;
 
-        foreach($kredit as $k) {
-            if($k != 0) {
+        foreach ($kredit as $k) {
+            if ($k != 0) {
                 $kosong = false;
             }
         }
 
-        if($kosong) {
+        if ($kosong) {
             return redirect()->back()->with('error', 'Data kosong semua');
-        } 
-        
+        }
+
         for ($x = 0; $x < count($id_therapist); $x++) {
             $data = [
                 'id_therapist' => $id_therapist[$x],
@@ -104,11 +109,12 @@ class Invoice_kunjungan extends Controller
         return redirect()->route('invoice_kunjungan')->with('sukses', 'Berhasil tambah pertanyaan');
     }
 
-    public function hapus_invoice_kunjungan(Request $r){
+    public function hapus_invoice_kunjungan(Request $r)
+    {
         $no_order = $r->no_order;
         DB::table('invoice_kunjungan')->where('no_order', $no_order)->delete();
-        DB::table('saldo_therapy')->where([['no_order', $no_order],['debit', 0]])->delete();
-        
+        DB::table('saldo_therapy')->where([['no_order', $no_order], ['debit', 0]])->delete();
+
         return redirect()->route('invoice_kunjungan')->with('sukses', 'Berhasil hapus pertanyaan');
     }
 
@@ -125,5 +131,80 @@ class Invoice_kunjungan extends Controller
             'nama' => $nama
         ];
         return view('invoice_kunjungan.detailSaldo', $data);
+    }
+
+    public function export_cronjob(Request $r)
+    {
+        $email = 'nandw567@gmail.com';
+
+        Mail::to('nandw567@gmail.com')->send(new kunjungan($email));
+    }
+
+    public function download_cronjob(Request $r)
+    {
+        $tgl1 = $r->tgl1;
+
+        $kunjungan = DB::select("SELECT a.tgl, a.no_order, c.member_id, c.nama_pasien, b.nama_therapy, d.nama_paket, a.kredit
+        FROM saldo_therapy as a
+        left JOIN dt_therapy as b on b.id_therapy = a.id_therapist
+        left join dt_pasien as c on c.member_id = a.member_id
+        left join dt_paket as d on d.id_paket = a.id_paket
+        where a.tgl = '$tgl1' and  a.kredit != '0';");
+
+
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->setActiveSheetIndex(0);
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Laporan Kunjungan');
+
+        $sheet
+            ->setCellValue('A1', 'No')
+            ->setCellValue('B1', 'Tanggal')
+            ->setCellValue('C1', 'No Order')
+            ->setCellValue('D1', 'Member ID')
+            ->setCellValue('E1', 'Nama Pasien')
+            ->setCellValue('F1', 'Nama Therapist')
+            ->setCellValue('G1', 'Nama Paket')
+            ->setCellValue('H1', 'Paket Dipakai');
+        $sheet->getStyle("A1:H1")->getFont()->setBold(true);
+
+        $kolom = 2;
+
+        foreach ($kunjungan as $no => $d) {
+            $sheet->setCellValue("A$kolom", $no + 1)
+                ->setCellValue("B$kolom", $d->tgl)
+                ->setCellValue("C$kolom", $d->no_order)
+                ->setCellValue("D$kolom", $d->member_id)
+                ->setCellValue("E$kolom", $d->nama_pasien)
+                ->setCellValue("F$kolom", $d->nama_therapy)
+                ->setCellValue("G$kolom", $d->nama_paket)
+                ->setCellValue("H$kolom", $d->kredit);
+
+            $kolom++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $style = [
+            'borders' => [
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                ],
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN
+                ],
+            ],
+        ];
+
+        $batas = $kolom - 1;
+        $sheet->getStyle('A1:H' . $batas)->applyFromArray($style);
+
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Laporan Kunjungan.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
     }
 }
