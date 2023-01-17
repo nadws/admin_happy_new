@@ -25,7 +25,7 @@
         </div>
         <section class="section">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-6">
                     <div class="card">
                         <div class="card-header">
                             <a href="#" id="sukses" data-bs-toggle="modal" data-bs-target="#tambah"
@@ -39,6 +39,7 @@
                                     <tr>
                                         <th width="6%">#</th>
                                         <th>Nama Therapist</th>
+                                        <th>Level</th>
                                         <th width="25%">Aksi</th>
                                     </tr>
                                 </thead>
@@ -50,11 +51,55 @@
                                     <tr>
                                         <td>{{ $i++ }}</td>
                                         <td>{{ $d->nama_therapy }}</td>
+                                        <td>{{ $d->level }}</td>
                                         <td>
                                             <a href="#" data-bs-toggle="modal"
                                                 data-bs-target="#edit{{ $d->id_therapy }}"
                                                 class="btn btn-sm icon btn-primary"><i class="bi bi-pencil"></i></a>
-                                            <a onclick="return confirm('Yakin ingin dihapus')" href="{{ route('hps_dokter', ['id_therapy' => $d->id_therapy]) }}"
+                                            <a onclick="return confirm('Yakin ingin dihapus')"
+                                                href="{{ route('hps_dokter', ['id_therapy' => $d->id_therapy]) }}"
+                                                class="btn btn-sm icon btn-danger"><i class="bi bi-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <a href="#" id="sukses" data-bs-toggle="modal" data-bs-target="#tambah"
+                                class="btn icon icon-left btn-primary" style="float: right"><i
+                                    class="bi bi-plus-circle"></i>
+                                Tambah</a>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-hover" id="table1">
+                                <thead>
+                                    <tr>
+                                        <th width="6%">#</th>
+                                        <th>Level</th>
+                                        <th>Rupiah</th>
+                                        <th width="25%">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                    $i = 1;
+                                    @endphp
+                                    @foreach ($level as $d)
+                                    <tr>
+                                        <td>{{ $i++ }}</td>
+                                        <td>{{ $d->level }}</td>
+                                        <td>{{ number_format($d->nominal,0) }}</td>
+                                        <td>
+                                            <a href="#" data-bs-toggle="modal"
+                                                data-bs-target="#edit{{ $d->id_level_therapist  }}"
+                                                class="btn btn-sm icon btn-primary"><i class="bi bi-pencil"></i></a>
+                                            <a onclick="return confirm('Yakin ingin dihapus')"
+                                                href="{{ route('hps_dokter', ['id_therapy' => $d->id_level_therapist ]) }}"
                                                 class="btn btn-sm icon btn-danger"><i class="bi bi-trash"></i></a>
                                         </td>
                                     </tr>
@@ -71,11 +116,11 @@
 </div>
 
 {{-- edit terapi --}}
-@foreach ($therapist as $i)    
+@foreach ($therapist as $i)
 <form action="{{ route('edit_terapi') }}" method="POST">
     @csrf
-    <div class="modal fade text-left" id="edit{{$i->id_therapy}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
-        aria-hidden="true">
+    <div class="modal fade text-left" id="edit{{$i->id_therapy}}" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel33" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -91,7 +136,8 @@
                         <div class="form-group">
                             <label>Nama Therapist </label>
                             <input type="hidden" name="id_therapy" value="{{ $i->id_therapy }}">
-                            <input type="text" value="{{ $i->nama_therapy }}" name="nama_therapy" class="form-control" />
+                            <input type="text" value="{{ $i->nama_therapy }}" name="nama_therapy"
+                                class="form-control" />
                         </div>
                     </div>
                     <div class="modal-footer">

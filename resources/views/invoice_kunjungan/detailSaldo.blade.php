@@ -1,4 +1,3 @@
-
 <div class="modal-content">
     <div class="modal-header">
         <h4 class="modal-title" id="myModalLabel33">
@@ -18,21 +17,21 @@
                         <th width="20%">Dipakai</th>
                     </tr>
                     @foreach ($invoice_kunjungan as $i)
-                        <tr>
-                            <td>{{ $i->nama_therapy }}</td>
-                            <td>{{ $i->nama_paket }}</td>
-                            <td>{{ $i->kredit }}</td>
-                        </tr>
+                    <tr>
+                        <td>{{ $i->nama_therapy }}</td>
+                        <td>{{ $i->nama_paket }}</td>
+                        <td>{{ $i->kredit }}</td>
+                    </tr>
                     @endforeach
                     {{-- @php
-                        $debit = 0;
-                        $kredit = 0;
+                    $debit = 0;
+                    $kredit = 0;
                     @endphp
                     @foreach ($invoice_kunjungan as $i)
                     @php
-                        $debit = $i->debit;
-                        $kredit = $i->kredit;
-                        $ttl = $i->debit - $i->kredit;
+                    $debit = $i->debit;
+                    $kredit = $i->kredit;
+                    $ttl = $i->debit - $i->kredit;
                     @endphp
                     @if ($ttl > 0)
                     <tr>
@@ -48,11 +47,11 @@
                         <td>{{$kredit}}</td>
                     </tr>
                     @endif
-                    
+
                     @endforeach --}}
                 </table>
             </div>
-        
+
         </div>
     </div>
     <div class="modal-footer">

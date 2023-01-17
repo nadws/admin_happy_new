@@ -38,32 +38,24 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Member ID</th>
-                                        <th>Nama Pasien</th>
-                                        <th>Status</th>
-                                        <th>Aksi</th>
+                                        <th>Therapist</th>
+                                        <th>Level</th>
+                                        <th>Point Komisi</th>
+                                        <th>Komisi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
                                     $i = 1;
                                     @endphp
-                                    @foreach ($data_paket_pasien as $n)
+                                    @foreach ($komisi as $n)
                                     <tr>
                                         <td>{{ $i++ }}</td>
-                                        <td>{{ $n->member_id }}</td>
-                                        <td>{{ $n->nama_pasien }}</td>
-                                        <td>
-                                            <span class="badge bg-{{ $n->saldo == NULL ? 'success' : 'danger' }}">
-                                                {{ $n->saldo == NULL ? 'Ok' : 'Paket mau habis' }}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#view"
-                                                class="btn btn-primary btn-sm view" member_id="{{$n->member_id}}"><i
-                                                    class="bi bi-folder-check"></i>
-                                            </a>
-                                        </td>
+                                        <td>{{ $n->nama_therapy }}</td>
+                                        <td>{{ $n->level }}</td>
+                                        <td align="center">{{ empty($n->saldo) ? '0' : $n->saldo }}</td>
+                                        <td>{{number_format( empty($n->saldo) ? '0' : $n->saldo * $n->nominal )}}</td>
+
                                     </tr>
                                     @endforeach
                                 </tbody>

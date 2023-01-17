@@ -10,8 +10,9 @@ class Dt_therapy extends Controller
     public function index(Request $r)
     {
         $data = [
-            'title' => 'Data Therapist',
-            'therapist' => DB::table('dt_therapy')->orderBy('id_therapy', 'DESC')->get()
+            'title' => 'Data Therapist & Level',
+            'therapist' => DB::select("SELECT * FROM dt_therapy as a left join level_therapist as b on b.id_level_therapist =  a.id_level"),
+            'level' => DB::table('level_therapist')->get()
         ];
         return view('therapy.index', $data);
     }
