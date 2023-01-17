@@ -39,7 +39,7 @@
                                     <tr>
                                         <th width="6%">#</th>
                                         <th>Nama Therapist</th>
-                                        <th>Level</th>
+                                        {{-- <th>Level</th> --}}
                                         <th width="25%">Aksi</th>
                                     </tr>
                                 </thead>
@@ -51,7 +51,7 @@
                                     <tr>
                                         <td>{{ $i++ }}</td>
                                         <td>{{ $d->nama_therapy }}</td>
-                                        <td>{{ $d->level }}</td>
+                                        {{-- <td>{{ $d->level }}</td> --}}
                                         <td>
                                             <a href="#" data-bs-toggle="modal"
                                                 data-bs-target="#edit{{ $d->id_therapy }}"
@@ -67,7 +67,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                {{-- <div class="col-lg-6">
                     <div class="card">
                         <div class="card-header">
                             <a href="#" id="sukses" data-bs-toggle="modal" data-bs-target="#tambah"
@@ -108,7 +108,7 @@
                             </table>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </section>
     </div>

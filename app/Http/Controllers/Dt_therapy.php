@@ -11,8 +11,8 @@ class Dt_therapy extends Controller
     {
         $data = [
             'title' => 'Data Therapist & Level',
-            'therapist' => DB::select("SELECT * FROM dt_therapy as a left join level_therapist as b on b.id_level_therapist =  a.id_level"),
-            'level' => DB::table('level_therapist')->get()
+            'therapist' => DB::select("SELECT * FROM dt_therapy as a"),
+            // 'level' => DB::table('level_therapist')->get()
         ];
         return view('therapy.index', $data);
     }

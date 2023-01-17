@@ -26,7 +26,7 @@
         <section class="section">
             <div class="row">
                 <div class="col-6 col-lg-2 col-md-6">
-                    <a href="{{route('importUser')}}">
+                    <a href="{{route('importUser')}}" class="exportKlik">
                         <div class="card">
                             <div class="card-body" style="height: 130px" >
                                 <div class="row ">
@@ -42,7 +42,7 @@
                             </div>
                             <div class="card-footer">
                                 <center>
-                                    <a href="{{route('importUser')}}" class="btn btn-info export1" id="export1">import</a>
+                                    <a href="{{route('importUser')}}" class="btn btn-info export1 exportKlik" id="export1">import</a>
                                     <button class="btn btn-info save_loading1" type="button" disabled>
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                         Loading...
@@ -82,7 +82,7 @@
                     </a>
                 </div> --}}
                 <div class="col-6 col-lg-2 col-md-6">
-                    <a href="{{route('importPaket')}}">
+                    <a href="{{route('importPaket')}}" class=" exportKlik">
                         <div class="card">
                             <div class="card-body" style="height: 130px" >
                                 <div class="row ">
@@ -98,7 +98,7 @@
                             </div>
                             <div class="card-footer">
                                 <center>
-                                    <a href="{{route('importPaket')}}" class="btn btn-info" id="export4">import</a>
+                                    <a href="{{route('importPaket')}}" class="btn btn-info exportKlik" id="export4">import</a>
                                     <button class="btn btn-info save_loading4" type="button" disabled>
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                         Loading...
@@ -110,7 +110,7 @@
                     </a>
                 </div>
                 <div class="col-6 col-lg-2 col-md-6">
-                    <a href="{{route('importDokter')}}">
+                    <a href="{{route('importDokter')}}" class="exportKlik">
                         <div class="card">
                             <div class="card-body" style="height: 130px" >
                                 <div class="row ">
@@ -126,7 +126,7 @@
                             </div>
                             <div class="card-footer">
                                 <center>
-                                    <a href="{{route('importDokter')}}" class="btn btn-info" id="export2">import</a>
+                                    <a href="{{route('importDokter')}}" class="btn btn-info exportKlik" id="export2">import</a>
                                     <button class="btn btn-info save_loading2" type="button" disabled>
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                         Loading...
@@ -138,7 +138,7 @@
                     </a>
                 </div>
                 <div class="col-6 col-lg-2 col-md-6">
-                    <a href="{{route('importNominal')}}">
+                    <a href="{{route('importNominal')}}" class="exportKlik">
                         <div class="card">
                             <div class="card-body" style="height: 130px" >
                                 <div class="row ">
@@ -154,7 +154,7 @@
                             </div>
                             <div class="card-footer">
                                 <center>
-                                    <a href="{{route('importNominal')}}" class="btn btn-info" id="export5">import</a>
+                                    <a href="{{route('importNominal')}}" class="btn btn-info exportKlik" id="export5">import</a>
                                     <button class="btn btn-info save_loading5" type="button" disabled>
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                         Loading...
@@ -170,10 +170,31 @@
         </section>
     </div>
 </div>
+<div class="modal fade text-left" id="loading" data-bs-backdrop="static">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                  <button class="btn btn-primary btn-block" type="button" disabled>
+                    <span
+                      class="spinner-grow spinner-grow-lg"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    Data sedang di import dari server !
+                  </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
 @endsection
 @section('scripts')
 <script>
     $(document).ready(function () {
+        $(document).on('click', '.exportKlik', function(){
+            $("#loading").modal('show')
+        })
         $('.save_loading1').hide();
         $('.save_loading2').hide();
         $('.save_loading3').hide();

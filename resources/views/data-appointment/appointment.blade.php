@@ -392,6 +392,7 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
+        
             $('.pilihan').hide();
             $('.pilihan').attr('disabled', 'true');
 
