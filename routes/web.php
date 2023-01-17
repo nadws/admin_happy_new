@@ -214,6 +214,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('edit_nominal', [NominalController::class, 'edit_nominal'])->name('edit_nominal');
     Route::get('hapus_nominal/{id}/{tipe}', [NominalController::class, 'hapus_nominal'])->name('hapus_nominal');
 
+    // export data
+    Route::post('exportScreening', [ExportController::class, 'exportScreening'])->name('exportScreening');
+    Route::post('exportTherapist', [ExportTherapist::class, 'index'])->name('exportTherapist');
+
     // export server
     Route::get('exportServer', [ExportServerController::class, 'index'])->name('exportServer');
     Route::get('exportUser', [ExportServerController::class, 'exportUser'])->name('exportUser');
@@ -229,6 +233,7 @@ Route::middleware(['auth'])->group(function () {
     // history therapist
     Route::get('historyTherapist', [HistoryTherapistController::class, 'index'])->name('historyTherapist');
     Route::get('komTherapist', [Komtherapist::class, 'index'])->name('komTherapist');
+    Route::get('historyDetail', [HistoryTherapistController::class, 'historyDetail'])->name('historyDetail');
 });
 
 require __DIR__ . '/auth.php';

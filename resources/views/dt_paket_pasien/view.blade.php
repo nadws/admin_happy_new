@@ -24,7 +24,7 @@
                 </span>
             <td>
                 <a href="#" class="btn btn-primary btn-sm view2" member_id="{{$i->member_id}}"
-                    id_paket="{{$i->id_paket}}"><i class="bi bi-folder-check"></i>
+                    id_paket="{{$i->id_paket}}">History
                 </a>
             </td>
         </tr>
