@@ -14,21 +14,22 @@ class NominalController extends Controller
 
     public function data_nominal($tipe)
     {
-        if($tipe == 1){
-            $title = "Screening";
-            $jenis = 'inv_screening';
-        } elseif($tipe == 2) {
-            $title = "Periksa";
-            $jenis = 'inv_periksa';
-        } elseif($tipe == 3) {
-            $title = "Registrasi";
-            $jenis = 'inv_registrasi';
-        } elseif($tipe == 4) {
-            $title = "Theraphy & Paket";
-            $jenis = 'inv_tp';
-        } elseif($tipe == 5) {
-            $title = "Kunjungan";
-            $jenis = 'inv_kunjungan';
+        switch($tipe) {
+            case '1':
+                $title = "Screening";
+                $jenis = 'inv_screening';
+            case '2':
+                $title = "Periksa";
+                $jenis = 'inv_periksa';
+            case '3':
+                $title = "Registrasi";
+                $jenis = 'inv_registrasi';
+            case '4':
+                $title = "Theraphy & Paket";
+                $jenis = 'inv_tp';
+            case '5':
+                $title = "Kunjungan";
+                $jenis = 'inv_kunjungan';
         }
 
         $data = [
