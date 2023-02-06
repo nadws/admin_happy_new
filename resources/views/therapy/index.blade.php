@@ -197,7 +197,6 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
-
             $(document).on('click', '.klik_view', function() {
                 var member_id = $(this).attr('member_id')
                 $.ajax({
@@ -206,7 +205,7 @@
                     success: function(r) {
                         $("#load_view_pasien").html(r);
                     }
-                });
+                })
             })
 
             $(document).on('click', '.klik_member', function() {
@@ -217,8 +216,8 @@
                     success: function(r) {
                         $("#load_view_member").html(r);
                     }
-                });
+                })
             })
-        });
+    });
 </script>
 @endsection

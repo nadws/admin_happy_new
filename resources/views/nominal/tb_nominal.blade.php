@@ -28,6 +28,20 @@
                 <div class="col-lg-8">
                     <div class="card">
                         <div class="card-header">
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link {{Request::is('data_nominal/1') ? 'active' : ''}}"
+                                        aria-current="page" href="{{ route('data_nominal',1) }}">Screening</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{Request::is('data_nominal/2') ? 'active' : ''}}"
+                                        aria-current="page" href="{{ route('data_nominal',2) }}">Periksa</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{Request::is('data_nominal/3') ? 'active' : ''}}"
+                                        aria-current="page" href="{{ route('data_nominal',3) }}">Registrasi</a>
+                                </li>
+                            </ul>
                             <a href="#" id="sukses" data-bs-toggle="modal" data-bs-target="#tambah"
                                 class="btn icon icon-left btn-primary" style="float: right"><i
                                     class="bi bi-plus-circle"></i>

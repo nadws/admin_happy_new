@@ -9,10 +9,7 @@ class NominalController extends Controller
 {
     public function index()
     {
-        $data = [
-            'title' => 'Data Nominal Inv'
-        ];
-        return view('nominal.nominal',$data);
+        return redirect()->route('data_nominal',1);
     }
 
     public function data_nominal($tipe)
