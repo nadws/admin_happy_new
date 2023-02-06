@@ -42,16 +42,18 @@ class NominalController extends Controller
 
     public function tambah_nominal($tipe, Request $r)
     {
-        if($tipe == 1){
-            $jenis = 'inv_screening';
-        } elseif($tipe == 2) {
-            $jenis = 'inv_periksa';
-        } elseif($tipe == 3) {
-            $jenis = 'inv_registrasi';
-        } elseif($tipe == 4) {
-            $jenis = 'inv_tp';
-        } elseif($tipe == 5) {
-            $jenis = 'inv_kunjungan';
+
+        switch($tipe) {
+            case '1':
+                $jenis = 'inv_screening';
+            case '2':
+                $jenis = 'inv_periksa';
+            case '3':
+                $jenis = 'inv_registrasi';
+            case '4':
+                $jenis = 'inv_tp';
+            case '5':
+                $jenis = 'inv_kunjungan';
         }
 
         DB::table('tb_nominal')->where('jenis', $jenis)->insert([
