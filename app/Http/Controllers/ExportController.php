@@ -326,8 +326,6 @@ class ExportController extends Controller
             $sheet->setCellValue($abjad1 . '1', $p->nama_paket);
             $sheet->setCellValue($abjad2 . '1', 'terapis');
             $i++;
-            $s++;
-
         }
 
         $sheet->getStyle("A1:G1")->getFont()->setBold(true);
