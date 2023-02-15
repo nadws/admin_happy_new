@@ -310,6 +310,10 @@ class ExportController extends Controller
 
         $pasien = DB::table('dt_pasien')->orderBy('member_id', 'ASC')->get();
 
+        $sheet->getColumnDimension('D')->setWidth(43.18);
+        $sheet->getColumnDimension('F')->setWidth(13.73);
+        $sheet->getColumnDimension('E')->setWidth(45.73);
+        $sheet->getColumnDimension('G')->setWidth(25.00);
         $sheet
             ->setCellValue('A1', 'No')
             ->setCellValue('B1', 'Id Pasien')
@@ -324,47 +328,105 @@ class ExportController extends Controller
             $s = $i;
             $abjad1 = chr(96 + ($i + 7 % 26) + $i + 1);
             $abjad2 = chr(96 + ($i + 8 % 26) + $s + 1);
-            $abjad1 = chr(96 + ($i + 7 % 26) + $i + 1);
-            $abjad2 = chr(96 + ($i + 8 % 26) + $s + 1);
+
+            $sheet->getColumnDimension($abjad1)->setWidth(12.00);
+            $sheet->getColumnDimension($abjad2)->setWidth(15.82);
 
             $sheet->setCellValue($abjad1 . '1', $p->nama_paket);
             $sheet->setCellValue($abjad2 . '1', 'terapis');
             $i++;
         }
 
-        $sheet->getStyle("A1:G1")->getFont()->setBold(true);
+        $sheet->getStyle('A1:' . $abjad2 . '1')->getFont()->setBold(true);
         $sheet->getStyle("B1:C1")->getFill()
             ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
             ->getStartColor()
             ->setARGB('d92121');
 
-        // $kol = 2;
+        $kol = 2;
 
-        // foreach ($pasien as $no => $d) {
-        //     $sheet->setCellValue("A$kol", $no + 1)
-        //         ->setCellValue("B$kol", $d->id_pasien)
-        //         ->setCellValue("C$kol", $d->member_id)
-        //         ->setCellValue("D$kol", $d->nama_pasien)
-        //         ->setCellValue("E$kol", $d->alamat)
-        //         ->setCellValue("F$kol", $d->tgl_lahir)
-        //         ->setCellValue("G$kol", $d->no_hp);
+        foreach ($pasien as $no => $d) {
+            $sheet->setCellValue("A$kol", $no + 1)
+                ->setCellValue("B$kol", $d->id_pasien)
+                ->setCellValue("C$kol", $d->member_id)
+                ->setCellValue("D$kol", $d->nama_pasien)
+                ->setCellValue("E$kol", $d->alamat)
+                ->setCellValue("F$kol", $d->tgl_lahir)
+                ->setCellValue("G$kol", $d->no_hp);
 
-        //     $kol++;
-        // }
+            foreach ($paket as $i => $p) {
+                $s = $i;
+                $abjad1 = chr(96 + ($i + 7 % 26) + $i + 1);
+                $abjad2 = chr(96 + ($i + 8 % 26) + $s + 1);
+
+                $saldo = DB::selectOne("SELECT a.member_id, a.id_paket, b.nama_therapy, SUM(a.debit) AS debit, SUM(a.kredit) AS kredit
+                FROM saldo_therapy AS a
+                LEFT JOIN dt_therapy AS b ON b.id_therapy = a.id_therapist
+                WHERE a.member_id = '$d->member_id' AND a.id_paket ='$p->id_paket'
+                GROUP BY a.member_id");
+                $sisa_saldo = empty($saldo->debit) ? '' : $saldo->debit - $saldo->kredit;
+
+                $sheet->setCellValue($abjad1 . $kol, $sisa_saldo);
+                $sheet->setCellValue($abjad2 . $kol, empty($saldo->nama_therapy) ? '' : $saldo->nama_therapy);
+                $i++;
+            }
+            $kol++;
+        }
 
         $style = [
-            'borders' => [
-                'alignment' => [
-                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
-                ],
-                'allBorders' => [
-                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN
-                ],
-            ],
+            'font' => array(
+                'size' => 10,
+                'name' => 'Comic Sans MS'
+            ),
+            'borders' => array(
+                'allBorders' => array(
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ),
+            ),
+            'alignment' => array(
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ),
         ];
         $batas = count($pasien) + 1;
-        $sheet->getStyle('A1:G' . $batas)->applyFromArray($style);
+        $sheet->getStyle('A1:' . $abjad2 . $batas)->applyFromArray($style);
+
+        foreach ($paket as $i => $p) {
+            $s = $i;
+            $abjad1 = chr(96 + ($i + 7 % 26) + $i + 1);
+            $abjad2 = chr(96 + ($i + 8 % 26) + $s + 1);
+            $rand = str_pad(dechex(rand(0x000000, 0xFFFFFF)), 6, 0, STR_PAD_LEFT);
+
+
+            //menghasilkan nilai acak untuk merah, hijau, dan biru
+            $red = rand(0, 255);
+            $green = rand(0, 255);
+            $blue = rand(0, 255);
+
+            //mengonversi nilai merah, hijau, dan biru ke format hexa
+            $red_hex = dechex($red);
+            $green_hex = dechex($green);
+            $blue_hex = dechex($blue);
+
+            //menggabungkan nilai merah, hijau, dan biru dalam format hexa untuk menciptakan warna hexa
+            $color_hex = "$red_hex$green_hex$blue_hex";
+
+            //mengatur warna latar belakang elemen HTML menggunakan warna yang dihasilkan secara acak dalam format hexa
+
+
+
+
+            $sheet->getStyle($abjad2 . '1' . ':' . $abjad2 . $batas)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()
+                ->setARGB("$color_hex");
+            $sheet->getStyle($abjad1 . '1' . ':' . $abjad1 . $batas)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()
+                ->setARGB("$color_hex");
+            $i++;
+        }
+
 
         $writer = new Xlsx($spreadsheet);
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');

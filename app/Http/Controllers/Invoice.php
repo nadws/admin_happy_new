@@ -63,7 +63,7 @@ class Invoice extends Controller
 
     public function edit_invoice(Request $r)
     {
-        if(!$r->pembayaran) {
+        if (!$r->pembayaran) {
             return redirect()->back()->with('error', 'Pembayaran tidak diisi');
         }
         DB::table('invoice')->where('id_invoice', $r->id_invoice)->update(['pembayaran' => $r->pembayaran]);

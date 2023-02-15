@@ -92,8 +92,8 @@ class Data_pasien extends Controller
     public function get_pasien(Request $r)
     {
         $pasien = DB::table('dt_pasien')->where('member_id', $r->member_id)->first();
-        $kunjungan = DB::table('invoice_kunjungan')->where('member_id', $r->member_id)->first();
-        $kunjungan6bulan = DB::selectOne("SELECT tgl FROM invoice_kunjungan WHERE member_id = '$r->member_id' ORDER BY id_invoice_kunjungan DESC LIMIT 1");
+        $kunjungan = DB::table('saldo_therapy')->where('member_id', $r->member_id)->first();
+        $kunjungan6bulan = DB::selectOne("SELECT tgl FROM saldo_therapy WHERE member_id = '$r->member_id' ORDER BY id_saldo_therapy  DESC LIMIT 1");
 
         if (empty($kunjungan)) {
             $kunjungan = false;
@@ -106,7 +106,7 @@ class Data_pasien extends Controller
 
             $tgl = $diffInMonths;
         }
-        
+
         return json_encode([
             'nama' => $pasien->nama_pasien,
             'kunjungan' => $kunjungan,
