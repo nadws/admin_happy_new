@@ -315,13 +315,14 @@ class ExportController extends Controller
             ->setCellValue('B1', 'Kode')
             ->setCellValue('C1', 'Nama')
             ->setCellValue('D1', 'Alamat')
-            ->setCellValue('E1', 'Tgl Lahir');
+            ->setCellValue('E1', 'Tgl Lahir')
+            ->setCellValue('F1', 'No HP');
         $paket = DB::table('dt_paket')->get();
 
         foreach ($paket as $i => $p) {
             $s = $i;
-            $abjad1 = chr(96 + ($i+5 % 26) + $i+1);
-            $abjad2 = chr(96 + ($i+6 % 26) + $s+1);
+            $abjad1 = chr(96 + ($i+6 % 26) + $i+1);
+            $abjad2 = chr(96 + ($i+7 % 26) + $s+1);
             
             $sheet->setCellValue($abjad1 . '1', $p->nama_paket);
             $sheet->setCellValue($abjad2 . '1', 'terapis');
