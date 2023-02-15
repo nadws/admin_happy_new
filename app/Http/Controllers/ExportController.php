@@ -322,8 +322,10 @@ class ExportController extends Controller
 
         foreach ($paket as $i => $p) {
             $s = $i;
-            $abjad1 = chr(96 + ($i + 6 % 26) + $i + 1);
-            $abjad2 = chr(96 + ($i + 7 % 26) + $s + 1);
+            $abjad1 = chr(96 + ($i + 7 % 26) + $i + 1);
+            $abjad2 = chr(96 + ($i + 8 % 26) + $s + 1);
+            $abjad1 = chr(96 + ($i + 7 % 26) + $i + 1);
+            $abjad2 = chr(96 + ($i + 8 % 26) + $s + 1);
 
             $sheet->setCellValue($abjad1 . '1', $p->nama_paket);
             $sheet->setCellValue($abjad2 . '1', 'terapis');
