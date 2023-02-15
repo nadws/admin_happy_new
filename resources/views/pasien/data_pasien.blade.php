@@ -52,7 +52,7 @@
                                 @foreach ($pasien as $no => $n)
                                     <tr>
                                         <td>{{ $no + 1 }}</td>
-                                        <td>{{ str_pad($n->member_id, , '0', STR_PAD_LEFT) }}</td>
+                                        <td>{{ str_pad($n->member_id, 5, '0', STR_PAD_LEFT) }}</td>
                                         <td>{{ date('d-m-Y', strtotime($n->tgl_lahir)) }}</td>
                                         <td>{{ $n->nama_pasien }}</td>
                                         <td>{{ $n->no_hp }}</td>
@@ -200,7 +200,7 @@
                 <div class="modal-content ">
                     <div class="modal-header btn-costume">
                         <h5 class="modal-title text-dark" id="exampleModalLabel">Import {{ $title }}</h5>
-                        <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close text-dark" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>

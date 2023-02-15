@@ -312,17 +312,18 @@ class ExportController extends Controller
 
         $sheet
             ->setCellValue('A1', 'No')
-            ->setCellValue('B1', 'Kode')
-            ->setCellValue('C1', 'Nama')
-            ->setCellValue('D1', 'Alamat')
-            ->setCellValue('E1', 'Tgl Lahir')
-            ->setCellValue('F1', 'No HP');
+            ->setCellValue('B1', 'Id Pasien')
+            ->setCellValue('C1', 'Kode')
+            ->setCellValue('D1', 'Nama')
+            ->setCellValue('E1', 'Alamat')
+            ->setCellValue('F1', 'Tgl Lahir')
+            ->setCellValue('G1', 'No HP');
         $paket = DB::table('dt_paket')->get();
 
         foreach ($paket as $i => $p) {
             $s = $i;
-            $abjad1 = chr(96 + ($i+6 % 26) + $i+1);
-            $abjad2 = chr(96 + ($i+7 % 26) + $s+1);
+            $abjad1 = chr(96 + ($i+7 % 26) + $i+1);
+            $abjad2 = chr(96 + ($i+8 % 26) + $s+1);
             
             $sheet->setCellValue($abjad1 . '1', $p->nama_paket);
             $sheet->setCellValue($abjad2 . '1', 'terapis');
@@ -399,6 +400,8 @@ class ExportController extends Controller
                             'no_hp' => $row['G'],
                             'tgl' => date('Y-m-d'),
                         ]);
+
+
                     } else {
                         DB::table('dt_pasien')->where('id_pasien', $row['B'])->update([
                             'member_id' => $row['C'],
@@ -417,4 +420,5 @@ class ExportController extends Controller
             return redirect()->route('data_pasien')->with('error', 'File tidak didukung');
         }
     }
+
 }
