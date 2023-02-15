@@ -319,12 +319,14 @@ class ExportController extends Controller
         $paket = DB::table('dt_paket')->get();
 
         foreach ($paket as $i => $p) {
-            $lingkah = 1;
-            $abjad1 = chr(96 + ($i+5 % 26) + 1);
-            $abjad2 = chr(96 + ($i+5 % 26) + 2);
-
+            $s = $i;
+            $abjad1 = chr(96 + ($i+5 % 26) + $i+1);
+            $abjad2 = chr(96 + ($i+6 % 26) + $s+1);
+            
             $sheet->setCellValue($abjad1 . '1', $p->nama_paket);
             $sheet->setCellValue($abjad2 . '1', 'terapis');
+            $i++;
+            $s++;
 
         }
 
