@@ -312,11 +312,12 @@ class ExportController extends Controller
 
         $sheet
             ->setCellValue('A1', 'No')
-            ->setCellValue('B1', 'Kode')
-            ->setCellValue('C1', 'Nama')
-            ->setCellValue('D1', 'Alamat')
-            ->setCellValue('E1', 'Tgl Lahir')
-            ->setCellValue('F1', 'No HP');
+            ->setCellValue('B1', 'Id Pasien')
+            ->setCellValue('C1', 'Kode')
+            ->setCellValue('D1', 'Nama')
+            ->setCellValue('E1', 'Alamat')
+            ->setCellValue('F1', 'Tgl Lahir')
+            ->setCellValue('G1', 'No HP');
         $paket = DB::table('dt_paket')->get();
 
         foreach ($paket as $i => $p) {

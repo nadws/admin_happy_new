@@ -139,6 +139,7 @@
                             </div>
                         </div>
                     </div>
+<<<<<<< HEAD
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
@@ -150,6 +151,45 @@
                         <span class="d-none d-sm-block">Save</span>
                     </button>
                 </div>
+=======
+                    <div class="card-body">
+                        <table class="table table-hover" id="table1">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th width="12%">No Rekam Medis</th>
+                                    <th>Tanggal lahir</th>
+                                    <th>Nama</th>
+                                    <th>No Telpon</th>
+                                    <th>Alamat</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($pasien as $no => $n)
+                                    <tr>
+                                        <td>{{ $no + 1 }}</td>
+                                        <td>{{ str_pad($n->member_id, 5, '0', STR_PAD_LEFT) }}</td>
+                                        <td>{{ date('d-m-Y', strtotime($n->tgl_lahir)) }}</td>
+                                        <td>{{ $n->nama_pasien }}</td>
+                                        <td>{{ $n->no_hp }}</td>
+                                        @if (strlen($n->alamat) > 14)
+                                            <td>
+                                                <span class="teksLimit{{ $n->id_pasien }}">
+                                                    {{ Str::limit($n->alamat, 20, '...') }}
+                                                    <a href="#" class="readMore" id="{{ $n->id_pasien }}">read
+                                                        more</a>
+                                                </span>
+                                                <span class="teksFull{{ $n->id_pasien }}"
+                                                    style="display:none">{{ $n->alamat }} <a href="#"
+                                                        class="less" id="{{ $n->id_pasien }}">less</a></span>
+                                            </td>
+                                        @else
+                                            <td>
+                                                {{ $n->alamat }}
+                                            </td>
+                                        @endif
+>>>>>>> 895aa9fe6f4fa8998bc0fa2c1d84d0b20b4dca58
 
             </div>
         </div>
@@ -249,7 +289,108 @@
                     <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </div>
+<<<<<<< HEAD
         </form>
+=======
+        </div>
+    </form>
+
+    {{-- edit pasien --}}
+    <form action="{{ route('edit_pasien') }}" method="post">
+        @csrf
+        <div class="modal fade text-left" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
+            aria-hidden="true">
+            <div class="modal-dialog  modal-lg modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel33">
+                            Edit Data Paisen
+                        </h4>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <i data-feather="x"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="edit_modal"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                            <i class="bx bx-x d-block d-sm-none"></i>
+                            <span class="d-none d-sm-block">Close</span>
+                        </button>
+                        <button type="submit" class="btn btn-primary ml-1">
+                            <i class="bx bx-check d-block d-sm-none"></i>
+                            <span class="d-none d-sm-block">Save</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    {{-- import --}}
+    <div class="modal fade" id="import" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <form action="{{ route('importDataPasien') }}" enctype="multipart/form-data" method="post">
+                @csrf
+                <div class="modal-content ">
+                    <div class="modal-header btn-costume">
+                        <h5 class="modal-title text-dark" id="exampleModalLabel">Import {{ $title }}</h5>
+                        <button type="button" class="close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <table>
+                                <tr>
+                                    <td width="100" class="pl-2">
+                                        <img width="80px" src="{{ asset('images-upload/') }}/1.png" alt="">
+                                    </td>
+                                    <td>
+                                        <span style="font-size: 20px;"><b> Download Excel template</b></span><br>
+                                        File ini memiliki kolom header dan isi yang sesuai dengan data produk
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('exportDataPasien') }}" class="btn btn-primary btn-sm"><i
+                                                class="fa fa-download"></i> DOWNLOAD TEMPLATE</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <hr>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="100" class="pl-2">
+                                        <img width="80px" src="{{ asset('images-upload/') }}/2.png" alt="">
+                                    </td>
+                                    <td>
+                                        <span style="font-size: 20px;"><b> Upload Excel template</b></span><br>
+                                        Setelah mengubah, silahkan upload file.
+                                    </td>
+                                    <td>
+                                        <input type="file" name="file" class="form-control">
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+>>>>>>> 895aa9fe6f4fa8998bc0fa2c1d84d0b20b4dca58
     </div>
 </div>
 @endsection
