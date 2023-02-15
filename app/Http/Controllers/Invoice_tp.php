@@ -55,8 +55,17 @@ class Invoice_tp extends Controller
         echo $paket->harga;
     }
 
+    public function loadTerapis(Request $r)
+    {
+        $data = [
+            'therapist' => DB::table('dt_therapy')->where('id_paket', $r->id_paket)->get()
+        ];
+        return view('invoice_tp.loadTerapis',$data);
+    }
+
     public function save_tp(Request $r)
     {
+      
         $tgl = $r->tgl;
         $member_id = $r->member_id;
         $pembayaran = $r->pembayaran;
@@ -95,6 +104,7 @@ class Invoice_tp extends Controller
                 'no_order' => 'HK-' . $no_order,
                 'tgl' => $tgl,
                 'member_id' => $member_id,
+                'admin' => Auth::user()->name
             ];
             DB::table('saldo_therapy')->insert($data);
         }

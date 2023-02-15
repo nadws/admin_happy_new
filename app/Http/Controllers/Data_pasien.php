@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class Data_pasien extends Controller
 {
@@ -13,9 +14,8 @@ class Data_pasien extends Controller
         $data = [
             'title' => 'Data Pasien',
             'pasien' => DB::table('dt_pasien')->orderBy('member_id', 'DESC')->get(),
-            'member_id' => empty($member_id) ? '50001' : $member_id->member_id,
+            'member_id' => empty($member_id->member_id) ? '5001' : $member_id->member_id + 1,
         ];
-
         return view('pasien.data_pasien', $data);
     }
 
@@ -26,11 +26,11 @@ class Data_pasien extends Controller
         $nama = $r->nama;
         $no_telpon = $r->no_telpon;
         $cek = DB::table('dt_pasien')->where('member_id', $member_id)->first();
-        
 
-        
-        if($cek){
-            if($r->page == 'screening') {
+
+
+        if ($cek) {
+            if ($r->page == 'screening') {
                 echo 'gagal';
             } else {
                 return redirect()->route('data_pasien')->with('error', 'Member ID sudah ada');
@@ -41,16 +41,16 @@ class Data_pasien extends Controller
             'nama_pasien' => $nama,
             'tgl_lahir' => $tgl_lahir,
             'no_hp' => $no_telpon,
+            'alamat' => $r->alamat,
             'tgl' => date('Y-m-d'),
         ];
 
         DB::table('dt_pasien')->insert($data);
-        if($r->page == 'screening') {
+        if ($r->page == 'screening') {
             echo 'sukses';
         } else {
             return redirect()->route('data_pasien')->with('sukses', 'Berhasil disimpan');
         }
-
     }
 
     public function delete_pasien(Request $r)
@@ -81,18 +81,36 @@ class Data_pasien extends Controller
             'nama_pasien' => $nama,
             'tgl_lahir' => $tgl_lahir,
             'no_hp' => $no_telpon,
-            'export' => 'T'
+            'export' => 'T',
+            'alamat' => $r->alamat,
         ];
 
         DB::table('dt_pasien')->where('id_pasien', $r->id_pasien)->update($data);
         return redirect()->route('data_pasien')->with('sukses', 'Berhasil disimpan');
-
     }
 
     public function get_pasien(Request $r)
     {
         $pasien = DB::table('dt_pasien')->where('member_id', $r->member_id)->first();
+        $kunjungan = DB::table('invoice_kunjungan')->where('member_id', $r->member_id)->first();
+        $kunjungan6bulan = DB::selectOne("SELECT tgl FROM invoice_kunjungan WHERE member_id = '$r->member_id' ORDER BY id_invoice_kunjungan DESC LIMIT 1");
 
-        echo $pasien->nama_pasien;
+        if (empty($kunjungan)) {
+            $kunjungan = false;
+        } else {
+            $kunjungan = true;
+            $today = Carbon::today();
+            $targetDate = Carbon::create($kunjungan6bulan->tgl);
+
+            $diffInMonths = $today->diffInMonths($targetDate);
+
+            $tgl = $diffInMonths;
+        }
+        
+        return json_encode([
+            'nama' => $pasien->nama_pasien,
+            'kunjungan' => $kunjungan,
+            'tglTerakhir' => $kunjungan ? $tgl : ''
+        ]);
     }
 }

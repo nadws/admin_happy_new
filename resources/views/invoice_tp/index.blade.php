@@ -16,7 +16,7 @@
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $title }}</li>
                         </ol>
                     </nav>
@@ -27,10 +27,7 @@
             <div class="card">
                 <div class="card-header">
                     <ul class="nav nav-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link {{Request::is('invoice') ? 'active' : ''}}"
-                                aria-current="page" href="{{ route('invoice') }}">Screening</a>
-                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link {{Request::is('inv_periksa') ? 'active' : ''}}"
                                 aria-current="page" href="{{ route('inv_periksa') }}">Periksa</a>
@@ -93,6 +90,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    
                 </div>
             </div>
         </section>
@@ -141,13 +139,13 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="">Nama Pasien</label>
-                                <input required type="text" class="form-control nama" disabled>
+                                <input required="true" type="text" class="form-control nama" readonly>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="">Pembayaran</label>
-                                <select name="pembayaran" id="" class="form-control choices">
+                                <select required name="pembayaran" id="" class="form-control choices">
                                     <option value="">- Pilih pembayaran -</option>
                                     <option value="CASH">CASH</option>
                                     <option value="BCA">BCA</option>
@@ -160,11 +158,14 @@
                         <div class="col-lg-12">
                             <hr>
                         </div>
-                        <div class="col-lg-12">
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="">Invoice Registrasi</label> &nbsp;
                                 <input type="checkbox" class="show" name="" id="" style="transform: scale(2)">
                             </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <p id="infoRegistrasi" class="text-danger"></p>
                         </div>
                         <div class="col-lg-6 reg">
                             <div class="form-group">
@@ -180,32 +181,33 @@
                         <div class="col-lg-12">
                             <hr>
                         </div>
-                        <div class="col-lg-3">
-                            <label for="">Therapist</label>
-                            <select name="id_therapist[]" id="" class=" form-select">
-                                <option value="">--Pilih data--</option>
-                                @foreach ($therapist as $p)
-                                <option value="{{$p->id_therapy}}">{{$p->nama_therapy}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <label for="">Paket</label>
-                            <select name="id_paket[]" id="" class=" form-select pilih_paket" count="1">
+                            <select name="id_paket[]" id="" class=" form-select pilih_paket select2" count="1">
                                 <option value="">--Pilih data--</option>
                                 @foreach ($paket as $p)
                                 <option value="{{$p->id_paket}}">{{$p->nama_paket}}</option>
                                 @endforeach
                             </select>
                         </div>
+                        
+                        <div class="col-lg-3">
+                            <label for="">Therapist</label>
+                            <select name="" id="terapiBelumLoad1" class="form-control" disabled>
+                                <option value="">- Pilih Therapis -</option>
+                            </select>
+                            <div id="loadTerapis1"></div>
+                            
+                        </div>
+                        
 
                         <div class="col-lg-2">
                             <label for="">Jumlah</label>
                             <input type="number" name="jumlah[]" class="form-control  jumlah1 jumlah" value="1"
                                 count="1">
                         </div>
-                        <div class="col-lg-3">
-                            <label for="">Rupiah</label>
+                        <div class="col-lg-2">
+                            <label for="">Total Rupiah</label>
                             <input type="number" name="total_rp[]" class="form-control rp1" readonly>
                             <input type="hidden" class="form-control jlh1">
                         </div>
@@ -326,6 +328,9 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
+        $('.select2').select2({
+                            dropdownParent: $('#tambah')
+                        });
             $('.pilihan').hide();
             $('.pilihan').attr('disabled', 'true');
             $('.reg').hide();
@@ -366,13 +371,34 @@
                         member_id: member_id,
                     },
                     type: "GET",
+                    dataType:'json',
                     success: function(data) {
-                        $('.nama').val(data);
+                        if(data.kunjungan) {
+                            if(data.tglTerakhir >= 6) {
+                                $("#infoRegistrasi").text('Anda harus daftar lagi karena telah melebihi batas registrasi')
+                                $(".show").attr('checked', 'true')
+                                $('.reg').show();
+                                $('.inp-reg').removeAttr('disabled');
+                            } else {
+                                $("#infoRegistrasi").text('')
+                                $(".show").removeAttr('checked')
+                                $('.reg').hide();
+                                $('.inp-reg').attr('disabled');
+                            }
+                            
+                        } else {
+                            $("#infoRegistrasi").text('Anda harus daftar')
+                            $(".show").attr('checked', 'true')
+                            $('.reg').show();
+                            $('.inp-reg').removeAttr('disabled');
+                        }
+                        $('.nama').val(data.nama);
                     }
                 });
             });
             $(document).on('change', '.pilih_paket', function() {
                 var count =  $(this).attr('count');
+              
                 var id_paket = $(this).val();
                 $.ajax({
                     url: "{{ route('get_paket') }}",
@@ -389,8 +415,20 @@
                         
                     }
                 });
+
+                $.ajax({
+                    type: "GET",
+                    url: "{{route('loadTerapis')}}?id_paket="+id_paket,
+                    success: function (r) {
+                        $('#loadTerapis'+count).html(r)
+                        $('.select2').select2({
+                            dropdownParent: $('#tambah')
+                        });
+                        $('#terapiBelumLoad'+count).css('display', 'none')
+                    }
+                });
             });
-            $(document).on('keyup', '.jumlah', function() {
+            $(document).on('keyup change', '.jumlah', function() {
                 var count =  $(this).attr('count');   
                 var jumlah = $(this).val();         
                 var harga = $('.jlh' + count).val();
@@ -413,6 +451,9 @@
                     type: "Get",
                     success: function(data) {
                         $('#tambah_paket').append(data);
+                        $('.select2').select2({
+                            dropdownParent: $('#tambah')
+                        });
                     }
                 });
             });

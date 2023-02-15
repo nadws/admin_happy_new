@@ -17,35 +17,7 @@ class ExportController extends Controller
         $screening = DB::select("SELECT a.rupiah,a.pembayaran,a.id_invoice,a.tgl, a.no_order, b.nama_pasien, b.member_id, a.status FROM invoice as a left join dt_pasien as b on b.member_id = a.member_id where a.tgl between '$tgl1' and '$tgl2' order by a.id_invoice DESC");
 
         $spreadsheet = new Spreadsheet();
-        $spreadsheet->setActiveSheetIndex(0);
-        $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setTitle('Invoice Screening');
-
-        $sheet
-            ->setCellValue('A1', 'No')
-            ->setCellValue('B1', 'Tanggal')
-            ->setCellValue('C1', 'Member ID')
-            ->setCellValue('D1', 'No Order')
-            ->setCellValue('E1', 'Nama Pasien')
-            ->setCellValue('F1', 'Status')
-            ->setCellValue('G1', 'Pembayaran')
-            ->setCellValue('H1', 'Rupiah');
-        $sheet->getStyle("A1:H1")->getFont()->setBold(true);
-
-        $kolom = 2;
-
-        foreach ($screening as $no => $d) {
-            $sheet->setCellValue("A$kolom", $no + 1)
-                ->setCellValue("B$kolom", $d->tgl)
-                ->setCellValue("C$kolom", $d->member_id)
-                ->setCellValue("D$kolom", $d->no_order)
-                ->setCellValue("E$kolom", $d->nama_pasien)
-                ->setCellValue("F$kolom", $d->status)
-                ->setCellValue("G$kolom", $d->pembayaran)
-                ->setCellValue("H$kolom", $d->rupiah);
-
-            $kolom++;
-        }
+        
 
         $writer = new Xlsx($spreadsheet);
         $style = [
@@ -60,11 +32,8 @@ class ExportController extends Controller
             ],
         ];
 
-        $batas = $kolom - 1;
-        $sheet->getStyle('A1:H' . $batas)->applyFromArray($style);
-
         $spreadsheet->createSheet();
-        $spreadsheet->setActiveSheetIndex(1);
+        $spreadsheet->setActiveSheetIndex(0);
 
         $sheet2 = $spreadsheet->getActiveSheet();
         $sheet2->setTitle('Invoice Periksa');
@@ -106,7 +75,7 @@ class ExportController extends Controller
         $sheet2->getStyle('A1:I' . $batasper)->applyFromArray($style);
 
         $spreadsheet->createSheet();
-        $spreadsheet->setActiveSheetIndex(2);
+        $spreadsheet->setActiveSheetIndex(1);
         $sheet3 = $spreadsheet->getActiveSheet();
         $sheet3->setTitle('Invoice Registrasi');
 
@@ -141,21 +110,15 @@ class ExportController extends Controller
         $sheet3->getStyle('A1:H' . $batasreg)->applyFromArray($style);
 
         $spreadsheet->createSheet();
-        $spreadsheet->setActiveSheetIndex(3);
+        $spreadsheet->setActiveSheetIndex(2);
         $sheet4 = $spreadsheet->getActiveSheet();
         $sheet4->setTitle('Invoice Therapy & Paket');
 
-        $tp = DB::select("SELECT a.rupiah,a.pembayaran, a.id_invoice_therapy, a.tgl, a.no_order, b.nama_pasien, a.member_id, c.saldo
-        FROM invoice_therapy AS a
-        LEFT JOIN dt_pasien AS b ON b.member_id = a.member_id
-        LEFT JOIN (
-        SELECT a.id_paket, SUM(a.debit - a.kredit) AS saldo, a.no_order
-        FROM saldo_therapy AS a
-        GROUP BY a.no_order, a.id_paket
-        HAVING SUM(a.debit - a.kredit) = 1
-        ) AS c ON c.no_order = a.no_order
-        WHERE a.tgl BETWEEN '$tgl1' AND '$tgl2'
-        ORDER BY a.id_invoice_therapy DESC");
+        $tp = DB::select("SELECT a.no_order,a.tgl,a.member_id,b.nama_pasien,a.pembayaran,c.rupiah FROM invoice_therapy as a 
+        LEFT JOIN dt_pasien as b ON a.member_id = b.member_id
+        LEFT JOIN(
+            SELECT a.no_order,SUM(a.total_rp) as rupiah FROM saldo_therapy as a GROUP BY a.no_order
+        ) as c ON a.no_order = c.no_order WHERE a.tgl BETWEEN '$tgl1' AND '$tgl2' ORDER BY a.no_order DESC");
 
         $sheet4
             ->setCellValue('A1', 'No')
@@ -186,7 +149,7 @@ class ExportController extends Controller
         $sheet4->getStyle('A1:H' . $batastp)->applyFromArray($style);
 
         $spreadsheet->createSheet();
-        $spreadsheet->setActiveSheetIndex(4);
+        $spreadsheet->setActiveSheetIndex(3);
         $sheet5 = $spreadsheet->getActiveSheet();
         $sheet5->setTitle('Invoice Kunjungan');
 
@@ -219,7 +182,7 @@ class ExportController extends Controller
         $sheet5->getStyle('A1:E' . $bataskun)->applyFromArray($style);
 
         $spreadsheet->createSheet();
-        $spreadsheet->setActiveSheetIndex(5);
+        $spreadsheet->setActiveSheetIndex(4);
         $sheet6 = $spreadsheet->getActiveSheet();
         $sheet6->setTitle('Data Paket Pasien');
 
@@ -227,15 +190,13 @@ class ExportController extends Controller
             ->setCellValue('A1', 'No')
             ->setCellValue('B1', 'Nama')
             ->setCellValue('C1', 'Member ID')
-            ->setCellValue('E1', 'Data Paket')
-            ->setCellValue('F1', 'Nama Theraphy')
-            ->setCellValue('G1', 'Paket')
-            ->setCellValue('H1', 'Jumlah')
-            ->setCellValue('I1', 'Dipakai')
-            ->setCellValue('J1', 'Sisa');
+            ->setCellValue('D1', 'Nama Theraphy')
+            ->setCellValue('E1', 'Paket')
+            ->setCellValue('F1', 'Jumlah')
+            ->setCellValue('G1', 'Dipakai')
+            ->setCellValue('H1', 'Sisa');
 
-        $sheet6->getStyle("A1:C1")->getFont()->setBold(true);
-        $sheet6->getStyle("E1:J1")->getFont()->setBold(true);
+        $sheet6->getStyle("A1:H1")->getFont()->setBold(true);
 
         $dt_pasien = DB::table('dt_pasien')->get();
         $kolpas = 2;
@@ -249,26 +210,24 @@ class ExportController extends Controller
             GROUP BY a.id_paket");
 
             if (!empty($detail)) {
-
-
                 foreach ($detail as $n) {
                     $ttl = $n->debit - $n->kredit;
                     $sheet6
                         ->setCellValue("A$kolpas", $nom++)
                         ->setCellValue("B$kolpas", $r->nama_pasien)
                         ->setCellValue("C$kolpas", $r->member_id)
-                        ->setCellValue("F$kolpas", $n->nama_therapy)
-                        ->setCellValue("G$kolpas", $n->nama_paket)
-                        ->setCellValue("H$kolpas", $n->debit)
-                        ->setCellValue("I$kolpas", $n->kredit)
-                        ->setCellValue("J$kolpas", $ttl);
+                        ->setCellValue("D$kolpas", $n->nama_therapy)
+                        ->setCellValue("E$kolpas", $n->nama_paket)
+                        ->setCellValue("F$kolpas", $n->debit)
+                        ->setCellValue("G$kolpas", $n->kredit)
+                        ->setCellValue("H$kolpas", $ttl);
                     $kolpas++;
                 }
             }
         }
 
         $bataspas = $kolpas - 1;
-        $sheet6->getStyle('A1:J' . $bataspas)->applyFromArray($style);
+        $sheet6->getStyle('A1:H' . $bataspas)->applyFromArray($style);
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Invoice & Paket Pasien.xlsx"');

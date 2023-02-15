@@ -20,6 +20,7 @@ use App\Http\Controllers\Invoice;
 use App\Http\Controllers\Invoice_kunjungan;
 use App\Http\Controllers\Invoice_periksa;
 use App\Http\Controllers\Invoice_tp;
+use App\Http\Controllers\JenisInvController;
 use App\Http\Controllers\Komtherapist;
 use App\Http\Controllers\NominalController;
 use App\Http\Controllers\Pertanyaan;
@@ -164,10 +165,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('get_edit_paket', [Data_paket::class, 'get_edit_paket'])->name('get_edit_paket');
     Route::post('edit_paket', [Data_paket::class, 'edit_paket'])->name('edit_paket');
     Route::get('delete_paket', [Data_paket::class, 'delete_paket'])->name('delete_paket');
+    
+    Route::get('jenis_inv', [JenisInvController::class, 'index'])->name('jenis_inv');
+    Route::post('tbh_jenis_inv', [JenisInvController::class, 'tbh_jenis_inv'])->name('tbh_jenis_inv');
+    Route::get('hps_jenis_inv', [JenisInvController::class, 'hps_jenis_inv'])->name('hps_jenis_inv');
+    Route::post('edit_jenis_inv', [JenisInvController::class, 'edit_jenis_inv'])->name('edit_jenis_inv');
 
     Route::get('invoice_tp', [Invoice_tp::class, 'index'])->name('invoice_tp');
     Route::get('tambah_paket', [Invoice_tp::class, 'tambah_paket'])->name('tambah_paket');
     Route::get('get_paket', [Invoice_tp::class, 'get_paket'])->name('get_paket');
+    Route::get('loadTerapis', [Invoice_tp::class, 'loadTerapis'])->name('loadTerapis');
     Route::post('save_tp', [Invoice_tp::class, 'save_tp'])->name('save_tp');
     Route::get('view_paket', [Invoice_tp::class, 'view_paket'])->name('view_paket');
     Route::get('view_paket2', [Invoice_tp::class, 'view_paket2'])->name('view_paket2');
@@ -186,6 +193,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('tb_therapy', [Dt_therapy::class, 'index'])->name('tb_therapy');
     Route::post('tbh_therapy', [Dt_therapy::class, 'tbh_therapy'])->name('tbh_therapy');
     Route::post('edit_terapi', [Dt_therapy::class, 'edit_terapi'])->name('edit_terapi');
+    Route::get('hps_terapi', [Dt_therapy::class, 'hps_terapi'])->name('hps_terapi');
 
     Route::get('dt_paket_pasien', [Data_paket_pasien::class, 'index'])->name('dt_paket_pasien');
     Route::get('view_paket_pasien', [Data_paket_pasien::class, 'view_paket_pasien'])->name('view_paket_pasien');

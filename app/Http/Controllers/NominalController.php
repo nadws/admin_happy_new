@@ -18,18 +18,23 @@ class NominalController extends Controller
             case '1':
                 $title = "Screening";
                 $jenis = 'inv_screening';
+                break;
             case '2':
                 $title = "Periksa";
                 $jenis = 'inv_periksa';
+                break;
             case '3':
                 $title = "Registrasi";
                 $jenis = 'inv_registrasi';
+                break;
             case '4':
                 $title = "Theraphy & Paket";
                 $jenis = 'inv_tp';
+                break;
             case '5':
                 $title = "Kunjungan";
                 $jenis = 'inv_kunjungan';
+                break;
         }
 
         $data = [
@@ -42,23 +47,28 @@ class NominalController extends Controller
 
     public function tambah_nominal($tipe, Request $r)
     {
-
+        
         switch($tipe) {
             case '1':
                 $jenis = 'inv_screening';
+                break;
             case '2':
                 $jenis = 'inv_periksa';
+                break;
             case '3':
                 $jenis = 'inv_registrasi';
+                break;
             case '4':
                 $jenis = 'inv_tp';
+                break;
             case '5':
                 $jenis = 'inv_kunjungan';
+                break;
         }
-
         DB::table('tb_nominal')->where('jenis', $jenis)->insert([
             'nominal' => $r->nominal,
-            'jenis' => $jenis
+            'jenis' => $jenis,
+            'nm_jenis' => $r->nm_jenis
         ]);
 
         return redirect()->route('data_nominal', $tipe)->with('sukses', 'Berhasil tambah nominal');

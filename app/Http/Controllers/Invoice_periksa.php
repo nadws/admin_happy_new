@@ -10,6 +10,7 @@ class Invoice_periksa extends Controller
 {
     function index(Request $r)
     {
+        
         if (empty($r->tgl1)) {
             $tgl1 = date('Y-m-01');
             $tgl2 = date('Y-m-t');
@@ -26,7 +27,7 @@ class Invoice_periksa extends Controller
             left join dt_dokter as c on c.id_dokter = a.id_dokter
             where a.tgl BETWEEN '$tgl1' and '$tgl2' order by a.id_invoice_periksa DESC"),
             'dokter' => DB::table('dt_dokter')->get(),
-            'nominal' => DB::table('tb_nominal')->where('jenis', 'inv_periksa')->get()
+            'nominal' => DB::table('tb_nominal')->where('jenis', 'inv_periksa')->get(),
         ];
         return view('invoice_periksa.index', $data);
     }
@@ -72,6 +73,7 @@ class Invoice_periksa extends Controller
             'tgl' => $r->tgl,
             'rupiah' => $r->rupiah,
             'pembayaran' => $pembayaran,
+            'jenis' => $r->id_jenis,
             'status' => 'paid',
             'admin' => Auth::user()->name
         ];

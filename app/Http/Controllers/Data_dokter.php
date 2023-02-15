@@ -18,6 +18,7 @@ class Data_dokter extends Controller
 
     public function tbh_dokter(Request $r)
     {
+      
         $data = ['nm_dokter' => $r->nm_dokter];
         DB::table('dt_dokter')->insert($data);
 

@@ -24,4 +24,10 @@
             <input required type="text" name="no_telpon" class="form-control" value="{{$pasien->no_hp}}">
         </div>
     </div>
+    <div class="col-lg-8">
+        <div class="form-group">
+            <label for="">Alamat</label>
+            <input required type="text" value="{{ $pasien->alamat }}" name="alamat" class="form-control">
+        </div>
+    </div>
 </div>

@@ -16,7 +16,7 @@
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $title }}</li>
                         </ol>
                     </nav>
@@ -109,7 +109,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="">Tanggal</label>
-                                <input required type="date" name="tgl" value="{{date('Y-m-d')}}" class="form-control">
+                                <input {{Auth::user()->role != 'Presiden' ? 'readonly' : ''}} required type="date" name="tgl" value="{{date('Y-m-d')}}" class="form-control">
                             </div>
                         </div>
                         
@@ -266,8 +266,9 @@
                         member_id: member_id,
                     },
                     type: "GET",
+                    dataType: 'json',
                     success: function(data) {
-                        $('.nama').val(data);
+                        $('.nama').val(data.nama);
                     }
                 });
 
@@ -290,8 +291,9 @@
                         member_id: member_id,
                     },
                     type: "GET",
+                    dataType : 'json',
                     success: function(data) {
-                        $('.nama').val(data);
+                        $('.nama').val(data.nama);
                     }
                 });
                 $.ajax({

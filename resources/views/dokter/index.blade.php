@@ -16,7 +16,7 @@
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $title }}</li>
                         </ol>
                     </nav>
@@ -83,6 +83,7 @@
                 </div>
                 <form action="#">
                     <div class="modal-body">
+                        
                         <div class="form-group">
                             <label>Nama Dokter </label>
                             <input type="text" name="nm_dokter" class="form-control" />

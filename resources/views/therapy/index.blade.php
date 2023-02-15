@@ -16,7 +16,7 @@
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $title }}</li>
                         </ol>
                     </nav>
@@ -39,7 +39,7 @@
                                     <tr>
                                         <th width="6%">#</th>
                                         <th>Nama Therapist</th>
-                                        {{-- <th>Level</th> --}}
+                                        <th>Paket</th>
                                         <th width="25%">Aksi</th>
                                     </tr>
                                 </thead>
@@ -51,13 +51,13 @@
                                     <tr>
                                         <td>{{ $i++ }}</td>
                                         <td>{{ $d->nama_therapy }}</td>
-                                        {{-- <td>{{ $d->level }}</td> --}}
+                                        <td>{{ $d->nama_paket }}</td>
                                         <td>
                                             <a href="#" data-bs-toggle="modal"
                                                 data-bs-target="#edit{{ $d->id_therapy }}"
                                                 class="btn btn-sm icon btn-primary"><i class="bi bi-pencil"></i></a>
                                             <a onclick="return confirm('Yakin ingin dihapus')"
-                                                href="{{ route('hps_dokter', ['id_therapy' => $d->id_therapy]) }}"
+                                                href="{{ route('hps_terapi', ['id_therapy' => $d->id_therapy]) }}"
                                                 class="btn btn-sm icon btn-danger"><i class="bi bi-trash"></i></a>
                                         </td>
                                     </tr>
@@ -67,48 +67,7 @@
                         </div>
                     </div>
                 </div>
-                {{-- <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <a href="#" id="sukses" data-bs-toggle="modal" data-bs-target="#tambah"
-                                class="btn icon icon-left btn-primary" style="float: right"><i
-                                    class="bi bi-plus-circle"></i>
-                                Tambah</a>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-hover" id="table1">
-                                <thead>
-                                    <tr>
-                                        <th width="6%">#</th>
-                                        <th>Level</th>
-                                        <th>Rupiah</th>
-                                        <th width="25%">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                    $i = 1;
-                                    @endphp
-                                    @foreach ($level as $d)
-                                    <tr>
-                                        <td>{{ $i++ }}</td>
-                                        <td>{{ $d->level }}</td>
-                                        <td>{{ number_format($d->nominal,0) }}</td>
-                                        <td>
-                                            <a href="#" data-bs-toggle="modal"
-                                                data-bs-target="#edit{{ $d->id_level_therapist  }}"
-                                                class="btn btn-sm icon btn-primary"><i class="bi bi-pencil"></i></a>
-                                            <a onclick="return confirm('Yakin ingin dihapus')"
-                                                href="{{ route('hps_dokter', ['id_therapy' => $d->id_level_therapist ]) }}"
-                                                class="btn btn-sm icon btn-danger"><i class="bi bi-trash"></i></a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div> --}}
+            
             </div>
         </section>
     </div>
@@ -120,11 +79,11 @@
     @csrf
     <div class="modal fade text-left" id="edit{{$i->id_therapy}}" tabindex="-1" role="dialog"
         aria-labelledby="myModalLabel33" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel33">
-                        Tambah Therapist
+                        Edit Therapist
                     </h4>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <i data-feather="x"></i>
@@ -132,11 +91,27 @@
                 </div>
                 <form action="#">
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label>Nama Therapist </label>
-                            <input type="hidden" name="id_therapy" value="{{ $i->id_therapy }}">
-                            <input type="text" value="{{ $i->nama_therapy }}" name="nama_therapy"
-                                class="form-control" />
+                        <div class="row">
+                            <div class="col-lg-8">
+                            
+                                <div class="form-group">
+                                    <label>Nama Therapist </label>
+                                    <input type="hidden" name="id_therapy" value="{{ $i->id_therapy }}">
+                                    <input type="text" value="{{ $i->nama_therapy }}" name="nama_therapy"
+                                        class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Data Paket </label>
+                                    <select name="id_paket" id="" class="form-control choices">
+                                        <option value="">- Pilih Paket -</option>
+                                        @foreach ($paket as $d)
+                                            <option {{$i->id_paket == $d->id_paket ? 'selected' : ''}} value="{{ $d->id_paket }}">{{ $d->nama_paket }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -155,11 +130,12 @@
     </div>
 </form>
 @endforeach
+
 <form action="{{ route('tbh_therapy') }}" method="POST">
     @csrf
     <div class="modal fade text-left" id="tambah" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel33">
@@ -171,9 +147,25 @@
                 </div>
                 <form action="#">
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label>Nama Therapist </label>
-                            <input type="text" name="nama_therapy" class="form-control" />
+                        <div class="row">
+                            <div class="col-lg-8">
+
+                                <div class="form-group">
+                                    <label>Nama Therapist </label>
+                                    <input required type="text" name="nama_therapy" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Data Paket </label>
+                                    <select name="id_paket" id="" class="form-control choices">
+                                        <option value="">- Pilih Paket -</option>
+                                        @foreach ($paket as $d)
+                                            <option value="{{ $d->id_paket }}">{{ $d->nama_paket }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">

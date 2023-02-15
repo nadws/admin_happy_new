@@ -16,7 +16,7 @@
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $title }}</li>
                         </ol>
                     </nav>
@@ -27,10 +27,10 @@
             <div class="card">
                 <div class="card-header">
                     <ul class="nav nav-tabs">
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link {{Request::is('invoice') ? 'active' : ''}}"
                                 aria-current="page" href="{{ route('invoice') }}">Screening</a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item">
                             <a class="nav-link {{Request::is('inv_periksa') ? 'active' : ''}}"
                                 aria-current="page" href="{{ route('inv_periksa') }}">Periksa</a>

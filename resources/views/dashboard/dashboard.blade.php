@@ -16,7 +16,7 @@
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $title }}</li>
                         </ol>
                     </nav>
@@ -36,7 +36,7 @@
                 @endphp
                 @foreach ($perm as $p)
                 <div class="col-6 col-lg-2 col-md-6">
-                    <a href="{{route($p->link)}}" target="_blank">
+                    <a href="{{route($p->link)}}">
                         <div class="card">
                             <div class="card-body px-4 py-4-5" style="height: 170px">
                                 <div class="row ">
