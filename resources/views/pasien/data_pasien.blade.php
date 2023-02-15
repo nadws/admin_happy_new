@@ -26,9 +26,14 @@
             <section class="section">
                 <div class="card">
                     <div class="card-header">
+
                         <a href="#" data-bs-toggle="modal" data-bs-target="#tambah"
-                            class="btn icon icon-left btn-primary" style="float: right;"><i class="bi bi-plus"></i>
+                            class="btn icon icon-left btn-primary" style="float: right; margin-left:5px;"><i
+                                class="bi bi-plus"></i>
                             Tambah</a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#import"
+                            class="btn icon icon-left btn-primary" style="float: right;"><i class="fas fa-file-import"></i>
+                            Import</a>
                     </div>
                     <div class="card-body">
                         <table class="table table-hover" id="table1">
@@ -47,23 +52,27 @@
                                 @foreach ($pasien as $no => $n)
                                     <tr>
                                         <td>{{ $no + 1 }}</td>
-                                        <td>{{ $n->member_id }}</td>
+                                        <td>{{ str_pad($n->member_id, , '0', STR_PAD_LEFT) }}</td>
                                         <td>{{ date('d-m-Y', strtotime($n->tgl_lahir)) }}</td>
                                         <td>{{ $n->nama_pasien }}</td>
                                         <td>{{ $n->no_hp }}</td>
                                         @if (strlen($n->alamat) > 14)
-                                        <td>
-                                            <span class="teksLimit{{$n->id_pasien}}"> {{ Str::limit($n->alamat, 20, '...') }} 
-                                                <a href="#" class="readMore" id="{{ $n->id_pasien }}">read more</a>
-                                            </span>
-                                            <span class="teksFull{{$n->id_pasien}}" style="display:none">{{ $n->alamat }} <a href="#" class="less" id="{{ $n->id_pasien }}">less</a></span>
-                                        </td>
+                                            <td>
+                                                <span class="teksLimit{{ $n->id_pasien }}">
+                                                    {{ Str::limit($n->alamat, 20, '...') }}
+                                                    <a href="#" class="readMore" id="{{ $n->id_pasien }}">read
+                                                        more</a>
+                                                </span>
+                                                <span class="teksFull{{ $n->id_pasien }}"
+                                                    style="display:none">{{ $n->alamat }} <a href="#"
+                                                        class="less" id="{{ $n->id_pasien }}">less</a></span>
+                                            </td>
                                         @else
-                                        <td>
-                                            {{ $n->alamat }}
-                                        </td>
+                                            <td>
+                                                {{ $n->alamat }}
+                                            </td>
                                         @endif
-                                        
+
                                         <td>
                                             <a href="#" class="btn btn-primary btn-sm edit" data-bs-toggle="modal"
                                                 data-bs-target="#edit" id_pasien="{{ $n->id_pasien }}"><i
@@ -148,6 +157,8 @@
             </div>
         </div>
     </form>
+
+    {{-- edit pasien --}}
     <form action="{{ route('edit_pasien') }}" method="post">
         @csrf
         <div class="modal fade text-left" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
@@ -180,6 +191,69 @@
             </div>
         </div>
     </form>
+
+    {{-- import --}}
+    <div class="modal fade" id="import" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <form action="{{ route('importDataPasien') }}" enctype="multipart/form-data" method="post">
+                @csrf
+                <div class="modal-content ">
+                    <div class="modal-header btn-costume">
+                        <h5 class="modal-title text-dark" id="exampleModalLabel">Import {{ $title }}</h5>
+                        <button type="button" class="close text-dark" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <table>
+                                <tr>
+                                    <td width="100" class="pl-2">
+                                        <img width="80px" src="{{ asset('images-upload/') }}/1.png" alt="">
+                                    </td>
+                                    <td>
+                                        <span style="font-size: 20px;"><b> Download Excel template</b></span><br>
+                                        File ini memiliki kolom header dan isi yang sesuai dengan data produk
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('exportDataPasien') }}" class="btn btn-primary btn-sm"><i
+                                                class="fa fa-download"></i> DOWNLOAD TEMPLATE</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <hr>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td width="100" class="pl-2">
+                                        <img width="80px" src="{{ asset('images-upload/') }}/2.png" alt="">
+                                    </td>
+                                    <td>
+                                        <span style="font-size: 20px;"><b> Upload Excel template</b></span><br>
+                                        Setelah mengubah, silahkan upload file.
+                                    </td>
+                                    <td>
+                                        <input type="file" name="file" class="form-control">
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection
 @section('scripts')
     <script>
@@ -195,6 +269,7 @@
                 });
 
             });
+
             function readMore() {
                 $(document).on('click', '.readMore', function(e) {
                     e.preventDefault()
@@ -210,7 +285,7 @@
                 })
             }
             readMore()
-            
+
 
         });
     </script>

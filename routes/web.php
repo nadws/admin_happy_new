@@ -207,9 +207,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('loadTerapi', [VoidController::class, 'loadTerapi'])->name('loadTerapi');
     Route::get('loadKunjungan', [VoidController::class, 'loadKunjungan'])->name('loadKunjungan');
 
-    // export data
+    // export dan import data
     Route::post('exportScreening', [ExportController::class, 'exportScreening'])->name('exportScreening');
     Route::get('exportTherapist/{tgl1}/{tgl2}', [ExportTherapist::class, 'index'])->name('exportTherapist');
+    Route::get('exportDataPasien', [ExportController::class, 'exportPasien'])->name('exportDataPasien');
+    Route::get('exportPaket', [ExportController::class, 'exportPaket'])->name('exportPaket');
+    Route::post('importDataPasien', [ExportController::class, 'importDataPasien'])->name('importDataPasien');
 
     Route::get('inv_registrasi', [inv_registrasi::class, 'index'])->name('inv_registrasi');
     Route::post('save_registrasi', [inv_registrasi::class, 'save_registrasi'])->name('save_registrasi');

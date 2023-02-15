@@ -17,7 +17,7 @@ class ExportController extends Controller
         $screening = DB::select("SELECT a.rupiah,a.pembayaran,a.id_invoice,a.tgl, a.no_order, b.nama_pasien, b.member_id, a.status FROM invoice as a left join dt_pasien as b on b.member_id = a.member_id where a.tgl between '$tgl1' and '$tgl2' order by a.id_invoice DESC");
 
         $spreadsheet = new Spreadsheet();
-        
+
 
         $writer = new Xlsx($spreadsheet);
         $style = [
@@ -235,5 +235,185 @@ class ExportController extends Controller
 
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');
+    }
+
+    public function exportPasien()
+    {
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->createSheet();
+
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Data Pasien');
+
+        $pasien = DB::table('dt_pasien')->orderBy('member_id', 'ASC')->get();
+
+        $sheet
+            ->setCellValue('A1', 'No')
+            ->setCellValue('B1', 'ID Pasien')
+            ->setCellValue('C1', 'Member ID')
+            ->setCellValue('D1', 'Nama')
+            ->setCellValue('E1', 'Alamat')
+            ->setCellValue('F1', 'Tgl Lahir')
+            ->setCellValue('G1', 'No HP');
+
+        $sheet->getStyle("A1:G1")->getFont()->setBold(true);
+        $sheet->getStyle("B1:C1")->getFill()
+            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            ->getStartColor()
+            ->setARGB('d92121');
+
+        $kol = 2;
+
+        foreach ($pasien as $no => $d) {
+            $sheet->setCellValue("A$kol", $no + 1)
+                ->setCellValue("B$kol", $d->id_pasien)
+                ->setCellValue("C$kol", $d->member_id)
+                ->setCellValue("D$kol", $d->nama_pasien)
+                ->setCellValue("E$kol", $d->alamat)
+                ->setCellValue("F$kol", $d->tgl_lahir)
+                ->setCellValue("G$kol", $d->no_hp);
+
+            $kol++;
+        }
+
+
+        $style = [
+            'borders' => [
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                ],
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN
+                ],
+            ],
+        ];
+        $batas = count($pasien) + 1;
+        $sheet->getStyle('A1:G' . $batas)->applyFromArray($style);
+
+        $writer = new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Data Pasien.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+    }
+
+    public function exportPaket()
+    {
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->createSheet();
+
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Data Pasien');
+
+        $pasien = DB::table('dt_pasien')->orderBy('member_id', 'ASC')->get();
+
+        $sheet
+            ->setCellValue('A1', 'No')
+            ->setCellValue('B1', 'Kode')
+            ->setCellValue('C1', 'Nama')
+            ->setCellValue('D1', 'Alamat')
+            ->setCellValue('E1', 'Tgl Lahir');
+        $paket = DB::table('dt_paket')->get();
+
+        foreach ($paket as $i => $p) {
+            $lingkah = 1;
+            $abjad1 = chr(96 + ($i+5 % 26) + 1);
+            $abjad2 = chr(96 + ($i+5 % 26) + 2);
+
+            $sheet->setCellValue($abjad1 . '1', $p->nama_paket);
+            $sheet->setCellValue($abjad2 . '1', 'terapis');
+
+        }
+
+        $sheet->getStyle("A1:G1")->getFont()->setBold(true);
+        $sheet->getStyle("B1:C1")->getFill()
+            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            ->getStartColor()
+            ->setARGB('d92121');
+
+        // $kol = 2;
+
+        // foreach ($pasien as $no => $d) {
+        //     $sheet->setCellValue("A$kol", $no + 1)
+        //         ->setCellValue("B$kol", $d->id_pasien)
+        //         ->setCellValue("C$kol", $d->member_id)
+        //         ->setCellValue("D$kol", $d->nama_pasien)
+        //         ->setCellValue("E$kol", $d->alamat)
+        //         ->setCellValue("F$kol", $d->tgl_lahir)
+        //         ->setCellValue("G$kol", $d->no_hp);
+
+        //     $kol++;
+        // }
+
+        $style = [
+            'borders' => [
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                ],
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN
+                ],
+            ],
+        ];
+        $batas = count($pasien) + 1;
+        $sheet->getStyle('A1:G' . $batas)->applyFromArray($style);
+
+        $writer = new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Data Pasien.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+    }
+
+    public function importDataPasien(Request $r)
+    {
+        $file = $r->file('file');
+        $fileDiterima = ['xls', 'xlsx'];
+        $cek = in_array($file->getClientOriginalExtension(), $fileDiterima);
+        if ($cek) {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+            $spreadsheet = $reader->load($file);
+            $sheet = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+            $data = [];
+
+            $numrow = 1;
+
+            foreach ($sheet as $row) {
+                if ($row['B'] == '' && $row['C'] == '') {
+                    continue;
+                }
+                if ($numrow > 1) {
+                    if ($row['B'] == '') {
+                        DB::table('dt_pasien')->insert([
+                            'member_id' => $row['C'],
+                            'nama_pasien' => $row['D'],
+                            'alamat' => $row['E'],
+                            'tgl_lahir' => $row['F'],
+                            'no_hp' => $row['G'],
+                            'tgl' => date('Y-m-d'),
+                        ]);
+                    } else {
+                        DB::table('dt_pasien')->where('id_pasien', $row['B'])->update([
+                            'member_id' => $row['C'],
+                            'nama_pasien' => $row['D'],
+                            'alamat' => $row['E'],
+                            'tgl_lahir' => $row['F'],
+                            'no_hp' => $row['G'],
+                            'tgl' => date('Y-m-d'),
+                        ]);
+                    }
+                }
+                $numrow++;
+            }
+            return redirect()->route('data_pasien')->with('sukses', 'Berhasil Import Data');
+        } else {
+            return redirect()->route('data_pasien')->with('error', 'File tidak didukung');
+        }
     }
 }

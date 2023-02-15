@@ -9,7 +9,7 @@ class NominalController extends Controller
 {
     public function index()
     {
-        return redirect()->route('data_nominal',1);
+        return redirect()->route('data_nominal',2);
     }
 
     public function data_nominal($tipe)
