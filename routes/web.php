@@ -165,7 +165,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('get_edit_paket', [Data_paket::class, 'get_edit_paket'])->name('get_edit_paket');
     Route::post('edit_paket', [Data_paket::class, 'edit_paket'])->name('edit_paket');
     Route::get('delete_paket', [Data_paket::class, 'delete_paket'])->name('delete_paket');
-    
+
     Route::get('jenis_inv', [JenisInvController::class, 'index'])->name('jenis_inv');
     Route::post('tbh_jenis_inv', [JenisInvController::class, 'tbh_jenis_inv'])->name('tbh_jenis_inv');
     Route::get('hps_jenis_inv', [JenisInvController::class, 'hps_jenis_inv'])->name('hps_jenis_inv');
