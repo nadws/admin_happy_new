@@ -29,12 +29,12 @@
                     <ul class="nav nav-tabs">
 
                         <li class="nav-item">
-                            <a class="nav-link {{Request::is('inv_periksa') ? 'active' : ''}}"
-                                aria-current="page" href="{{ route('inv_periksa') }}">Periksa</a>
+                            <a class="nav-link {{Request::is('inv_periksa') ? 'active' : ''}}" aria-current="page"
+                                href="{{ route('inv_periksa') }}">Periksa</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{Request::is('invoice_tp') ? 'active' : ''}}"
-                                aria-current="page" href="{{ route('invoice_tp') }}">Therapy & Paket</a>
+                            <a class="nav-link {{Request::is('invoice_tp') ? 'active' : ''}}" aria-current="page"
+                                href="{{ route('invoice_tp') }}">Therapy & Paket</a>
                         </li>
                     </ul>
                     <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn icon icon-left btn-primary"
@@ -90,7 +90,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    
+
                 </div>
             </div>
         </section>
@@ -100,8 +100,8 @@
 
 <form action="{{ route('save_tp') }}" method="post">
     @csrf
-    <div class="modal fade text-left" id="tambah">
-        <div class="modal-dialog  modal-lg " role="document">
+    <div id="tambah" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">>
+        <div class="modal-dialog  modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel33">
@@ -190,16 +190,16 @@
                                 @endforeach
                             </select>
                         </div>
-                        
+
                         <div class="col-lg-3">
                             <label for="">Therapist</label>
                             <select name="" id="terapiBelumLoad1" class="form-control" disabled>
                                 <option value="">- Pilih Therapis -</option>
                             </select>
                             <div id="loadTerapis1"></div>
-                            
+
                         </div>
-                        
+
 
                         <div class="col-lg-2">
                             <label for="">Jumlah</label>
@@ -329,7 +329,7 @@
 <script>
     $(document).ready(function() {
         $('.select2').select2({
-                            dropdownParent: $('#tambah')
+                            dropdownParent: $('#tambah .modal-content')
                         });
             $('.pilihan').hide();
             $('.pilihan').attr('disabled', 'true');
@@ -375,7 +375,7 @@
                     success: function(data) {
                         if(data.kunjungan) {
                             if(data.tglTerakhir >= 6) {
-                                $("#infoRegistrasi").text('Anda harus daftar lagi karena telah melebihi batas registrasi')
+                                $("#infoRegistrasi").text('Maaf anda harus membayar registrasi lagi karena telah melebihi batas registrasi ')
                                 $(".show").attr('checked', 'true')
                                 $('.reg').show();
                                 $('.inp-reg').removeAttr('disabled');
@@ -387,7 +387,7 @@
                             }
                             
                         } else {
-                            $("#infoRegistrasi").text('Anda harus daftar')
+                            $("#infoRegistrasi").text('Maaf anda harus bayar registrasi untuk pertama kali')
                             $(".show").attr('checked', 'true')
                             $('.reg').show();
                             $('.inp-reg').removeAttr('disabled');
@@ -451,8 +451,8 @@
                     type: "Get",
                     success: function(data) {
                         $('#tambah_paket').append(data);
-                        $('.select2').select2({
-                            dropdownParent: $('#tambah')
+                        $(".select2").select2({
+                            dropdownParent: $('#tambah .modal-content')
                         });
                     }
                 });
