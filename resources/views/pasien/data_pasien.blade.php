@@ -249,7 +249,6 @@
                     <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </div>
-<<<<<<< HEAD
         </div>
     </form>
 
@@ -349,9 +348,6 @@
                 </div>
             </form>
         </div>
-=======
-        </form>
->>>>>>> 61269c9c131130f22d700da161fc03d883d8175d
     </div>
 </div>
 @endsection

@@ -331,12 +331,9 @@ class ExportController extends Controller
             $abjad1 = chr(96 + ($i + 7 % 26) + $i + 1);
             $abjad2 = chr(96 + ($i + 8 % 26) + $s + 1);
 
-<<<<<<< HEAD
-=======
             $sheet->getColumnDimension($abjad1)->setWidth(12.00);
             $sheet->getColumnDimension($abjad2)->setWidth(15.82);
 
->>>>>>> 61269c9c131130f22d700da161fc03d883d8175d
             $sheet->setCellValue($abjad1 . '1', $p->nama_paket);
             $sheet->setCellValue($abjad2 . '1', 'terapis');
             $i++;
@@ -487,7 +484,6 @@ class ExportController extends Controller
             return redirect()->route('data_pasien')->with('error', 'File tidak didukung');
         }
     }
-<<<<<<< HEAD
 
     public function importPaket(Request $r)
     {
@@ -575,6 +571,4 @@ class ExportController extends Controller
             return redirect()->route('data_pasien')->with('error', 'File tidak didukung');
         }
     }
-=======
->>>>>>> 61269c9c131130f22d700da161fc03d883d8175d
 }
