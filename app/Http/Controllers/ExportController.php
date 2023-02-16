@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Illuminate\Support\Str;
 
 class ExportController extends Controller
 {
@@ -322,11 +324,9 @@ class ExportController extends Controller
 
         foreach ($paket as $i => $p) {
             $s = $i;
-            $abjad1 = chr(96 + ($i+7 % 26) + $i+1);
-            $abjad2 = chr(96 + ($i+8 % 26) + $s+1);
-            $abjad1 = chr(96 + ($i+7 % 26) + $i+1);
-            $abjad2 = chr(96 + ($i+8 % 26) + $s+1);
-            
+            $abjad1 = chr(96 + ($i + 7 % 26) + $i + 1);
+            $abjad2 = chr(96 + ($i + 8 % 26) + $s + 1);
+
             $sheet->setCellValue($abjad1 . '1', $p->nama_paket);
             $sheet->setCellValue($abjad2 . '1', 'terapis');
             $i++;
@@ -402,8 +402,6 @@ class ExportController extends Controller
                             'no_hp' => $row['G'],
                             'tgl' => date('Y-m-d'),
                         ]);
-
-
                     } else {
                         DB::table('dt_pasien')->where('id_pasien', $row['B'])->update([
                             'member_id' => $row['C'],
@@ -423,4 +421,90 @@ class ExportController extends Controller
         }
     }
 
+    public function importPaket(Request $r)
+    {
+        $file = $r->file('file');
+        $fileDiterima = ['xls', 'xlsx'];
+        $cek = in_array($file->getClientOriginalExtension(), $fileDiterima);
+        if ($cek) {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+            $spreadsheet = $reader->load($file);
+            $sheet = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+            $data = [];
+
+            $numrow = 1;
+
+            foreach ($sheet as $row) {
+                if ($row['B'] == '' && $row['C'] == '') {
+                    continue;
+                }
+                if ($numrow > 1) {
+                    if ($row['B'] == '') {
+                        DB::table('dt_pasien')->insert([
+                            'member_id' => $row['C'],
+                            'nama_pasien' => $row['D'],
+                            'alamat' => $row['E'],
+                            'tgl_lahir' => $row['F'],
+                            'no_hp' => $row['G'],
+                            'tgl' => date('Y-m-d'),
+                        ]);
+
+                        $paket = DB::table('dt_paket')->get();
+
+                        foreach ($paket as $i => $p) {
+                            $s = $i;
+                            $abjad1 = chr(96 + ($i + 7 % 26) + $i + 1);
+                            $abjad2 = chr(96 + ($i + 8 % 26) + $s + 1);
+                            $abjad1 = Str::upper($abjad1);
+                            $abjad2 = Str::upper($abjad2);
+                            if($row[$abjad1] == '' && $row[$abjad2] == '') {
+                            } else {
+                                $invoice = DB::selectOne("SELECT max(a.urutan) as urutan FROM invoice_therapy as a");
+                                $no_order = empty($invoice->urutan) ? 1001 : $invoice->urutan + 1;
+    
+                                DB::table('saldo_therapy')->insert([
+                                    'no_order' => 'HK-' . $no_order,
+                                    'id_paket' => $p->id_paket,
+                                    'debit' => $row[$abjad1],
+                                    'id_therapist' => $row[$abjad2],
+                                    'kredit' => 0,
+                                    'total_rp' => 0,
+                                    'member_id' => $row['C'],
+                                    'tgl' => date('Y-m-d'),
+                                    'admin' => Auth::user()->name,
+                                    'export' => 'T',
+                                ]);
+    
+                                DB::table('invoice_therapy')->insert([
+                                    'no_order' => 'HK-' . $no_order,
+                                    'urutan' => $no_order,
+                                    'pembayaran' => 'BCA',
+                                    'rupiah' => 0,
+                                    'member_id' => $row['C'],
+                                    'tgl' => date('Y-m-d'),
+                                    'admin' => Auth::user()->name,
+                                    'export' => 'T',
+                                ]);
+                            }
+
+                            $i++;
+                        }
+                    } else {
+                        DB::table('dt_pasien')->where('id_pasien', $row['B'])->update([
+                            'member_id' => $row['C'],
+                            'nama_pasien' => $row['D'],
+                            'alamat' => $row['E'],
+                            'tgl_lahir' => $row['F'],
+                            'no_hp' => $row['G'],
+                            'tgl' => date('Y-m-d'),
+                        ]);
+                    }
+                }
+                $numrow++;
+            }
+            return redirect()->route('data_pasien')->with('sukses', 'Berhasil Import Data');
+        } else {
+            return redirect()->route('data_pasien')->with('error', 'File tidak didukung');
+        }
+    }
 }

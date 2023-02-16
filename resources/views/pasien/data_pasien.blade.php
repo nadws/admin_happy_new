@@ -195,7 +195,8 @@
     {{-- import --}}
     <div class="modal fade" id="import" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <form action="{{ route('importDataPasien') }}" enctype="multipart/form-data" method="post">
+            {{-- <form action="{{ route('importDataPasien') }}" enctype="multipart/form-data" method="post"> --}}
+            <form action="{{ route('importPaket') }}" enctype="multipart/form-data" method="post">
                 @csrf
                 <div class="modal-content ">
                     <div class="modal-header btn-costume">
