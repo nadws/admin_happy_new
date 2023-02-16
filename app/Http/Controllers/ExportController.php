@@ -186,48 +186,123 @@ class ExportController extends Controller
         $sheet6 = $spreadsheet->getActiveSheet();
         $sheet6->setTitle('Data Paket Pasien');
 
+        $pasien = DB::table('dt_pasien')->orderBy('member_id', 'ASC')->get();
+
+        $sheet6->getColumnDimension('D')->setWidth(43.18);
+        $sheet6->getColumnDimension('F')->setWidth(13.73);
+        $sheet6->getColumnDimension('E')->setWidth(45.73);
+        $sheet6->getColumnDimension('G')->setWidth(25.00);
         $sheet6
             ->setCellValue('A1', 'No')
-            ->setCellValue('B1', 'Nama')
-            ->setCellValue('C1', 'Member ID')
-            ->setCellValue('D1', 'Nama Theraphy')
-            ->setCellValue('E1', 'Paket')
-            ->setCellValue('F1', 'Jumlah')
-            ->setCellValue('G1', 'Dipakai')
-            ->setCellValue('H1', 'Sisa');
+            ->setCellValue('B1', 'Id Pasien')
+            ->setCellValue('C1', 'Kode')
+            ->setCellValue('D1', 'Nama')
+            ->setCellValue('E1', 'Alamat')
+            ->setCellValue('F1', 'Tgl Lahir')
+            ->setCellValue('G1', 'No HP');
+        $paket = DB::table('dt_paket')->get();
 
-        $sheet6->getStyle("A1:H1")->getFont()->setBold(true);
+        foreach ($paket as $i => $p) {
+            $s = $i;
+            $abjad1 = chr(96 + ($i + 7 % 26) + $i + 1);
+            $abjad2 = chr(96 + ($i + 8 % 26) + $s + 1);
 
-        $dt_pasien = DB::table('dt_pasien')->get();
-        $kolpas = 2;
-        $nom = 1;
-        foreach ($dt_pasien as $no => $r) {
-            $detail = DB::select("SELECT a.id_paket, a.id_therapist,  b.nama_paket, c.nama_therapy, sum(a.debit) as debit, sum(a.kredit) as kredit, a.total_rp, a.no_order
-            FROM saldo_therapy as a 
-            LEFT JOIN dt_paket as b on b.id_paket = a.id_paket
-            LEFT JOIN dt_therapy AS c ON c.id_therapy = a.id_therapist
-            WHERE a.member_id = '$r->member_id'
-            GROUP BY a.id_paket");
+            $sheet6->getColumnDimension($abjad1)->setWidth(12.00);
+            $sheet6->getColumnDimension($abjad2)->setWidth(15.82);
 
-            if (!empty($detail)) {
-                foreach ($detail as $n) {
-                    $ttl = $n->debit - $n->kredit;
-                    $sheet6
-                        ->setCellValue("A$kolpas", $nom++)
-                        ->setCellValue("B$kolpas", $r->nama_pasien)
-                        ->setCellValue("C$kolpas", $r->member_id)
-                        ->setCellValue("D$kolpas", $n->nama_therapy)
-                        ->setCellValue("E$kolpas", $n->nama_paket)
-                        ->setCellValue("F$kolpas", $n->debit)
-                        ->setCellValue("G$kolpas", $n->kredit)
-                        ->setCellValue("H$kolpas", $ttl);
-                    $kolpas++;
-                }
+            $sheet6->setCellValue($abjad1 . '1', $p->nama_paket);
+            $sheet6->setCellValue($abjad2 . '1', 'terapis');
+            $i++;
+        }
+        $sheet6->getStyle('A1:' . $abjad2 . '1')->getFont()->setBold(true);
+
+
+        $kol = 2;
+
+        foreach ($pasien as $no => $d) {
+            $sheet6->setCellValue("A$kol", $no + 1)
+                ->setCellValue("B$kol", $d->id_pasien)
+                ->setCellValue("C$kol", $d->member_id)
+                ->setCellValue("D$kol", $d->nama_pasien)
+                ->setCellValue("E$kol", $d->alamat)
+                ->setCellValue("F$kol", $d->tgl_lahir)
+                ->setCellValue("G$kol", $d->no_hp);
+
+            foreach ($paket as $i => $p) {
+                $s = $i;
+                $abjad1 = chr(96 + ($i + 7 % 26) + $i + 1);
+                $abjad2 = chr(96 + ($i + 8 % 26) + $s + 1);
+
+                $saldo = DB::selectOne("SELECT a.member_id, a.id_paket, b.nama_therapy, SUM(a.debit) AS debit, SUM(a.kredit) AS kredit
+                FROM saldo_therapy AS a
+                LEFT JOIN dt_therapy AS b ON b.id_therapy = a.id_therapist
+                WHERE a.member_id = '$d->member_id' AND a.id_paket ='$p->id_paket'
+                GROUP BY a.member_id");
+                $sisa_saldo = empty($saldo->debit) ? '' : $saldo->debit - $saldo->kredit;
+
+                $sheet6->setCellValue($abjad1 . $kol, $sisa_saldo);
+                $sheet6->setCellValue($abjad2 . $kol, empty($saldo->nama_therapy) ? '' : $saldo->nama_therapy);
+                $i++;
             }
+            $kol++;
         }
 
-        $bataspas = $kolpas - 1;
-        $sheet6->getStyle('A1:H' . $bataspas)->applyFromArray($style);
+        $style = [
+            'font' => array(
+                'size' => 10,
+                'name' => 'Comic Sans MS'
+            ),
+            'borders' => array(
+                'allBorders' => array(
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ),
+            ),
+            'alignment' => array(
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ),
+        ];
+        $batas = count($pasien) + 1;
+        $sheet6->getStyle('A1:' . $abjad2 . $batas)->applyFromArray($style);
+
+        foreach ($paket as $i => $p) {
+            $s = $i;
+            $abjad1 = chr(96 + ($i + 7 % 26) + $i + 1);
+            $abjad2 = chr(96 + ($i + 8 % 26) + $s + 1);
+            $rand = str_pad(dechex(rand(0x000000, 0xFFFFFF)), 6, 0, STR_PAD_LEFT);
+
+
+            //menghasilkan nilai acak untuk merah, hijau, dan biru
+            $red = rand(128, 255);
+            $green = rand(128, 255);
+            $blue = rand(128, 255);
+
+            //mengonversi nilai merah, hijau, dan biru ke format hexa
+            $red_hex = dechex($red);
+            $green_hex = dechex($green);
+            $blue_hex = dechex($blue);
+
+            //menggabungkan nilai merah, hijau, dan biru dalam format hexa untuk menciptakan warna hexa
+            $color_hex = "$red_hex$green_hex$blue_hex";
+
+
+            //mengatur warna latar belakang elemen HTML menggunakan warna yang dihasilkan secara acak dalam format hexa
+
+
+
+
+            $sheet6->getStyle($abjad2 . '1' . ':' . $abjad2 . $batas)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()
+                ->setARGB("$color_hex");
+            $sheet6->getStyle($abjad1 . '1' . ':' . $abjad1 . $batas)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()
+                ->setARGB("$color_hex");
+            $i++;
+        }
+
+
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Invoice & Paket Pasien.xlsx"');
