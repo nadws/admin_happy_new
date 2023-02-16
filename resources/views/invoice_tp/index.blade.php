@@ -422,7 +422,7 @@
                     success: function (r) {
                         $('#loadTerapis'+count).html(r)
                         $('.select2').select2({
-                            dropdownParent: $('#tambah')
+                            dropdownParent: $('#tambah .modal-content')
                         });
                         $('#terapiBelumLoad'+count).css('display', 'none')
                     }
