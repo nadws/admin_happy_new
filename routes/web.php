@@ -213,7 +213,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('exportDataPasien', [ExportController::class, 'exportPasien'])->name('exportDataPasien');
     Route::get('exportPaket', [ExportController::class, 'exportPaket'])->name('exportPaket');
     Route::post('importDataPasien', [ExportController::class, 'importDataPasien'])->name('importDataPasien');
-    Route::post('importPaket', [ExportController::class, 'importPaket'])->name('importPaket');
+    Route::post('importPaketPasien', [ExportController::class, 'importPaketPasien'])->name('importPaketPasien');
 
     Route::get('inv_registrasi', [inv_registrasi::class, 'index'])->name('inv_registrasi');
     Route::post('save_registrasi', [inv_registrasi::class, 'save_registrasi'])->name('save_registrasi');

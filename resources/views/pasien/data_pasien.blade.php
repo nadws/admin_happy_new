@@ -193,7 +193,7 @@
 {{-- import --}}
 <div class="modal fade" id="import" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <form action="{{ route('importDataPasien') }}" enctype="multipart/form-data" method="post">
+        <form action="{{ route('importPaketPasien') }}" enctype="multipart/form-data" method="post">
             @csrf
             <div class="modal-content ">
                 <div class="modal-header btn-costume">
@@ -285,70 +285,6 @@
             </div>
         </div>
     </form>
-
-    {{-- import --}}
-    <div class="modal fade" id="import" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            {{-- <form action="{{ route('importDataPasien') }}" enctype="multipart/form-data" method="post"> --}}
-            <form action="{{ route('importPaket') }}" enctype="multipart/form-data" method="post">
-                @csrf
-                <div class="modal-content ">
-                    <div class="modal-header btn-costume">
-                        <h5 class="modal-title text-dark" id="exampleModalLabel">Import {{ $title }}</h5>
-                        <button type="button" class="close text-dark" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <table>
-                                <tr>
-                                    <td width="100" class="pl-2">
-                                        <img width="80px" src="{{ asset('images-upload/') }}/1.png" alt="">
-                                    </td>
-                                    <td>
-                                        <span style="font-size: 20px;"><b> Download Excel template</b></span><br>
-                                        File ini memiliki kolom header dan isi yang sesuai dengan data produk
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('exportDataPasien') }}" class="btn btn-primary btn-sm"><i
-                                                class="fa fa-download"></i> DOWNLOAD TEMPLATE</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3">
-                                        <hr>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td width="100" class="pl-2">
-                                        <img width="80px" src="{{ asset('images-upload/') }}/2.png" alt="">
-                                    </td>
-                                    <td>
-                                        <span style="font-size: 20px;"><b> Upload Excel template</b></span><br>
-                                        Setelah mengubah, silahkan upload file.
-                                    </td>
-                                    <td>
-                                        <input type="file" name="file" class="form-control">
-                                    </td>
-                                </tr>
-                            </table>
-
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 </div>
 @endsection
 @section('scripts')

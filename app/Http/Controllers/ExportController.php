@@ -485,7 +485,7 @@ class ExportController extends Controller
         }
     }
 
-    public function importPaket(Request $r)
+    public function importPaketPasien(Request $r)
     {
         $file = $r->file('file');
         $fileDiterima = ['xls', 'xlsx'];
@@ -499,13 +499,17 @@ class ExportController extends Controller
             $numrow = 1;
 
             foreach ($sheet as $row) {
-                if ($row['B'] == '' && $row['C'] == '') {
+                if ($row['B'] == '' && $row['D'] == '') {
                     continue;
+
                 }
                 if ($numrow > 1) {
                     if ($row['B'] == '') {
+                        $member_id = DB::selectOne("SELECT max(member_id) as member_id FROM `dt_pasien` ORDER BY member_id ASC;");
+                        $member_id = empty($member_id->member_id) ? '5001' : $member_id->member_id + 1;
+                        
                         DB::table('dt_pasien')->insert([
-                            'member_id' => $row['C'],
+                            'member_id' => $row['C'] == '' ? $member_id : $row['C'],
                             'nama_pasien' => $row['D'],
                             'alamat' => $row['E'],
                             'tgl_lahir' => $row['F'],
@@ -525,7 +529,8 @@ class ExportController extends Controller
                             } else {
                                 $invoice = DB::selectOne("SELECT max(a.urutan) as urutan FROM invoice_therapy as a");
                                 $no_order = empty($invoice->urutan) ? 1001 : $invoice->urutan + 1;
-    
+                                
+                                
                                 DB::table('saldo_therapy')->insert([
                                     'no_order' => 'HK-' . $no_order,
                                     'id_paket' => $p->id_paket,
@@ -533,7 +538,7 @@ class ExportController extends Controller
                                     'id_therapist' => $row[$abjad2],
                                     'kredit' => 0,
                                     'total_rp' => 0,
-                                    'member_id' => $row['C'],
+                                    'member_id' => $row['C'] == '' ? $member_id : $row['C'],
                                     'tgl' => date('Y-m-d'),
                                     'admin' => Auth::user()->name,
                                     'export' => 'T',
@@ -544,7 +549,7 @@ class ExportController extends Controller
                                     'urutan' => $no_order,
                                     'pembayaran' => 'BCA',
                                     'rupiah' => 0,
-                                    'member_id' => $row['C'],
+                                    'member_id' => $row['C'] == '' ? $member_id : $row['C'],
                                     'tgl' => date('Y-m-d'),
                                     'admin' => Auth::user()->name,
                                     'export' => 'T',
