@@ -304,7 +304,7 @@ class ExportController extends Controller
             $i++;
         }
 
-
+        
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Invoice & Paket Pasien.xlsx"');
@@ -380,8 +380,9 @@ class ExportController extends Controller
     public function exportPaket()
     {
         $spreadsheet = new Spreadsheet();
-        $spreadsheet->createSheet();
 
+        $spreadsheet->createSheet();
+        $spreadsheet->setActiveSheetIndex(0);
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setTitle('Data Pasien');
 
@@ -393,6 +394,7 @@ class ExportController extends Controller
         $sheet->getColumnDimension('G')->setWidth(25.00);
         $sheet
             ->setCellValue('A1', 'No')
+            ->setCellValue('A2', '1')
             ->setCellValue('B1', 'Id Pasien')
             ->setCellValue('C1', 'Kode')
             ->setCellValue('D1', 'Nama')
@@ -410,7 +412,7 @@ class ExportController extends Controller
             $sheet->getColumnDimension($abjad2)->setWidth(15.82);
 
             $sheet->setCellValue($abjad1 . '1', $p->nama_paket);
-            $sheet->setCellValue($abjad2 . '1', 'terapis');
+            $sheet->setCellValue($abjad2 . '1', 'Id Therapy');
             $i++;
         }
 
@@ -420,35 +422,7 @@ class ExportController extends Controller
             ->getStartColor()
             ->setARGB('d92121');
 
-        $kol = 2;
-
-        foreach ($pasien as $no => $d) {
-            $sheet->setCellValue("A$kol", $no + 1)
-                ->setCellValue("B$kol", $d->id_pasien)
-                ->setCellValue("C$kol", $d->member_id)
-                ->setCellValue("D$kol", $d->nama_pasien)
-                ->setCellValue("E$kol", $d->alamat)
-                ->setCellValue("F$kol", $d->tgl_lahir)
-                ->setCellValue("G$kol", $d->no_hp);
-
-            foreach ($paket as $i => $p) {
-                $s = $i;
-                $abjad1 = chr(96 + ($i + 7 % 26) + $i + 1);
-                $abjad2 = chr(96 + ($i + 8 % 26) + $s + 1);
-
-                $saldo = DB::selectOne("SELECT a.member_id, a.id_paket, b.nama_therapy, SUM(a.debit) AS debit, SUM(a.kredit) AS kredit
-                FROM saldo_therapy AS a
-                LEFT JOIN dt_therapy AS b ON b.id_therapy = a.id_therapist
-                WHERE a.member_id = '$d->member_id' AND a.id_paket ='$p->id_paket'
-                GROUP BY a.member_id");
-                $sisa_saldo = empty($saldo->debit) ? '' : $saldo->debit - $saldo->kredit;
-
-                $sheet->setCellValue($abjad1 . $kol, $sisa_saldo);
-                $sheet->setCellValue($abjad2 . $kol, empty($saldo->nama_therapy) ? '' : $saldo->nama_therapy);
-                $i++;
-            }
-            $kol++;
-        }
+   
 
         $style = [
             'font' => array(
@@ -465,7 +439,7 @@ class ExportController extends Controller
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
             ),
         ];
-        $batas = count($pasien) + 1;
+        $batas = 2;
         $sheet->getStyle('A1:' . $abjad2 . $batas)->applyFromArray($style);
 
         foreach ($paket as $i => $p) {
@@ -503,6 +477,26 @@ class ExportController extends Controller
                 ->setARGB("$color_hex");
             $i++;
         }
+
+        $spreadsheet->createSheet();
+        $spreadsheet->setActiveSheetIndex(1);
+        $sheet1 = $spreadsheet->getActiveSheet();
+        $sheet1->setTitle('Data Therapy');
+
+        $dt_therapy = DB::table('dt_therapy as a')->join('dt_paket as b', 'a.id_paket', 'b.id_paket')->orderBy('a.id_therapy', 'ASC')->get();
+        $sheet1->setCellValue('A1', 'ID Therapy')
+            ->setCellValue('B1', 'Nama Therapy')
+            ->setCellValue('C1', 'Nama Paket');
+        
+        $kol = 2;
+        foreach($dt_therapy as $d) {
+            $sheet1->setCellValue('A'.$kol, $d->id_therapy)
+            ->setCellValue('B'.$kol, $d->nama_therapy)
+            ->setCellValue('C'.$kol, $d->nama_paket);
+            $kol++;
+        }
+        $batas = count($dt_therapy) + 1;
+        $sheet1->getStyle('A1:' . "C" . $batas)->applyFromArray($style);
 
 
         $writer = new Xlsx($spreadsheet);
@@ -576,13 +570,12 @@ class ExportController extends Controller
             foreach ($sheet as $row) {
                 if ($row['B'] == '' && $row['D'] == '') {
                     continue;
-
                 }
                 if ($numrow > 1) {
                     if ($row['B'] == '') {
                         $member_id = DB::selectOne("SELECT max(member_id) as member_id FROM `dt_pasien` ORDER BY member_id ASC;");
                         $member_id = empty($member_id->member_id) ? '5001' : $member_id->member_id + 1;
-                        
+
                         DB::table('dt_pasien')->insert([
                             'member_id' => $row['C'] == '' ? $member_id : $row['C'],
                             'nama_pasien' => $row['D'],
@@ -600,12 +593,12 @@ class ExportController extends Controller
                             $abjad2 = chr(96 + ($i + 8 % 26) + $s + 1);
                             $abjad1 = Str::upper($abjad1);
                             $abjad2 = Str::upper($abjad2);
-                            if($row[$abjad1] == '' && $row[$abjad2] == '') {
+                            if ($row[$abjad1] == '' && $row[$abjad2] == '') {
                             } else {
                                 $invoice = DB::selectOne("SELECT max(a.urutan) as urutan FROM invoice_therapy as a");
                                 $no_order = empty($invoice->urutan) ? 1001 : $invoice->urutan + 1;
-                                
-                                
+
+
                                 DB::table('saldo_therapy')->insert([
                                     'no_order' => 'HK-' . $no_order,
                                     'id_paket' => $p->id_paket,
@@ -618,7 +611,7 @@ class ExportController extends Controller
                                     'admin' => Auth::user()->name,
                                     'export' => 'T',
                                 ]);
-    
+
                                 DB::table('invoice_therapy')->insert([
                                     'no_order' => 'HK-' . $no_order,
                                     'urutan' => $no_order,

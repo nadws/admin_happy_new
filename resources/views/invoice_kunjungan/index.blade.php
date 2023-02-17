@@ -26,12 +26,8 @@
         <section class="section">
             <div class="card">
                 <div class="card-header">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn icon icon-left btn-primary"
-                        style="float: right;"><i class="bi bi-plus"></i>
-                        Buat Invoice Baru</a>
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#export" class="btn icon icon-left btn-primary"
-                        style="float: right; margin-right: 5px;"><i class="bi bi-file-excel"></i>
-                        Export</a>
+                    <x-btn-aldi  />
+                  
                 </div>
                 <div class="card-body">
                     <table class="table table-hover" id="table1">
@@ -74,7 +70,6 @@
             </div>
         </section>
     </div>
-
 </div>
 
 <form action="{{ route('save_invoice_kunjungan') }}" method="post">
@@ -120,6 +115,7 @@
                                 <input required type="text" class="form-control nama" disabled>
                             </div>
                         </div>
+
                         <div class="col-lg-12">
                             <hr>
                         </div>

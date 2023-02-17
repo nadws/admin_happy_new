@@ -214,7 +214,7 @@
                                     File ini memiliki kolom header dan isi yang sesuai dengan data produk
                                 </td>
                                 <td>
-                                    <a href="{{ route('exportDataPasien') }}" class="btn btn-primary btn-sm"><i
+                                    <a href="{{ route('exportPaket') }}" class="btn btn-primary btn-sm"><i
                                             class="fa fa-download"></i> DOWNLOAD TEMPLATE</a>
                                 </td>
                             </tr>

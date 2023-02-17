@@ -4,7 +4,7 @@
             <tr>
                 <th>Therapist</th>
                 <th>Paket</th>
-                <th>Jumlah</th>
+                <th>Sisa</th>
                 <th width="20%">Dipakai</th>
             </tr>
             @foreach ($invoice_kunjungan as $i)

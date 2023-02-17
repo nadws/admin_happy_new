@@ -28,6 +28,7 @@ class Invoice_periksa extends Controller
             where a.tgl BETWEEN '$tgl1' and '$tgl2' order by a.id_invoice_periksa DESC"),
             'dokter' => DB::table('dt_dokter')->get(),
             'nominal' => DB::table('tb_nominal')->where('jenis', 'inv_periksa')->get(),
+            'btnTeks' => 'Export',
         ];
         return view('invoice_periksa.index', $data);
     }
