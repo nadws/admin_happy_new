@@ -37,8 +37,8 @@
                                 href="{{ route('invoice_tp') }}">Therapy & Paket</a>
                         </li>
                     </ul>
-                    <x-btn-aldi  />
-                    
+                    <x-btn-aldi />
+
                 </div>
                 <div class="card-body">
                     <table class="table" id="table1">
@@ -108,11 +108,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
+
                     <div class="row">
-                        <div class="col-lg-8">
+                        <div class="col-lg-7">
                             <div class="form-group">
                                 <label for="">No Rekam Medis</label>
-                                <select name="member_id" id="" class="choices form-select pilih_rek">
+                                <select name="member_id" id="" class="select2 pilih_rek">
                                     <option value="">--Pilih data--</option>
                                     @foreach ($dt_pasien as $d)
                                     <option value="{{$d->member_id}}">{{$d->member_id}} - {{ $d->nama_pasien }} - {{
@@ -122,26 +123,16 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="">Tanggal</label>
                                 <input required type="date" name="tgl" value="{{date('Y-m-d')}}" class="form-control">
                             </div>
                         </div>
-
-
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="">Nama Pasien</label>
-                                <input required="true" type="text" class="form-control nama" readonly>
-                            </div>
-                        </div>
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="">Pembayaran</label>
-                                <select required name="pembayaran" id="" class="form-control choices">
+                                <select required name="pembayaran" id="" class="select2">
                                     <option value="">- Pilih pembayaran -</option>
                                     <option value="CASH">CASH</option>
                                     <option value="BCA">BCA</option>
@@ -154,32 +145,12 @@
                         <div class="col-lg-12">
                             <hr>
                         </div>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="">Invoice Registrasi</label> &nbsp;
-                                <input type="checkbox" class="show" name="" id="" style="transform: scale(2)">
-                            </div>
-                        </div>
-                        <div class="col-lg-8">
-                            <p id="infoRegistrasi" class="text-danger"></p>
-                        </div>
-                        <div class="col-lg-6 reg">
-                            <div class="form-group">
-                                <label for="">Nominal</label>
-                                <select name="rupiah" class="form-control inp-reg select2">
-                                    <option value="">- Pilih Nominal -</option>
-                                    @foreach ($nominal as $n)
-                                    <option value="{{ $n->nominal }}">{{ number_format($n->nominal,0) }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <hr>
-                        </div>
+
+
                         <div class="col-lg-4">
                             <label for="">Paket</label>
-                            <select name="id_paket[]" id="" class=" form-select pilih_paket select2" count="1">
+                            <select name="id_paket[]" id="" member_id="" class=" form-select pilih_paket select2"
+                                count="1">
                                 <option value="">--Pilih data--</option>
                                 @foreach ($paket as $p)
                                 <option value="{{$p->id_paket}}">{{$p->nama_paket}}</option>
@@ -209,8 +180,38 @@
                         </div>
                         <div class="col-lg-1">
                             <label for="">Aksi</label>
-                            <a href="#" class="btn btn-sm btn-primary tambah_paket"><i
+                            <a href="#" class="btn btn-sm btn-primary tambah_paket" member_id=""><i
                                     class="bi bi-plus-square-fill"></i></a>
+                        </div>
+                        <div class="col-lg-4 mt-2">
+                            <div class="form-group">
+                                <label for="">Invoice Registrasi</label> &nbsp;
+                                <input type="checkbox" class="show show1" detail="1" name="" id=""
+                                    style="transform: scale(2)">
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <p class="text-danger infoRegistrasi1"></p>
+                        </div>
+                        <div class="col-lg-4 reg reg1">
+                            <div class="form-group">
+                                <label for="">Invoice</label>
+                                <select name="id_invoice" class="form-control inp-reg inp-reg1 select2" detail='1'>
+                                    <option value="">- Pilih Invoice -</option>
+                                    @foreach ($nominal as $n)
+                                    <option value="{{ $n->id_nominal }}">{{ $n->nm_jenis }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 reg reg1">
+                            <div class="form-group">
+                                <label for="">Nominal</label>
+                                <input type="text" name="rupiah[]" class="form-control nm-regitrasi1" readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <hr>
                         </div>
                         <div id="tambah_paket">
 
@@ -333,13 +334,14 @@
             $('.inp-reg').attr('disabled', 'true');
 
             $(document).on('click', '.show', function() {
-                if($(this).prop("checked") == true){
-                    $('.reg').show();
-                    $('.inp-reg').removeAttr('disabled');
+                var detail = $(this).attr('detail');
+                if($('.show' + detail).prop("checked") == true){
+                    $('.reg' + detail).show();
+                    $('.inp-reg' + detail).removeAttr('disabled');
                 }
-                else if($(this).prop("checked") == false){
-                    $('.reg').hide();
-                    $('.inp-reg').attr('disabled', 'true');
+                else if($('.show' + detail).prop("checked") == false){
+                    $('.reg' + detail).hide();
+                    $('.inp-reg' + detail).attr('disabled', 'true');
                 }
                 
             });
@@ -359,11 +361,23 @@
                     $('.input_manual').attr('disabled', 'true');
                 }
             });
+
             $(document).on('change', '.pilih_rek', function() {
                 var member_id = $(this).val();
+                $('.pilih_paket').attr('member_id', member_id);
+                $('.tambah_paket').attr('member_id', member_id);
+            });
+            
+            $(document).on('change', '.pilih_paket', function() {
+                var count =  $(this).attr('count');
+                var member_id =  $(this).attr('member_id'); 
+                var id_paket = $(this).val();
+               
+
                 $.ajax({
                     url: "{{ route('get_pasien') }}",
                     data: {
+                        id_paket: id_paket,
                         member_id: member_id,
                     },
                     type: "GET",
@@ -371,31 +385,27 @@
                     success: function(data) {
                         if(data.kunjungan) {
                             if(data.tglTerakhir >= 6) {
-                                $("#infoRegistrasi").text('Maaf anda harus membayar registrasi lagi karena telah melebihi batas registrasi ')
-                                $(".show").attr('checked', 'true')
-                                $('.reg').show();
-                                $('.inp-reg').removeAttr('disabled');
+                                $(".infoRegistrasi" + count).text('Maaf anda harus membayar registrasi lagi karena telah melebihi batas registrasi ')
+                                $(".show" + count).attr('checked', 'true')
+                                $('.reg' + count).show();
+                                $('.inp-reg' + count).removeAttr('disabled');
                             } else {
-                                $("#infoRegistrasi").text('')
-                                $(".show").removeAttr('checked')
-                                $('.reg').hide();
-                                $('.inp-reg').attr('disabled');
+                                $(".infoRegistrasi" + count).text('')
+                                $(".show" + count).removeAttr('checked')
+                                $('.reg' + count).hide();
+                                $('.inp-reg' + count).attr('disabled');
                             }
                             
                         } else {
-                            $("#infoRegistrasi").text('Maaf anda harus bayar registrasi untuk pertama kali')
-                            $(".show").attr('checked', 'true')
-                            $('.reg').show();
-                            $('.inp-reg').removeAttr('disabled');
+                            $(".infoRegistrasi" + count).text('Maaf anda harus bayar registrasi untuk pertama kali')
+                            $(".show"+ count).attr('checked', 'true')
+                            $('.reg'+ count).show();
+                            $('.inp-reg'+ count).removeAttr('disabled');
                         }
                         $('.nama').val(data.nama);
                     }
                 });
-            });
-            $(document).on('change', '.pilih_paket', function() {
-                var count =  $(this).attr('count');
-              
-                var id_paket = $(this).val();
+
                 $.ajax({
                     url: "{{ route('get_paket') }}",
                     data: {
@@ -441,15 +451,19 @@
             var count = 1;
             $(document).on('click', '.tambah_paket', function() {
                 var id_akun = $(this).attr('id_akun');
+                var member_id = $(this).attr('member_id');
+               
                 count = count + 1;
                 $.ajax({
-                    url: "{{ route('tambah_paket') }}?count=" + count,
+                    url: "{{ route('tambah_paket') }}?count=" + count + "&member_id=" + member_id,
                     type: "Get",
                     success: function(data) {
                         $('#tambah_paket').append(data);
                         $(".select2").select2({
                             dropdownParent: $('#tambah .modal-content')
                         });
+                        $('.reg' + count).hide();
+                        $('.inp-reg' + count).attr('disabled', 'true');
                     }
                 });
             });
@@ -478,6 +492,19 @@
                     success: function(data) {
                         $('#view_paket2').html(data);
                         $('#view2').modal('show'); 
+                    }
+                });
+            });
+            $(document).on('change', '.inp-reg', function() {
+                var detail = $(this).attr('detail');
+               var id_nominal = $('.inp-reg' + detail).val();
+
+              
+               $.ajax({
+                    url: "{{ route('nominal_invoice_registrasi') }}?id_nominal=" + id_nominal + "&detail=" + detail,
+                    type: "Get",
+                    success: function(data) {
+                        $('.nm-regitrasi' + detail).val(data);
                     }
                 });
             });

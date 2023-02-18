@@ -30,9 +30,9 @@
             </div>
             <div class="col-6 mt-4">
                 <div class="float-end">
-                    Invoice #: {{$invoice->no_order}}
+                    Invoice #: {{$invoice2->no_order}}
                     <br />
-                    Created: {{ date('F d, Y',strtotime($invoice->tgl)) }}<br />
+                    Created: {{ date('F d, Y',strtotime($invoice2->tgl)) }}<br />
                     Due: {{ date('F d, Y') }}
                 </div>
             </div>
@@ -49,106 +49,31 @@
                         <th>Payment Method</th>
                         <th style="text-align: right">Check #</th>
                     </tr>
+                    @php
+                    $total = 0;
+                    @endphp
+                    @foreach ($invoice as $a)
+                    @php
+                    $total += $a->rupiah;
+                    @endphp
                     <tr>
-                        <td>Invoice Periksa</td>
-                        <td align="right">Rp. {{ number_format($invoice->rupiah,0)}}</td>
+                        <td>{{ empty($a->ket) ? $a->nm_jenis : $a->ket}}</td>
+                        <td align="right">Rp. {{ number_format($a->rupiah,0)}}</td>
                     </tr>
+
+                    @endforeach
                     <tr>
                         <th></th>
-                        <th style="text-align: right">Total: Rp. {{ number_format($invoice->rupiah,0)}}</th>
+                        <th style="text-align: right">Total: Rp.{{number_format($total,0)}} </th>
                     </tr>
+
 
                 </table>
             </div>
 
         </div>
 
-        <div class="row">
-            <div class="col-12">
-                <hr style="border: 1px solid black">
-            </div>
-            <div class="col-6 ">
-                <div class="float-start">
-                    <img src="{{ asset('images-upload/logo.png') }}" width="120" height="120" alt="">
-                </div>
-            </div>
-            <div class="col-6 mt-4">
-                <div class="float-end">
-                    Invoice #: {{$invoice->no_order}}
-                    <br />
-                    Created: {{ date('F d, Y',strtotime($invoice->tgl)) }}<br />
-                    Due: {{ date('F d, Y') }}
-                </div>
-            </div>
-            <div class="col-6 mt-4">
-                <div class="float-start">
-                    Happy Kids<br />
-                    {{$alamat->isi}}
-                </div>
 
-            </div>
-            <div class="col-lg-12 mt-2">
-                <table class="table table-sm">
-                    <tr class="table-active">
-                        <th>Payment Method</th>
-                        <th style="text-align: right">Check #</th>
-                    </tr>
-                    <tr>
-                        <td>Invoice Periksa</td>
-                        <td align="right">Rp. {{ number_format($invoice->rupiah,0)}}</td>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th style="text-align: right">Total: Rp. {{ number_format($invoice->rupiah,0)}}</th>
-                    </tr>
-
-                </table>
-            </div>
-
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <hr style="border: 1px solid black">
-            </div>
-            <div class="col-6 ">
-                <div class="float-start">
-                    <img src="{{ asset('images-upload/logo.png') }}" width="120" height="120" alt="">
-                </div>
-            </div>
-            <div class="col-6 mt-4">
-                <div class="float-end">
-                    Invoice #: {{$invoice->no_order}}
-                    <br />
-                    Created: {{ date('F d, Y',strtotime($invoice->tgl)) }}<br />
-                    Due: {{ date('F d, Y') }}
-                </div>
-            </div>
-            <div class="col-6 mt-4">
-                <div class="float-start">
-                    Happy Kids<br />
-                    {{$alamat->isi}}
-                </div>
-
-            </div>
-            <div class="col-lg-12 mt-2">
-                <table class="table table-sm">
-                    <tr class="table-active">
-                        <th>Payment Method</th>
-                        <th style="text-align: right">Check #</th>
-                    </tr>
-                    <tr>
-                        <td>Invoice Periksa</td>
-                        <td align="right">Rp. {{ number_format($invoice->rupiah,0)}}</td>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th style="text-align: right">Total: Rp. {{ number_format($invoice->rupiah,0)}}</th>
-                    </tr>
-
-                </table>
-            </div>
-
-        </div>
     </div>
     <!-- Optional JavaScript; choose one of the two! -->
 

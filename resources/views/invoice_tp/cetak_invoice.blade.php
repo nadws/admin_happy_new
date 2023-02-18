@@ -65,22 +65,23 @@
                         <td align="right">Rp. {{number_format($p->total_rp ,0)}}</td>
                     </tr>
                     @endforeach
-                    @if (empty($invoice2->rupiah))
-
-                    @else
-                    <tr>
-                        <td>Registrasi</td>
-                        <td align="right">1</td>
-                        <td align="right">Rp. {{ number_format($invoice2->rupiah,0)}}</td>
-                        <td align="right">Rp. {{ number_format($invoice2->rupiah,0)}}</td>
-                    </tr>
-                    @endif
                     @php
-                    $invo = empty($invoice2->rupiah) ? '0' : $invoice2->rupiah
+                    $total2 =0;
+                    @endphp
+                    @foreach ($invoice2 as $a)
+                    @php
+                    $total2 += $a->rupiah;
                     @endphp
                     <tr>
+                        <td>Registrasi {{$a->nama_paket}}</td>
+                        <td align="right">1</td>
+                        <td align="right">Rp. {{ number_format($a->rupiah,0)}}</td>
+                        <td align="right">Rp. {{ number_format($a->rupiah,0)}}</td>
+                    </tr>
+                    @endforeach
+                    <tr>
                         <th colspan="3"></th>
-                        <th style="text-align: right">Total: Rp. {{number_format($total + $invo,0)}}</th>
+                        <th style="text-align: right">Total: Rp. {{number_format($total + $total2 ,0)}}</th>
                     </tr>
 
                 </table>

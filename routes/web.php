@@ -180,6 +180,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('view_paket2', [Invoice_tp::class, 'view_paket2'])->name('view_paket2');
     Route::get('cetak_invoice_tp', [Invoice_tp::class, 'cetak_invoice_tp'])->name('cetak_invoice_tp');
     Route::get('hapus_invoice_tp', [Invoice_tp::class, 'hapus_invoice_tp'])->name('hapus_invoice_tp');
+    Route::get('nominal_invoice_registrasi', [Invoice_tp::class, 'nominal_invoice_registrasi'])->name('nominal_invoice_registrasi');
 
     Route::get('invoice_kunjungan', [Invoice_kunjungan::class, 'index'])->name('invoice_kunjungan');
     Route::get('get_paket_kunjungan', [Invoice_kunjungan::class, 'get_paket'])->name('get_paket_kunjungan');

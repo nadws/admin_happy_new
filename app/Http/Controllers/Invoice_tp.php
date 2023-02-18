@@ -41,8 +41,10 @@ class Invoice_tp extends Controller
         $data = [
             'title' => 'paket',
             'count' => $r->count,
+            'member_id' => $r->member_id,
             'paket' => DB::table('dt_paket')->get(),
             'therapist' => DB::table('dt_therapy')->get(),
+            'nominal' => DB::table('tb_nominal')->where('jenis', 'inv_registrasi')->get()
 
         ];
         return view('invoice_tp.tambah', $data);
@@ -60,12 +62,12 @@ class Invoice_tp extends Controller
         $data = [
             'therapist' => DB::table('dt_therapy')->where('id_paket', $r->id_paket)->get()
         ];
-        return view('invoice_tp.loadTerapis',$data);
+        return view('invoice_tp.loadTerapis', $data);
     }
 
     public function save_tp(Request $r)
     {
-      
+
         $tgl = $r->tgl;
         $member_id = $r->member_id;
         $pembayaran = $r->pembayaran;
@@ -108,22 +110,27 @@ class Invoice_tp extends Controller
             ];
             DB::table('saldo_therapy')->insert($data);
         }
-        if (empty($rupiah)) {
-            # code...
-        } else {
-            $data = [
-                'no_order' => 'HK-' . $no_order,
-                'urutan' => $no_order,
-                'member_id' => $member_id,
-                'tgl' => $r->tgl,
-                'rupiah' => $rupiah,
-                'pembayaran' => $r->pembayaran,
-                'status' => 'paid',
-                'admin' => Auth::user()->name
 
-            ];
-            DB::table('invoice_registrasi')->insert($data);
+        for ($x = 0; $x < count($rupiah); $x++) {
+            if (empty($rupiah[$x])) {
+                # code...
+            } else {
+                $data = [
+                    'no_order' => 'HK-' . $no_order,
+                    'urutan' => $no_order,
+                    'member_id' => $member_id,
+                    'tgl' => $r->tgl,
+                    'rupiah' => $rupiah[$x],
+                    'pembayaran' => $r->pembayaran,
+                    'status' => 'paid',
+                    'admin' => Auth::user()->name,
+                    'id_paket' => $id_paket[$x],
+
+                ];
+                DB::table('invoice_registrasi')->insert($data);
+            }
         }
+
 
 
 
@@ -179,11 +186,13 @@ class Invoice_tp extends Controller
         WHERE a.no_order = '$invoice->no_order'
         GROUP BY a.no_order, a.id_paket");
 
+        $registrasi = DB::select("SELECT * FROM invoice_registrasi as a left join dt_paket as b on b.id_paket = a.id_paket where a.no_order =  '$invoice->no_order'");
+
         $data = [
             'title' => 'Invoice',
             'invoice' => $invoice,
             'paket' => $paket,
-            'invoice2' => DB::table('invoice_registrasi')->where('no_order', "$invoice->no_order")->first(),
+            'invoice2' => $registrasi,
             'alamat' => DB::table('h1')->where('id_h1', '12')->first(),
             'email' => DB::table('h1')->where('id_h1', '14')->first()
         ];
@@ -199,5 +208,14 @@ class Invoice_tp extends Controller
         DB::table('saldo_therapy')->where('no_order', $id)->delete();
         // DB::table('invoice_kunjungan')->where('member_id', $member)->delete();
         return redirect()->route('invoice_tp')->with('sukses', 'Berhasil hapus invoice');
+    }
+
+    public function nominal_invoice_registrasi(Request $r)
+    {
+        $id_nominal = $r->id_nominal;
+
+        $nominal = DB::selectOne("SELECT a.nominal FROM tb_nominal as a where a.id_nominal = '$id_nominal'");
+
+        echo $nominal->nominal;
     }
 }

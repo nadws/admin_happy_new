@@ -10,7 +10,7 @@ class Invoice_periksa extends Controller
 {
     function index(Request $r)
     {
-        
+
         if (empty($r->tgl1)) {
             $tgl1 = date('Y-m-01');
             $tgl2 = date('Y-m-t');
@@ -25,7 +25,7 @@ class Invoice_periksa extends Controller
             FROM invoice_periksa as a 
             left join dt_pasien as b on b.member_id = a.member_id 
             left join dt_dokter as c on c.id_dokter = a.id_dokter
-            where a.tgl BETWEEN '$tgl1' and '$tgl2' order by a.id_invoice_periksa DESC"),
+            where a.tgl BETWEEN '$tgl1' and '$tgl2' group by a.no_order order by a.id_invoice_periksa DESC"),
             'dokter' => DB::table('dt_dokter')->get(),
             'nominal' => DB::table('tb_nominal')->where('jenis', 'inv_periksa')->get(),
             'btnTeks' => 'Export',
@@ -37,7 +37,7 @@ class Invoice_periksa extends Controller
     {
         DB::table('invoice_periksa')->where('id_invoice_periksa', $r->id_invoice_periksa)->update(
             [
-                'id_dokter' => $r->id_dokter, 
+                'id_dokter' => $r->id_dokter,
                 'pembayaran' => $r->pembayaran
             ]
         );
@@ -60,6 +60,8 @@ class Invoice_periksa extends Controller
         $id_dokter = $r->id_dokter;
         $invoice = DB::selectOne("SELECT max(a.urutan) as urutan FROM invoice_periksa as a");
 
+        $pasien = DB::table('dt_pasien')->where('member_id', $member_id)->first();
+
         if (empty($invoice->urutan)) {
             $no_order = 1001;
         } else {
@@ -79,6 +81,39 @@ class Invoice_periksa extends Controller
             'admin' => Auth::user()->name
         ];
         DB::table('invoice_periksa')->insert($data);
+        if ($pasien->kartu == 'T') {
+            $data = [
+                'no_order' => 'HK' . $no_order,
+                'urutan' => $no_order,
+                'member_id' => $member_id,
+                'id_dokter' => $id_dokter,
+                'tgl' => $r->tgl,
+                'rupiah' => '10000',
+                'pembayaran' => $pembayaran,
+                'jenis' => $r->id_jenis,
+                'status' => 'paid',
+                'admin' => Auth::user()->name,
+                'ket' => 'Bikin Kartu'
+            ];
+            DB::table('invoice_periksa')->insert($data);
+
+            DB::table('dt_pasien')->where('member_id', $member_id)->update(['kartu' => 'Y']);
+        }
+
+        $data = [
+            'no_order' => 'HK' . $no_order,
+            'urutan' => $no_order,
+            'member_id' => $member_id,
+            'id_dokter' => $id_dokter,
+            'tgl' => $r->tgl,
+            'rupiah' => '25000',
+            'pembayaran' => $pembayaran,
+            'jenis' => $r->id_jenis,
+            'status' => 'paid',
+            'admin' => Auth::user()->name,
+            'ket' => 'Administrasi'
+        ];
+        DB::table('invoice_periksa')->insert($data);
 
 
         return redirect()->route('inv_periksa')->with('sukses', 'Berhasil tambah pertanyaan');
@@ -92,8 +127,10 @@ class Invoice_periksa extends Controller
 
     public function cetak_inv_periksa(Request $r)
     {
+        $invoice = DB::select("SELECT * FROM invoice_periksa as a left join tb_nominal as b on b.id_nominal = a.jenis where a.no_order =  '$r->no_order'");
         $data = [
-            'invoice' => DB::table('invoice_periksa')->where('id_invoice_periksa', $r->id_invoice)->first(),
+            'invoice2' => DB::table('invoice_periksa')->where('no_order', $r->no_order)->first(),
+            'invoice' =>  $invoice,
             'alamat' => DB::table('h1')->where('id_h1', '12')->first()
         ];
         return view('invoice_periksa.cetak_invoice_new', $data);
