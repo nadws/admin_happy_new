@@ -121,7 +121,13 @@ class Invoice_periksa extends Controller
 
     public function hapus_invoice_periksa(Request $r)
     {
-        DB::table('invoice_periksa')->where('id_invoice_periksa', $r->id_invoice_periksa)->delete();
+        DB::table('invoice_periksa')->where('no_order', $r->id_invoice_periksa)->delete();
+        $cek = DB::table('dt_pasien')->where('no_order', $r->id_invoice_periksa)->first();
+        if(!empty($cek)) {
+            DB::table('dt_pasien')->where('no_order', $r->id_invoice_periksa)->update([
+                'kartu' => 'T'
+            ]);
+        }
         // return redirect()->route('inv_periksa')->with('sukses', 'Berhasil tambah pertanyaan');
     }
 

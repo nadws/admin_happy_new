@@ -239,21 +239,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="">Tanggal</label>
-                                <input required type="date" name="tgl" value="{{ date('Y-m-d') }}" class="form-control">
-                            </div>
-                        </div>
-
-
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="">Nama Pasien</label>
-                                <input required type="text" class="form-control nama" disabled>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-12 mt-2">
                             <div class="form-group">
                                 <label for="">Nama Dokter</label>
                                 <select name="id_dokter" id="" class="select2 form-select">
@@ -264,6 +250,14 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="">Tanggal</label>
+                                <input required type="date" name="tgl" value="{{ date('Y-m-d') }}" class="form-control">
+                            </div>
+                        </div>
+
+                        
 
 
                         <div class="col-lg-6">

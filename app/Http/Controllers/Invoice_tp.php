@@ -17,15 +17,9 @@ class Invoice_tp extends Controller
         $data = [
             'title' => 'Data Invoice Therapy & Paket',
             'dt_pasien' => DB::table('dt_pasien')->get(),
-            'invoice_tp' => DB::select("SELECT a.pembayaran, a.id_invoice_therapy, a.tgl, a.no_order, b.nama_pasien, a.member_id, c.saldo
+            'invoice_tp' => DB::select("SELECT a.pembayaran, a.id_invoice_therapy, a.tgl, a.no_order, b.nama_pasien, a.member_id
             FROM invoice_therapy AS a
             LEFT JOIN dt_pasien AS b ON b.member_id = a.member_id
-            LEFT JOIN (
-            SELECT a.id_paket, SUM(a.debit - a.kredit) AS saldo, a.no_order
-            FROM saldo_therapy AS a
-            GROUP BY a.no_order, a.id_paket
-            HAVING SUM(a.debit - a.kredit) = 1
-            ) AS c ON c.no_order = a.no_order
             WHERE a.tgl BETWEEN '$tgl1' AND '$tgl2'
             ORDER BY a.id_invoice_therapy DESC"),
             'paket' => DB::table('dt_paket')->get(),
@@ -206,6 +200,7 @@ class Invoice_tp extends Controller
 
         DB::table('invoice_therapy')->where('no_order', $id)->delete();
         DB::table('saldo_therapy')->where('no_order', $id)->delete();
+        DB::table('invoice_registrasi')->where('no_order', $id)->delete();
         // DB::table('invoice_kunjungan')->where('member_id', $member)->delete();
         return redirect()->route('invoice_tp')->with('sukses', 'Berhasil hapus invoice');
     }

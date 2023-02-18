@@ -38,7 +38,7 @@ class VoidController extends Controller
             FROM invoice_periksa as a 
             left join dt_pasien as b on b.member_id = a.member_id 
             left join dt_dokter as c on c.id_dokter = a.id_dokter
-            where a.tgl BETWEEN '$r->tgl1' and '$r->tgl2' order by a.id_invoice_periksa DESC"),
+            where a.tgl BETWEEN '$r->tgl1' and '$r->tgl2' GROUP BY a.no_order order by a.id_invoice_periksa DESC"),
         ];
         return view('void.loadPeriksa',$data);
 
@@ -57,6 +57,7 @@ class VoidController extends Controller
             HAVING SUM(a.debit - a.kredit) = 1
             ) AS c ON c.no_order = a.no_order
             WHERE a.tgl BETWEEN '$r->tgl1' AND '$r->tgl2'
+            GROUP BY a.no_order
             ORDER BY a.id_invoice_therapy DESC"),
         ];
         return view('void.loadTerapi',$data);
