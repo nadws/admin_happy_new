@@ -30,9 +30,11 @@
                     <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn icon icon-left btn-primary"
                         style="float: right; margin-left:5px;"><i class="bi bi-plus"></i>
                         Tambah</a>
+                    @if (Auth::user()->role == 'Presiden')
                     <a href="#" data-bs-toggle="modal" data-bs-target="#import" class="btn icon icon-left btn-primary"
                         style="float: right;"><i class="fas fa-file-import"></i>
                         Import</a>
+                    @endif
                 </div>
                 <div class="card-body">
                     <table class="table table-hover" id="table1">
@@ -40,11 +42,8 @@
                             <tr>
                                 <th>#</th>
                                 <th width="12%">No Rekam Medis</th>
-                                <th>Tanggal lahir</th>
                                 <th>Nama</th>
-                                <th>No Telpon</th>
-                                <th>Alamat</th>
-                                <th>Aksi</th>
+                                <th width="16%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,26 +51,27 @@
                             <tr>
                                 <td>{{ $no + 1 }}</td>
                                 <td>{{ $n->member_id }}</td>
-                                <td>{{ date('d-m-Y', strtotime($n->tgl_lahir)) }}</td>
-                                <td>{{ $n->nama_pasien }}</td>
-                                <td>{{ $n->no_hp }}</td>
-                                @if (strlen($n->alamat) > 14)
+                                @if (strlen($n->nama_pasien) > 60)
                                 <td>
                                     <span class="teksLimit{{ $n->id_pasien }}">
-                                        {{ Str::limit($n->alamat, 20, '...') }}
+                                        {{ Str::limit($n->nama_pasien, 60, '...') }}
                                         <a href="#" class="readMore" id="{{ $n->id_pasien }}">read
                                             more</a>
                                     </span>
-                                    <span class="teksFull{{ $n->id_pasien }}" style="display:none">{{ $n->alamat }} <a
+                                    <span class="teksFull{{ $n->id_pasien }}" style="display:none">{{ $n->nama_pasien }} <a
                                             href="#" class="less" id="{{ $n->id_pasien }}">less</a></span>
                                 </td>
                                 @else
                                 <td>
-                                    {{ $n->alamat }}
+                                    {{ $n->nama_pasien }}
                                 </td>
                                 @endif
 
+
                                 <td>
+                                    <a href="#" class="btn btn-primary btn-sm detail" data-bs-toggle="modal"
+                                        data-bs-target="#detail" id_pasien="{{ $n->id_pasien }}"><i
+                                            class="bi bi-eye"></i></a>
                                     <a href="#" class="btn btn-primary btn-sm edit" data-bs-toggle="modal"
                                         data-bs-target="#edit" id_pasien="{{ $n->id_pasien }}"><i
                                             class="bi bi-pencil-square"></i></a>
@@ -155,6 +155,38 @@
         </div>
     </div>
 </form>
+
+{{-- detail pasien --}}
+<div class="modal fade text-left" id="detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
+    aria-hidden="true">
+    <div class="modal-dialog  modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel33">
+                    Detail Paisen
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="detail_modal"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                    <i class="bx bx-x d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Close</span>
+                </button>
+                <button type="submit" class="btn btn-primary ml-1">
+                    <i class="bx bx-check d-block d-sm-none"></i>
+                    <span class="d-none d-sm-block">Save</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 
 {{-- edit pasien --}}
 <form action="{{ route('edit_pasien') }}" method="post">
@@ -297,6 +329,18 @@
                     method: "Get",
                     success: function(data) {
                         $('#edit_modal').html(data);
+                    }
+                });
+
+            });
+
+            $('.detail').click(function() {
+                var id_pasien = $(this).attr('id_pasien');
+                $.ajax({
+                    url: "{{ route('detail_pasien') }}?id_pasien=" + id_pasien,
+                    method: "Get",
+                    success: function(data) {
+                        $('#detail_modal').html(data);
                     }
                 });
 

@@ -40,7 +40,8 @@ class NominalController extends Controller
         $data = [
             'title' => $title,
             'query' => DB::table('tb_nominal')->where('jenis', $jenis)->get(),
-            'tipe' => $tipe
+            'tipe' => $tipe,
+            'jenis' => $jenis
         ];
         return view('nominal.tb_nominal',$data);
     }
@@ -48,26 +49,9 @@ class NominalController extends Controller
     public function tambah_nominal($tipe, Request $r)
     {
         
-        switch($tipe) {
-            case '1':
-                $jenis = 'inv_screening';
-                break;
-            case '2':
-                $jenis = 'inv_periksa';
-                break;
-            case '3':
-                $jenis = 'inv_registrasi';
-                break;
-            case '4':
-                $jenis = 'inv_tp';
-                break;
-            case '5':
-                $jenis = 'inv_kunjungan';
-                break;
-        }
-        DB::table('tb_nominal')->where('jenis', $jenis)->insert([
+        DB::table('tb_nominal')->where('jenis', $r->jenisInv)->insert([
             'nominal' => $r->nominal,
-            'jenis' => $jenis,
+            'jenis' => $r->jenisInv,
             'nm_jenis' => $r->nm_jenis
         ]);
 
@@ -83,7 +67,9 @@ class NominalController extends Controller
     public function edit_nominal(Request $r)
     {
         DB::table('tb_nominal')->where('id_nominal', $r->id_nominal)->update([
-            'nominal' => $r->nominal
+            'nominal' => $r->nominal,
+            'jenis' => $r->jenisInv,
+            'nm_jenis' => $r->nm_jenis
         ]);
         return redirect()->route('data_nominal', $r->tipe)->with('sukses', 'Berhasil edit nominal');
     }

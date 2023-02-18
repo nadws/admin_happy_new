@@ -69,6 +69,16 @@ class Data_pasien extends Controller
         return view('pasien.edit', $data);
     }
 
+    public function detail_pasien(Request $r)
+    {
+        $data = [
+            'title' => 'Data Detail Pasien',
+            'pasien' => DB::table('dt_pasien')->where('id_pasien', $r->id_pasien)->first(),
+        ];
+
+        return view('pasien.detail', $data);
+    }
+
     public function edit_pasien(Request $r)
     {
         $member_id = $r->member_id;

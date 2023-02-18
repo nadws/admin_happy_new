@@ -27,7 +27,7 @@
             <div class="col-lg-8">
             <div class="card">
                 <div class="card-header">
-                    <a href="#" id="sukses" data-bs-toggle="modal" data-bs-target="#tambah"
+                    <a href="#" id="sukses" style="float:right" data-bs-toggle="modal" data-bs-target="#tambah"
                         class="btn icon icon-left btn-primary"><i class="bi bi-plus-circle"></i> Tambah</a>
                 </div>
                 <div class="card-body">

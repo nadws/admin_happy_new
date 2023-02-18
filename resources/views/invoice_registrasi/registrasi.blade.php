@@ -29,9 +29,7 @@
                     <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn icon icon-left btn-primary"
                         style="float: right;"><i class="bi bi-plus"></i>
                         Buat Invoice Baru</a>
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#export" class="btn icon icon-left btn-primary"
-                        style="float: right; margin-right: 5px;"><i class="bi bi-file-excel"></i>
-                        Export</a>
+                    <x-btn-aldi/>
                 </div>
                 <div class="card-body">
                     <table class="table table-hover" id="table1">

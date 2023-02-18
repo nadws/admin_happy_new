@@ -40,13 +40,16 @@
         <tr>
             <td style="vertical-align: middle;">
                 <?= $m->menu ?>
+                
+                
             </td>
             <td>
                 <?php $sub = DB::table('tb_sub_menu')
                 ->where('id_menu', $m->id_menu)
                 ->get() ?>
                 <?php foreach ($sub as $s) : ?>
-                <?= $s->sub_menu ?> <br>
+                <label for="labm{{ $s->id_sub_menu }}">{{$s->sub_menu}}</label>
+                <br>
                 <?php endforeach ?>
             </td>
             <td>
@@ -58,9 +61,9 @@
                 ->first() ?>
 
                 <?php if (empty($menu_p->permission)) : ?>
-                <input type="checkbox" name="permission[]" value="<?= $s->id_sub_menu ?>" id=""><br>
+                <input type="checkbox" name="permission[]" value="<?= $s->id_sub_menu ?>" id="labm{{ $s->id_sub_menu }}"><br>
                 <?php else : ?>
-                <input type="checkbox" name="permission[]" value="<?= $s->id_sub_menu ?>" checked><br>
+                <input type="checkbox" name="permission[]" value="<?= $s->id_sub_menu ?>" id="labm{{ $s->id_sub_menu }}" checked><br>
                 <?php endif ?>
 
                 <?php endforeach ?>

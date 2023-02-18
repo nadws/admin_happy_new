@@ -37,7 +37,9 @@
                                 href="{{ route('invoice_tp') }}">Therapy & Paket</a>
                         </li>
                     </ul>
-
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn icon icon-left btn-primary"
+                        style="float: right;"><i class="bi bi-plus"></i>
+                        Buat Invoice Baru</a>
                     <x-btn-aldi />
 
                 </div>
@@ -236,17 +238,6 @@
 
                         </div>
                     </div>
-                    <div class="col-lg-12 mt-2">
-                        <div class="form-group">
-                            <label for="">Nama Dokter</label>
-                            <select name="id_dokter" id="" class="select2 form-select">
-                                <option value="">--Pilih dokter--</option>
-                                @foreach ($dokter as $d)
-                                <option value="{{ $d->id_dokter }}">{{ $d->nm_dokter }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
@@ -256,8 +247,23 @@
                         </div>
 
 
-
-
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="">Nama Pasien</label>
+                                <input required type="text" class="form-control nama" disabled>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="">Nama Dokter</label>
+                                <select name="id_dokter" id="" class="select2 form-select">
+                                    <option value="">--Pilih dokter--</option>
+                                    @foreach ($dokter as $d)
+                                    <option value="{{ $d->id_dokter }}">{{ $d->nm_dokter }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
 
 
                         <div class="col-lg-6">

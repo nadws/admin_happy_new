@@ -99,22 +99,22 @@
                         </div>
 
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="">Tanggal</label>
                                 <input {{Auth::user()->role != 'Presiden' ? 'readonly' : ''}} required type="date" name="tgl" value="{{date('Y-m-d')}}" class="form-control">
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         
 
-                        <div class="col-lg-6">
+                        {{-- <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="">Nama Pasien</label>
                                 <input required type="text" class="form-control nama" disabled>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="col-lg-12">
                             <hr>
