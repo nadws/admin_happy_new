@@ -151,6 +151,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('save_pasien', [Data_pasien::class, 'save_pasien'])->name('save_pasien');
     Route::get('delete_pasien', [Data_pasien::class, 'delete_pasien'])->name('delete_pasien');
     Route::get('get_edit_pasien', [Data_pasien::class, 'get_edit_pasien'])->name('get_edit_pasien');
+    Route::get('detail_pasien', [Data_pasien::class, 'detail_pasien'])->name('detail_pasien');
     Route::post('edit_pasien', [Data_pasien::class, 'edit_pasien'])->name('edit_pasien');
 
     Route::get('inv_periksa', [Invoice_periksa::class, 'index'])->name('inv_periksa');
@@ -247,6 +248,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('historyTherapist', [HistoryTherapistController::class, 'index'])->name('historyTherapist');
     Route::get('komTherapist', [Komtherapist::class, 'index'])->name('komTherapist');
     Route::get('historyDetail', [HistoryTherapistController::class, 'historyDetail'])->name('historyDetail');
+    
+    Route::get('/+menu', [UserController::class, 'tambahMenu'])->name('plusMenu');
+    Route::get('/delMenu', [UserController::class, 'delMenu'])->name('delMenu');
+
 });
 
 require __DIR__ . '/auth.php';

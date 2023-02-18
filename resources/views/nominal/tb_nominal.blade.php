@@ -49,9 +49,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        @if ($tipe == 2)
-                                            <th>Nama Jenis</th>
-                                        @endif
+                                        <th>Nama Jenis</th>
                                         <th>Nominal</th>
                                         <th width="25%">Aksi</th>
                                     </tr>
@@ -60,9 +58,7 @@
                                     @foreach ($query as $no => $d)
                                     <tr>
                                         <td>{{ $no+1 }}</td>
-                                        @if ($tipe == 2)
-                                            <td>{{ $d->nm_jenis }}</td>
-                                        @endif
+                                        <td>{{ $d->nm_jenis }}</td>
                                         <td>{{ number_format($d->nominal,0) }}</td>
                                         <td>
                                             <a href="#" data-bs-toggle="modal"
@@ -101,18 +97,18 @@
                 </div>
                 <form action="#">
                     <input type="hidden" name="id_nominal" value="{{ $d->id_nominal }}">
-                    <input type="hidden" name="tipe" value="{{ $tipe }}">
+                    <input type="hidden" name="jenisInv" value="{{$jenis}}">
+                    <input type="hidden" name="tipe" value="{{$tipe}}">
+                    
                     <div class="modal-body">
                         <div class="row">
-                            @if ($tipe == 2)
                             <div class="col-lg-8">
                                 <div class="form-group">
                                     <label>Nama Jenis </label>
                                     <input type="text" value="{{ $d->nm_jenis }}" name="nm_jenis" class="form-control" />
                                 </div>
                             </div>
-                            @endif
-                            <div class="col-lg-{{$tipe == 2 ? '4' : '12'}}">
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Nominal </label>
                                     <input type="number" value="{{ $d->nominal }}" style="text-align:right;" name="nominal" class="form-control" />
@@ -155,15 +151,14 @@
                 <form action="#">
                     <div class="modal-body">
                         <div class="row">
-                            @if ($tipe == 2)
                             <div class="col-lg-8">
                                 <div class="form-group">
+                                    <input type="hidden" name="jenisInv" value="{{$jenis}}">
                                     <label>Nama Jenis </label>
                                     <input type="text" name="nm_jenis" class="form-control" />
                                 </div>
                             </div>
-                            @endif
-                            <div class="col-lg-{{$tipe == 2 ? '4' : '12'}}">
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Nominal </label>
                                     <input type="number" style="text-align:right;" name="nominal" class="form-control" />

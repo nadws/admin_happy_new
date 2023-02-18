@@ -121,4 +121,33 @@ class UserController extends Controller
 
         return redirect()->route('tb_user')->with('sukses', 'Sukses atur permssion');
     }
+
+    public function tambahMenu()
+    {
+        $data = [
+            
+            'dashboard' => DB::table('tb_menu_dashboard')->orderBy('urutan', 'ASC')->get(),
+            'void' => DB::table('tb_menu_void')->get(),
+            'menu' => DB::table('tb_sub_menu')->orderBy('urutan', 'ASC')->get(),
+        ];
+        return view('user.menu',$data);
+    }
+
+    public function delMenu(Request $r)
+    {
+        if($r->jenis == 1) {
+            $table = 'tb_sub_menu';
+            $id = 'id_sub_menu';
+        } elseif($r->jenis == 2) {
+            $table = 'tb_menu_dashboard';
+            $id = 'id';
+        } else {
+            $table = 'tb_menu_void';
+            $id = 'id';
+        }
+
+        DB::table($table)->where($id, $r->id)->delete();
+        // DB::table($table)->where($id, $r->id)->delete();
+        return redirect()->route('plusMenu')->with('sukses', 'Sukses tambah menu');
+    }
 }

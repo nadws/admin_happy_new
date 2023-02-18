@@ -37,6 +37,9 @@
                                 href="{{ route('invoice_tp') }}">Therapy & Paket</a>
                         </li>
                     </ul>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn icon icon-left btn-primary"
+                        style="float: right;"><i class="bi bi-plus"></i>
+                        Buat Invoice Baru</a>
                     <x-btn-aldi  />
                     
                 </div>
