@@ -31,7 +31,7 @@
                             }}</span>
                     </td>
                     <td>
-                        <a href="#" id="hapusPeriksa" id_invoice="{{$n->id_invoice_periksa}}" 
+                        <a href="#" id="hapusPeriksa" id_invoice="{{$n->no_order}}" 
                             class="btn btn-warning btn-sm"><i class="bi bi-trash"></i></a>
                     </td>
                 </tr>
