@@ -97,7 +97,7 @@ class Invoice_periksa extends Controller
             ];
             DB::table('invoice_periksa')->insert($data);
 
-            DB::table('dt_pasien')->where('member_id', $member_id)->update(['kartu' => 'Y']);
+            DB::table('dt_pasien')->where('member_id', $member_id)->update(['kartu' => 'Y', 'no_order' => 'HK' . $no_order]);
         }
 
         $data = [
