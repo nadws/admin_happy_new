@@ -26,6 +26,9 @@
         <section class="section">
             <div class="card">
                 <div class="card-header">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#tambah" class="btn icon icon-left btn-primary"
+                        style="float: right;"><i class="bi bi-plus"></i>
+                        Buat Invoice Baru</a>
                     <x-btn-aldi  />
                   
                 </div>

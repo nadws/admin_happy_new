@@ -47,6 +47,8 @@ Route::get('/', function () {
     return view('auth.login');
 })->name('signin');
 
+
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         $data = [
@@ -249,10 +251,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('historyTherapist', [HistoryTherapistController::class, 'index'])->name('historyTherapist');
     Route::get('komTherapist', [Komtherapist::class, 'index'])->name('komTherapist');
     Route::get('historyDetail', [HistoryTherapistController::class, 'historyDetail'])->name('historyDetail');
-    
+
     Route::get('/+menu', [UserController::class, 'tambahMenu'])->name('plusMenu');
     Route::get('/delMenu', [UserController::class, 'delMenu'])->name('delMenu');
-
 });
 
 require __DIR__ . '/auth.php';

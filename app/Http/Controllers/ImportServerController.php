@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
 
 class ImportServerController extends Controller
 {
@@ -19,12 +20,27 @@ class ImportServerController extends Controller
 
     public function importUser(Request $r)
     {
-        $user = Http::get("https://happykids.ptagafood.com/api/users");
-        $dt_user = json_decode($user, TRUE);
+        // get api dari server
+        $client = new Client();
+
+        $response = $client->request('GET', 'https://adm.klinikhappykids.com/api/users', [
+            'headers' => [
+                'X-API-KEY' => '@Takemor.'
+            ]
+        ]);
+        $data = json_decode($response->getBody(), true);
+        
+        $dt_user = $data['users'];
+        $tb_menu_dashboard = $data['tb_menu_dashboard'];
+        $tb_menu_void = $data['tb_menu_void'];
+        $tb_sub_menu = $data['tb_sub_menu'];
+        $tb_permission = $data['tb_permission'];
+
+        // -----------------------
         $pesan = 'error';
         if(!empty($dt_user)) {
             DB::table('users')->truncate();
-            foreach ($dt_user['users'] as $v) {
+            foreach ($dt_user as $v) {
                 $data = [
                     'id' => $v['id'],
                     'name' => $v['name'],
@@ -39,29 +55,102 @@ class ImportServerController extends Controller
             }
             $pesan = 'sukses';
         }
+        
+        if(!empty($tb_menu_dashboard)) {
+            DB::table('tb_menu_dashboard')->truncate();
+            foreach ($tb_menu_dashboard as $v) {
+                $data = [
+                    'id' => $v['id'],
+                    'icon' => $v['icon'],
+                    'teks' => $v['teks'],
+                    'link' => $v['link'],
+                    'urutan' => $v['urutan'],
+                ];
+                DB::table('tb_menu_dashboard')->insert($data);
+            }
+            $pesan = 'sukses';
+        }
+
+        if(!empty($tb_menu_void)) {
+            DB::table('tb_menu_void')->truncate();
+            foreach ($tb_menu_void as $v) {
+                $data = [
+                    'id' => $v['id'],
+                    'icon' => $v['icon'],
+                    'teks' => $v['teks'],
+                    'target_id' => $v['target_id'],
+                ];
+                DB::table('tb_menu_void')->insert($data);
+            }
+            $pesan = 'sukses';
+        }
+
+        if(!empty($tb_sub_menu)) {
+            DB::table('tb_sub_menu')->truncate();
+            foreach ($tb_sub_menu as $v) {
+                $data = [
+                    'id_sub_menu' => $v['id_sub_menu'],
+                    'id_menu' => $v['id_menu'],
+                    'sub_menu' => $v['sub_menu'],
+                    'url' => $v['url'],
+                    'created_at' => $v['created_at'],
+                    'updated_at' => $v['updated_at'],
+                    'urutan' => $v['urutan'],
+                ];
+                DB::table('tb_sub_menu')->insert($data);
+            }
+            $pesan = 'sukses';
+        }
+
+        if(!empty($tb_permission)) {
+            DB::table('tb_permission')->truncate();
+            foreach ($tb_permission as $v) {
+                $data = [
+                    'id_user' => $v['id_user'],
+                    'permission' => $v['permission'],
+                    'created_at' => $v['created_at'],
+                    'updated_at' => $v['updated_at'],
+                ];
+                DB::table('tb_permission')->insert($data);
+            }
+            $pesan = 'sukses';
+        }
         return redirect()->route('importServer')->with($pesan, 'Import dari server');
     }
 
     public function importDokter()
     {
-        $user = Http::get("https://happykids.ptagafood.com/api/dokter");
-        $dt_user = json_decode($user, TRUE);
+        // get api dari server
+        $client = new Client();
+
+        $response = $client->request('GET', 'https://adm.klinikhappykids.com/api/dokter', [
+            'headers' => [
+                'X-API-KEY' => '@Takemor.'
+            ]
+        ]);
+        
+        $data = json_decode($response->getBody(), true);
+        $dt_user = $data['dokter'];
+        $therapist = $data['therapist'];
+        // -----------------------  
+
         $pesan = 'error';
         if(!empty($dt_user)){
             DB::table('dt_dokter')->truncate();
             DB::table('dt_therapy')->truncate();
             
-            foreach ($dt_user['dokter'] as $v) {
+            foreach ($dt_user as $v) {
                 $data = [
                     'id_dokter' => $v['id_dokter'],
                     'nm_dokter' => $v['nm_dokter'],
                 ];
                 DB::table('dt_dokter')->insert($data);
             }
-            foreach ($dt_user['therapist'] as $v) {
+            foreach ($therapist as $v) {
                 $data = [
                     'id_therapy' => $v['id_therapy'],
                     'nama_therapy' => $v['nama_therapy'],
+                    'id_paket' => $v['id_paket'],
                 ];
                 DB::table('dt_therapy')->insert($data);
             }
@@ -70,39 +159,26 @@ class ImportServerController extends Controller
         return redirect()->route('importServer')->with($pesan, "Import dari server");
     }
 
-    public function importPasien()
-    {
-        $user = Http::get("https://happykids.ptagafood.com/api/pasien");
-        $dt_user = json_decode($user, TRUE);
-        $pesan = 'error';
-        if(!empty($dt_user)){
-            DB::table('dt_pasien')->truncate();
-            
-            foreach ($dt_user['pasien'] as $v) {
-                $data = [
-                    'id_pasien' => $v['id_pasien'],
-                    'member_id' => $v['member_id'],
-                    'nama_pasien' => $v['nama_pasien'],
-                    'tgl_lahir' => $v['tgl_lahir'],
-                    'no_hp' => $v['no_hp'],
-                ];
-                DB::table('dt_pasien')->insert($data);
-            }
-
-            $pesan = 'sukses';
-        }
-        return redirect()->route('importServer')->with($pesan, "Import dari server");
-    }
-
     public function importPaket()
     {
-        $user = Http::get("https://happykids.ptagafood.com/api/paket");
-        $dt_user = json_decode($user, TRUE);
+        // get api dari server
+        $client = new Client();
+
+        $response = $client->request('GET', 'https://adm.klinikhappykids.com/api/paket', [
+            'headers' => [
+                'X-API-KEY' => '@Takemor.'
+            ]
+        ]);
+        
+        $data = json_decode($response->getBody(), true);
+        $dt_user = $data['paket'];
+        // -----------------------  
+
         $pesan = 'error';
         if(!empty($dt_user)){
             DB::table('dt_paket')->truncate();
             
-            foreach ($dt_user['paket'] as $v) {
+            foreach ($dt_user as $v) {
                 $data = [
                     'id_paket' => $v['id_paket'],
                     'nama_paket' => $v['nama_paket'],
@@ -118,17 +194,28 @@ class ImportServerController extends Controller
 
     public function importNominal()
     {
-        $user = Http::get("https://happykids.ptagafood.com/api/nominal");
-        $dt_user = json_decode($user, TRUE);
+        // get api dari server
+        $client = new Client();
+
+        $response = $client->request('GET', 'https://adm.klinikhappykids.com/api/nominal', [
+            'headers' => [
+                'X-API-KEY' => '@Takemor.'
+            ]
+        ]);
+        $data = json_decode($response->getBody(), true);
+        $dt_user = $data['nominal'];
+        // -----------------------  
+
         $pesan = 'error';
         if(!empty($dt_user)){
             DB::table('tb_nominal')->truncate();
             
-            foreach ($dt_user['nominal'] as $v) {
+            foreach ($dt_user as $v) {
                 $data = [
                     'id_nominal' => $v['id_nominal'],
                     'nominal' => $v['nominal'],
                     'jenis' => $v['jenis'],
+                    'nm_jenis' => $v['nm_jenis'],
                 ];
                 DB::table('tb_nominal')->insert($data);
             }
