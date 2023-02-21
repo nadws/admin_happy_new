@@ -35,6 +35,8 @@ class ImportServerController extends Controller
         $tb_menu_void = $data['tb_menu_void'];
         $tb_sub_menu = $data['tb_sub_menu'];
         $tb_permission = $data['tb_permission'];
+        $dashboard_permission = $data['dashboard_permission'];
+        $void_permission = $data['void_permission'];
 
         // -----------------------
         $pesan = 'error';
@@ -112,6 +114,30 @@ class ImportServerController extends Controller
                     'updated_at' => $v['updated_at'],
                 ];
                 DB::table('tb_permission')->insert($data);
+            }
+            $pesan = 'sukses';
+        }
+
+        if(!empty($dashboard_permission)) {
+            DB::table('dashboard_permission')->truncate();
+            foreach ($dashboard_permission as $v) {
+                $data = [
+                    'id_user' => $v['id_user'],
+                    'id_menu_dashboard' => $v['id_menu_dashboard'],
+                ];
+                DB::table('dashboard_permission')->insert($data);
+            }
+            $pesan = 'sukses';
+        }
+        
+        if(!empty($void_permission)) {
+            DB::table('void_permission')->truncate();
+            foreach ($void_permission as $v) {
+                $data = [
+                    'id_user' => $v['id_user'],
+                    'id_menu_void' => $v['id_menu_void'],
+                ];
+                DB::table('void_permission')->insert($data);
             }
             $pesan = 'sukses';
         }

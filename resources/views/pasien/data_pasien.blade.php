@@ -183,7 +183,6 @@
     </div>
 </div>
 
-
 {{-- edit pasien --}}
 <form action="{{ route('edit_pasien') }}" method="post">
     @csrf
@@ -318,7 +317,8 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
-            $('.edit').click(function() {
+            $(document).on('click', '.edit', function(e){
+                e.preventDefault()
                 var id_pasien = $(this).attr('id_pasien');
                 $.ajax({
                     url: "{{ route('get_edit_pasien') }}?id_pasien=" + id_pasien,
@@ -327,8 +327,8 @@
                         $('#edit_modal').html(data);
                     }
                 });
+            })
 
-            });
             $(document).on('click', '.detail', function(e){
                 e.preventDefault()
                 var id_pasien = $(this).attr('id_pasien');
