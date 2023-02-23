@@ -23,14 +23,11 @@ class Data_paket extends Controller
         $nama_paket = $r->nama_paket;
         $harga = $r->harga;
 
-        for ($i=0; $i < 20; $i++) { 
-        
-            $data = [
-                'nama_paket' => Str::random(5),
-                'harga' => $harga,
-            ];
-            DB::table('dt_paket')->insert($data);
-        }
+        $data = [
+            'nama_paket' => $nama_paket,
+            'harga' => $harga,
+        ];
+        DB::table('dt_paket')->insert($data);
 
         return redirect()->route('dt_paket')->with('sukses', 'Berhasil disimpan');
     }
