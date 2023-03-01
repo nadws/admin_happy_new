@@ -3,7 +3,7 @@
 @if ($errors->any())
     <div {{ $attributes }}>
         <div class="font-small text-red-600" style="margin-bottom: 0px;">
-            {{ __('Whoops! Something went wrong.') }}
+            {{ __('Kontak administrator untuk mengaktifkan akun.') }}
         </div>
 
         <ul class=" list-disc list-inside text-sm text-red-600">

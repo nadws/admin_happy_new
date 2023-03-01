@@ -90,6 +90,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('cms', function () {
         return redirect('http://127.0.0.1:2222/dashboard');
     })->name('cms');
+    Route::get('p', function () {
+        return view('p');
+    })->name('p');
 
     Route::get('data_dokter', [DataDokterController::class, 'index'])->name('data_dokter');
 

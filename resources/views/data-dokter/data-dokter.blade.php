@@ -55,8 +55,6 @@
                                             <a href="#" class="btn btn-sm icon btn-danger"><i class="bi bi-trash"></i></a>
                                         </td>
                                     </tr>
-
-
                                 </tbody>
                             </table>
                         </div>
