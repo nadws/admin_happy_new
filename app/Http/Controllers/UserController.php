@@ -16,10 +16,10 @@ class UserController extends Controller
         $data = [
             'title' => 'Tb User',
             'users' => User::all(),
-            
+
         ];
 
-        return view('user.user',$data);
+        return view('user.user', $data);
     }
 
     public function save_user(Request $r)
@@ -86,35 +86,35 @@ class UserController extends Controller
         DB::table('void_permission')->where('id_user', $id_user)->delete();
         DB::table('dashboard_permission')->where('id_user', $id_user)->delete();
 
-        if(!empty($permission)) {
+        if (!empty($permission)) {
             for ($i = 0; $i < count($r->permission); $i++) {
                 $data_permission = [
                     'id_user' => $id_user,
                     'permission' => $permission[$i]
                 ];
-    
+
                 DB::table('tb_permission')->insert($data_permission);
             }
         }
-        
-        if(!empty($id_menu_dashboard)) {
+
+        if (!empty($id_menu_dashboard)) {
             for ($i = 0; $i < count($r->id_menu_dashboard); $i++) {
                 $data_dashboard = [
                     'id_user' => $id_user,
                     'id_menu_dashboard' => $id_menu_dashboard[$i]
                 ];
-    
+
                 DB::table('dashboard_permission')->insert($data_dashboard);
             }
         }
 
-        if(!empty($id_menu_void)) {
+        if (!empty($id_menu_void)) {
             for ($i = 0; $i < count($r->id_menu_void); $i++) {
                 $data_void = [
                     'id_user' => $id_user,
                     'id_menu_void' => $id_menu_void[$i]
                 ];
-    
+
                 DB::table('void_permission')->insert($data_void);
             }
         }
@@ -125,20 +125,20 @@ class UserController extends Controller
     public function tambahMenu()
     {
         $data = [
-            
+
             'dashboard' => DB::table('tb_menu_dashboard')->orderBy('urutan', 'ASC')->get(),
             'void' => DB::table('tb_menu_void')->get(),
             'menu' => DB::table('tb_sub_menu')->orderBy('urutan', 'ASC')->get(),
         ];
-        return view('user.menu',$data);
+        return view('user.menu', $data);
     }
 
     public function delMenu(Request $r)
     {
-        if($r->jenis == 1) {
+        if ($r->jenis == 1) {
             $table = 'tb_sub_menu';
             $id = 'id_sub_menu';
-        } elseif($r->jenis == 2) {
+        } elseif ($r->jenis == 2) {
             $table = 'tb_menu_dashboard';
             $id = 'id';
         } else {
