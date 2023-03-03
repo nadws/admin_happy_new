@@ -123,7 +123,7 @@ class Invoice_periksa extends Controller
     {
         DB::table('invoice_periksa')->where('no_order', $r->id_invoice_periksa)->delete();
         $cek = DB::table('dt_pasien')->where('no_order', $r->id_invoice_periksa)->first();
-        if(!empty($cek)) {
+        if (!empty($cek)) {
             DB::table('dt_pasien')->where('no_order', $r->id_invoice_periksa)->update([
                 'kartu' => 'T'
             ]);
@@ -135,7 +135,7 @@ class Invoice_periksa extends Controller
     {
         $invoice = DB::select("SELECT * FROM invoice_periksa as a left join tb_nominal as b on b.id_nominal = a.jenis where a.no_order =  '$r->no_order'");
         $data = [
-            'invoice2' => DB::table('invoice_periksa')->where('no_order', $r->no_order)->first(),
+            'invoice2' => DB::selectOne("SELECT  * FROM invoice_periksa as a left join dt_pasien as b on b.member_id =  a.member_id where a.no_order = '$r->no_order'"),
             'invoice' =>  $invoice,
             'alamat' => DB::table('h1')->where('id_h1', '12')->first()
         ];
