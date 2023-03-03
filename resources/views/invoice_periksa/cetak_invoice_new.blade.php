@@ -82,14 +82,20 @@
                     $total += $a->rupiah;
                     @endphp
                     <tr>
-                        <td>{{ empty($a->ket) ? $a->nm_jenis : $a->ket}}</td>
+                        <td>{{$a->nm_jenis}}</td>
                         <td align="right">Rp. {{ number_format($a->rupiah,0)}}</td>
                     </tr>
 
                     @endforeach
+
+                    <tr>
+                        <td>Administrasi</td>
+                        <td align="right">Rp. {{ number_format($invoice3->nominal,0)}}</td>
+                    </tr>
+
                     <tr>
                         <th style="text-align: center">Terbilang</th>
-                        <th style="text-align: right"> Rp.{{number_format($total,0)}} </th>
+                        <th style="text-align: right"> Rp.{{number_format($total + $invoice3->nominal,0)}} </th>
                     </tr>
 
 
