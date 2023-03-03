@@ -33,15 +33,40 @@
                     Invoice #: {{$invoice->no_order}}
                     <br />
                     Created: {{ date('F d, Y',strtotime($invoice->tgl)) }}<br />
-                    Due: {{ date('F d, Y') }}
                 </div>
             </div>
             <div class="col-6 mt-4">
                 <div class="float-start">
                     Happy Kids<br />
                     {{$alamat->isi}}
+                    <br>
+                    <br>
                 </div>
 
+            </div>
+            <div class="col-lg-12">
+                <table>
+                    <tr>
+                        <td>Nama</td>
+                        <td>:</td>
+                        <td>{{$invoice->nama_pasien}}</td>
+                    </tr>
+                    <tr>
+                        <td>No Rekam Medis</td>
+                        <td>:</td>
+                        <td>{{$invoice->member_id}}</td>
+                    </tr>
+                    <tr>
+                        <td>Alamat</td>
+                        <td>:</td>
+                        <td>{{$invoice->alamat}}</td>
+                    </tr>
+                    <tr>
+                        <td>No Telp</td>
+                        <td>:</td>
+                        <td>{{$invoice->no_hp}}</td>
+                    </tr>
+                </table>
             </div>
             <div class="col-lg-12 mt-3">
                 <table class="table table-sm table-bordered">
@@ -80,11 +105,31 @@
                     </tr>
                     @endforeach
                     <tr>
-                        <th colspan="3"></th>
-                        <th style="text-align: right">Total: Rp. {{number_format($total + $total2 ,0)}}</th>
+                        <th style="text-align: center" colspan="3">Terbilang</th>
+                        <th style="text-align: right">Rp. {{number_format($total + $total2 ,0)}}</th>
                     </tr>
 
                 </table>
+                <br>
+                <br>
+                <br>
+            </div>
+
+            <div class="col-8 ">
+
+            </div>
+            <style>
+                .ttd {
+                    text-align: center
+                }
+            </style>
+            <div class="col-4">
+                <h5 class="ttd">Ttd + Stempel</h5>
+                <br>
+                <br>
+                <br>
+                <br>
+                <h5 class="ttd fw-bold">( Ivana Agustin )</h5>
             </div>
 
         </div>

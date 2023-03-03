@@ -7,7 +7,6 @@
     <title>Admin Happy Kids</title>
 
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/css/main/app.css">
-    <link rel="stylesheet" href="{{ asset('theme') }}/assets/css/main/app-dark.css">
     <link rel="shortcut icon" href="{{ asset('images-upload/logo.png') }}" type="image/x-icon">
     <link rel="shortcut icon" href="{{ asset('images-upload/logo.png') }}" type="image/png">
 
@@ -23,7 +22,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    
+
 
     @yield('styles')
 </head>
@@ -316,7 +315,7 @@ $warna4 = DB::table('cms_content')
                             <span class="d-none d-sm-block">Save</span>
                         </button>
                     </div>
-    
+
                 </div>
             </div>
         </div>
