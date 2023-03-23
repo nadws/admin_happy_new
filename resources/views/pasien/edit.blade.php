@@ -2,7 +2,7 @@
     <div class="col-lg-4">
         <div class="form-group">
             <label for="">No Rekam Medis</label>
-            <input readonly required type="text" name="member_id" class="form-control" value="{{$pasien->member_id}}">
+            <input required type="text" name="member_id" class="form-control" value="{{$pasien->member_id}}">
             <input required type="hidden" name="id_pasien" class="form-control" value="{{$pasien->id_pasien}}">
         </div>
     </div>

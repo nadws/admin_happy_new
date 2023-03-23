@@ -18,6 +18,9 @@ class ExportServerController extends Controller
             'title' => 'Export Data',
             'pasien' => DB::table('dt_pasien')->where('export', 'T')->count(),
             'inv' => DB::table('invoice_periksa')->where('export', 'T')->count(),
+            'inv2' => DB::table('invoice_therapy')->where('export', 'T')->count(),
+            'inv3' => DB::table('invoice_kunjungan')->where('export', 'T')->count(),
+            'inv4' => DB::table('invoice_registrasi')->where('export', 'T')->count(),
             'menu' => DB::table('tb_menu_dashboard')->whereNotIn('id', [8, 9, 10])->get()
         ];
         return view('export.export', $data);
@@ -57,6 +60,7 @@ class ExportServerController extends Controller
             'json' => $wadah
         ]);
         $data = json_decode((string) $response->getBody(), true);
+        
 
         if ($response->getStatusCode() === 201) {
             // dd($data['message']);

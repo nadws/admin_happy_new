@@ -110,7 +110,7 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="">No Rekam Medis</label>
-                                <input readonly value="{{ $member_id }}" required type="text" name="member_id"
+                                <input  value="{{ $member_id }}" required type="text" name="member_id"
                                     class="form-control">
                             </div>
                         </div>

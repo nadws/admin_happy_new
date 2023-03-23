@@ -25,7 +25,7 @@
         </div>
         <section class="section">
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-10">
                     <div class="card">
                         <div class="card-header">
                             <a href="#" id="sukses" data-bs-toggle="modal" data-bs-target="#tambah"

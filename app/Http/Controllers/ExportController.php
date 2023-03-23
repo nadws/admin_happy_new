@@ -562,11 +562,12 @@ class ExportController extends Controller
         if ($cek) {
             $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx;
             $spreadsheet = $reader->load($file);
-            $sheet = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+            $sheet = $spreadsheet->getSheetByName('Data Pasien')->toArray(null, true, true, true);
             $data = [];
 
             $numrow = 1;
 
+           
             foreach ($sheet as $row) {
                 if ($row['B'] == '' && $row['D'] == '') {
                     continue;

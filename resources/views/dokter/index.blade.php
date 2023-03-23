@@ -105,9 +105,9 @@
     </div>
 </form>
 
+@foreach ($dokter as $d)
 <form action="{{ route('edit_dokter') }}" method="POST">
     @csrf
-    @foreach ($dokter as $d)
     <div class="modal fade text-left" id="edit{{ $d->id_dokter }}" tabindex="-1" role="dialog"
         aria-labelledby="myModalLabel33" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -142,8 +142,8 @@
             </div>
         </div>
     </div>
-    @endforeach
 </form>
+@endforeach
 @endsection
 @section('scripts')
 <script>

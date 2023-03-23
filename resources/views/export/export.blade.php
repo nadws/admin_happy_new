@@ -79,7 +79,7 @@
                     </div>
                 @endif
                 
-                @if ($inv >= 1)
+                @if ($inv >= 1 || $inv2 >= 1 || $inv3 >= 1 || $inv4 >= 1)
                     <div class="col-6 col-lg-4 col-md-6">
                         <a href="{{route('exportInv')}}" class="exportKlik">
                             <div class="card">
