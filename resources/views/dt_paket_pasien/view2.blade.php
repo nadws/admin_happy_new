@@ -27,6 +27,7 @@
             @php
             $saldo += $i->debit - $i->kredit
             @endphp
+            @if($i->debit+$i->kredit != 0)
             <tr>
                 <td>{{$no+1}}</td>
                 <td>{{date('d-m-Y',strtotime($i->tgl))}}</td>
@@ -36,6 +37,7 @@
                 <td>{{$i->kredit }}</td>
                 <td>{{$saldo }}</td>
             </tr>
+            @endif
             @endforeach
 
         </tbody>
